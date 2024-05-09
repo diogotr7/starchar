@@ -1,5 +1,3 @@
-import { Color } from "./character/Color";
-
 function H(n: number): string {
   return n.toString(16).padStart(2, "0");
 }
@@ -54,14 +52,15 @@ export class BufferReader {
     return data;
   }
 
-  readKeyedColor(key: number, count: number = 0): Color {
+  readKeyedColor(key: number, count: number = 0): string {
     this.expectUint32(key);
     const r = this.readByte();
     const g = this.readByte();
     const b = this.readByte();
-    const a = this.readByte();
+    //ignore alpha
+    this.readByte();
     this.expectUint32(count);
-    return `#${H(r)}${H(g)}${H(b)}${H(a)}`;
+    return `#${H(r)}${H(g)}${H(b)}`;
   }
 
   readKeyedUint32(key: number, count: number = 0): number {

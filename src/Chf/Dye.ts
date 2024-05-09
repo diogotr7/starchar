@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 import { DyeColors, readDyeColors } from "./DyeColors";
 import { DyeValues, readDyeValues } from "./DyeValues";
 
@@ -34,7 +34,7 @@ export function readDye(reader: BufferReader): Dye {
   };
 }
 
-enum DyeType {
+export enum DyeType {
   Hair,
   Eyebrows,
   Beard,

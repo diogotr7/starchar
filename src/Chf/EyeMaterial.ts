@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 import { DyeColors, readDyeColors } from "./DyeColors";
 
 export type EyeMaterial = {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AppShell, Center, FileInput, Group, Title } from "@mantine/core";
-import ChfViewer from "./ChfViewer";
+import ChfViewer from "./Components/ChfViewer";
 
 function App() {
   const [chf, setChf] = useState<File | null>();
@@ -9,7 +9,14 @@ function App() {
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
-          <Title>StarChar</Title>
+          <Title onClick={() => window.location.reload()}>StarChar</Title>
+          <FileInput
+            clearable
+            accept=".chf"
+            placeholder="Upload Chf"
+            value={chf}
+            onChange={setChf}
+          />
         </Group>
       </AppShell.Header>
       <AppShell.Main>
@@ -17,14 +24,7 @@ function App() {
           <ChfViewer chf={chf} />
         ) : (
           <Center>
-            <FileInput
-              label="Choose a file"
-              description="File must be a .chf file"
-              accept=".chf"
-              placeholder="No file chosen"
-              value={chf}
-              onChange={setChf}
-            />
+            <Title>Upload .chf file to begin!</Title>
           </Center>
         )}
       </AppShell.Main>

@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 import { FacialHair as FacialHair, readFacialHair } from "./FacialHair";
 import { Eyelashes as Eyelashes, readEyelashes } from "./Eyelashes";
 import { Eyebrows as Eyebrows, readEyebrows } from "./Eyebrows";

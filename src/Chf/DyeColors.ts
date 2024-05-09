@@ -1,9 +1,8 @@
-import { BufferReader } from "../BufferReader";
-import { Color } from "./Color";
+import { BufferReader } from "../Utils/BufferReader";
 
 export type DyeColors = {
-  color1: Color;
-  color2: Color;
+  color1: string;
+  color2: string;
 };
 
 export function readDyeColors(reader: BufferReader): DyeColors {

@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 
 export type Eyelashes = NonNullable<unknown>;
 export function readEyelashes(reader: BufferReader): Eyelashes {

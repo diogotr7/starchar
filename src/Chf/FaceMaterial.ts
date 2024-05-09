@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 import { FaceColors, readFaceColors } from "./FaceColors";
 import { FaceInfo, readFaceInfo } from "./FaceInfo";
 import { HeadMaterialType } from "./HeadMaterial";

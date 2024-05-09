@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 
 export type HeadMaterial = {
   materialType: HeadMaterialType;

@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 import { Head, readHead } from "./Head";
 
 export type Body = { head: Head };

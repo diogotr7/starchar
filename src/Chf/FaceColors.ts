@@ -1,17 +1,16 @@
-import { BufferReader } from "../BufferReader";
-import { Color } from "./Color";
+import { BufferReader } from "../Utils/BufferReader";
 
 export type FaceColors = {
-  HeadColor: Color;
-  EyeMakeupColor1: Color;
-  EyeMakeupColor2: Color;
-  EyeMakeupColor3: Color;
-  CheekMakeupColor1: Color;
-  CheekMakeupColor2: Color;
-  CheekMakeupColor3: Color;
-  LipMakeupColor1: Color;
-  LipMakeupColor2: Color;
-  LipMakeupColor3: Color;
+  HeadColor: string;
+  EyeMakeupColor1: string;
+  EyeMakeupColor2: string;
+  EyeMakeupColor3: string;
+  CheekMakeupColor1: string;
+  CheekMakeupColor2: string;
+  CheekMakeupColor3: string;
+  LipMakeupColor1: string;
+  LipMakeupColor2: string;
+  LipMakeupColor3: string;
   Data10: number;
   Data11: number;
   Data12: number;

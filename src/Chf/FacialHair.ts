@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 import { HairModifier, readHairModifier } from "./HairModifier";
 
 export type FacialHair = {

@@ -1,10 +1,9 @@
-import { BufferReader } from "../BufferReader";
-import { Color } from "./Color";
+import { BufferReader } from "../Utils/BufferReader";
 
 export type BodyMaterial = {
   additionalParams: string;
-  torsoColor: Color;
-  limbColor: Color;
+  torsoColor: string;
+  limbColor: string;
 };
 
 export function readBodyMaterial(reader: BufferReader): BodyMaterial {

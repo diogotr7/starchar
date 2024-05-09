@@ -1,4 +1,4 @@
-import { BufferReader } from "../BufferReader";
+import { BufferReader } from "../Utils/BufferReader";
 import { Body, readBody } from "./Body";
 import { BodyMaterial, readBodyMaterial } from "./BodyMaterial";
 import { Dye, readDye } from "./Dye";
