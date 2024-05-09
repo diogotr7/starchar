@@ -1,6 +1,8 @@
 import { BufferReader } from "../BufferReader";
 import { Body, readBody } from "./Body";
-import { readDye } from "./Dye";
+import { BodyMaterial, readBodyMaterial } from "./BodyMaterial";
+import { Dye, readDye } from "./Dye";
+import { EyeMaterial, readEyeMaterial } from "./EyeMaterial";
 import { FaceMaterial, readFaceMaterial } from "./FaceMaterial";
 import { HeadMaterial, readHeadMaterial } from "./HeadMaterial";
 
@@ -18,6 +20,9 @@ export type Character = {
   body: Body;
   headMaterial: HeadMaterial;
   faceMaterial: FaceMaterial;
+  dyes: Dye[];
+  eyeMaterial: EyeMaterial;
+  bodyMaterial: BodyMaterial;
 };
 
 export function readCharacter(bytes: Uint8Array): Character {
@@ -34,10 +39,13 @@ export function readCharacter(bytes: Uint8Array): Character {
   const headMaterial = readHeadMaterial(reader);
   const faceMaterial = readFaceMaterial(reader, headMaterial.materialType);
 
-  const dyes = [];
+  const dyes: Dye[] = [];
   while (reader.peekUint32() != 0xa047885e) {
     dyes.push(readDye(reader));
   }
+
+  const eyeMaterial = readEyeMaterial(reader);
+  const bodyMaterial = readBodyMaterial(reader);
 
   return {
     bodyType: readBodyType(bodyTypeGuid),
@@ -45,6 +53,9 @@ export function readCharacter(bytes: Uint8Array): Character {
     body,
     headMaterial,
     faceMaterial,
+    dyes,
+    eyeMaterial,
+    bodyMaterial,
   };
 }
 
