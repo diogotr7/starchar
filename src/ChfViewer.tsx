@@ -1,4 +1,4 @@
-import { Code, Skeleton, Text } from "@mantine/core";
+import { Code, Skeleton } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { extract } from "./chf";
 import { StarCitizenCharacter, parse } from "./character/StarCitizenCharacter";
