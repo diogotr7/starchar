@@ -1,5 +1,6 @@
 import { BufferReader } from "../BufferReader";
 import { Body, readBody } from "./Body";
+import { readDye } from "./Dye";
 import { FaceMaterial, readFaceMaterial } from "./FaceMaterial";
 import { HeadMaterial, readHeadMaterial } from "./HeadMaterial";
 
@@ -33,18 +34,22 @@ export function readCharacter(bytes: Uint8Array): Character {
   const headMaterial = readHeadMaterial(reader);
   const faceMaterial = readFaceMaterial(reader, headMaterial.materialType);
 
-  let bodyType: BodyType;
-  if (bodyTypeGuid === "25f439d5-146b-4a61-a999-a486dfb68a49")
-    bodyType = "male";
-  else if (bodyTypeGuid === "d0794a94-efb0-4cad-ad38-2558b4d3c253")
-    bodyType = "female";
-  else throw new Error(`Unknown body type: ${bodyTypeGuid}`);
+  const dyes = [];
+  while (reader.peekUint32() != 0xa047885e) {
+    dyes.push(readDye(reader));
+  }
 
   return {
-    bodyType,
+    bodyType: readBodyType(bodyTypeGuid),
     dna: toHexString(dnaBytes),
     body,
     headMaterial,
     faceMaterial,
   };
+}
+
+function readBodyType(guid: string): BodyType {
+  if (guid === "25f439d5-146b-4a61-a999-a486dfb68a49") return "male";
+  if (guid === "d0794a94-efb0-4cad-ad38-2558b4d3c253") return "female";
+  throw new Error(`Unknown body type: ${guid}`);
 }
