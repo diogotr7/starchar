@@ -1,3 +1,9 @@
+import { Color } from "./character/Color";
+
+function H(n: number): string {
+  return n.toString(16).padStart(2, "0");
+}
+
 export class BufferReader {
   private view: DataView;
   private offset: number;
@@ -35,6 +41,36 @@ export class BufferReader {
     return low + high * 2 ** 32;
   }
 
+  readFloat32(): number {
+    const value = this.view.getFloat32(this.offset, true);
+    this.offset += Float32Array.BYTES_PER_ELEMENT;
+    return value;
+  }
+
+  readKeyedFloat32(key: number, count: number = 0): number {
+    this.expectUint32(key);
+    const data = this.readFloat32();
+    this.expectUint32(count);
+    return data;
+  }
+
+  readKeyedColor(key: number, count: number = 0): Color {
+    this.expectUint32(key);
+    const r = this.readByte();
+    const g = this.readByte();
+    const b = this.readByte();
+    const a = this.readByte();
+    this.expectUint32(count);
+    return `#${H(r)}${H(g)}${H(b)}${H(a)}`;
+  }
+
+  readKeyedUint32(key: number, count: number = 0): number {
+    this.expectUint32(key);
+    const value = this.readUint32();
+    this.expectUint32(count);
+    return value;
+  }
+
   readGuid(): string {
     //16 bytes
     const a = this.readByte();
@@ -53,10 +89,6 @@ export class BufferReader {
     const n = this.readByte();
     const o = this.readByte();
     const p = this.readByte();
-
-    function H(n: number): string {
-      return n.toString(16).padStart(2, "0");
-    }
 
     // I hate this
     return `${H(h)}${H(g)}${H(f)}${H(e)}-${H(d)}${H(c)}-${H(b)}${H(a)}-${H(

@@ -1,5 +1,7 @@
 import { BufferReader } from "../BufferReader";
 import { Body, readBody } from "./Body";
+import { FaceMaterial, readFaceMaterial } from "./FaceMaterial";
+import { HeadMaterial, readHeadMaterial } from "./HeadMaterial";
 
 export function toHexString(byteArray: Uint8Array) {
   return Array.from(byteArray, function (byte) {
@@ -13,6 +15,8 @@ export type Character = {
   bodyType: BodyType;
   dna: string;
   body: Body;
+  headMaterial: HeadMaterial;
+  faceMaterial: FaceMaterial;
 };
 
 export function readCharacter(bytes: Uint8Array): Character {
@@ -23,10 +27,11 @@ export function readCharacter(bytes: Uint8Array): Character {
   reader.expectEmptyGuid();
   reader.expectUint64(0xd8);
   const dnaBytes = reader.readBytes(0xd8);
-  const totalCount = reader.readUint64();
-  console.log(`Total count: ${totalCount}`);
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  reader.readUint64();
   const body = readBody(reader);
+  const headMaterial = readHeadMaterial(reader);
+  const faceMaterial = readFaceMaterial(reader, headMaterial.materialType);
 
   let bodyType: BodyType;
   if (bodyTypeGuid === "25f439d5-146b-4a61-a999-a486dfb68a49")
@@ -39,5 +44,7 @@ export function readCharacter(bytes: Uint8Array): Character {
     bodyType,
     dna: toHexString(dnaBytes),
     body,
+    headMaterial,
+    faceMaterial,
   };
 }
