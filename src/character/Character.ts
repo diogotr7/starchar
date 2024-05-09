@@ -1,4 +1,3 @@
-import { match } from "ts-pattern";
 import { BufferReader } from "../BufferReader";
 import { Body, readBody } from "./Body";
 
@@ -8,8 +7,10 @@ export function toHexString(byteArray: Uint8Array) {
   }).join("");
 }
 
+type BodyType = "male" | "female";
+
 export type Character = {
-  bodyType: "male" | "female";
+  bodyType: BodyType;
   dna: string;
   body: Body;
 };
@@ -27,11 +28,12 @@ export function readCharacter(bytes: Uint8Array): Character {
 
   const body = readBody(reader);
 
-  const bodyType = match(bodyTypeGuid)
-    .returnType<"male" | "female">()
-    .with("25f439d5-146b-4a61-a999-a486dfb68a49", () => "male")
-    .with("d0794a94-efb0-4cad-ad38-2558b4d3c253", () => "female")
-    .run();
+  let bodyType: BodyType;
+  if (bodyTypeGuid === "25f439d5-146b-4a61-a999-a486dfb68a49")
+    bodyType = "male";
+  else if (bodyTypeGuid === "d0794a94-efb0-4cad-ad38-2558b4d3c253")
+    bodyType = "female";
+  else throw new Error(`Unknown body type: ${bodyTypeGuid}`);
 
   return {
     bodyType,

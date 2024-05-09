@@ -1,19 +1,8 @@
 import { useState } from "react";
-import {
-  ActionIcon,
-  AppShell,
-  Center,
-  FileInput,
-  Group,
-  Space,
-  Title,
-  useMantineColorScheme,
-} from "@mantine/core";
-import { IconSun } from "@tabler/icons-react";
+import { AppShell, Center, FileInput, Group, Title } from "@mantine/core";
 import ChfViewer from "./ChfViewer";
 
 function App() {
-  const { toggleColorScheme } = useMantineColorScheme();
   const [chf, setChf] = useState<File | null>();
 
   return (
@@ -21,10 +10,6 @@ function App() {
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
           <Title>StarChar</Title>
-          <Space />
-          <ActionIcon onClick={toggleColorScheme} size={35}>
-            <IconSun />
-          </ActionIcon>
         </Group>
       </AppShell.Header>
       <AppShell.Main>

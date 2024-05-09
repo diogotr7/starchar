@@ -728,24 +728,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tabler/icons-react@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "@tabler/icons-react@npm:3.3.0"
-  dependencies:
-    "@tabler/icons": "npm:3.3.0"
-  peerDependencies:
-    react: ">= 16"
-  checksum: 10c0/c5debd4afe94179759662e31a54d9bc7be5ffd081a87b2d5d220b15f2ad92220e016577f61b3df611ae8d42df57bfbca9c5b1ffa404f38e17678cccac42e8ddc
-  languageName: node
-  linkType: hard
-
-"@tabler/icons@npm:3.3.0":
-  version: 3.3.0
-  resolution: "@tabler/icons@npm:3.3.0"
-  checksum: 10c0/8151654fcdd58c948c5594ae6ff297e32b5ca82eaba950c7b00e002f13f2b856ba7867f9a898df8df63425b6c8aff0000534317dd9b6d1ab9efd9abb67c57f6d
-  languageName: node
-  linkType: hard
-
 "@types/estree@npm:1.0.5":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
@@ -1154,15 +1136,6 @@ __metadata:
   version: 0.0.1
   resolution: "concat-map@npm:0.0.1"
   checksum: 10c0/c996b1cfdf95b6c90fee4dae37e332c8b6eb7d106430c17d538034c0ad9a1630cb194d2ab37293b1bdd4d779494beee7786d586a50bd9376fd6f7bcc2bd4c98f
-  languageName: node
-  linkType: hard
-
-"crc32@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "crc32@npm:0.2.2"
-  bin:
-    crc32: ./bin/runner.js
-  checksum: 10c0/ed475a5618c948112010677751819a03ff2259c8e52d11f427c4a901d9c560d859a7c623c7885e84e811ebffc9e2c4d1aff4e685475647ab3bc2f423b86905fe
   languageName: node
   linkType: hard
 
@@ -1732,13 +1705,6 @@ __metadata:
   version: 1.4.0
   resolution: "graphemer@npm:1.4.0"
   checksum: 10c0/e951259d8cd2e0d196c72ec711add7115d42eb9a8146c8eeda5b8d3ac91e5dd816b9cd68920726d9fd4490368e7ed86e9c423f40db87e2d8dfafa00fa17c3a31
-  languageName: node
-  linkType: hard
-
-"guid-ts@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "guid-ts@npm:1.1.2"
-  checksum: 10c0/480adbc21dd7457162f6772c5499737f719909e86cf62ef00eafa3cb8a0f05947bba6acd286f7af9103525d2659fd98a275149da630d59c70c0e1860ffbaf8e4
   languageName: node
   linkType: hard
 
@@ -2833,23 +2799,19 @@ __metadata:
     "@cloudpss/zstd": "npm:^0.2.16"
     "@mantine/core": "npm:^7.9.1"
     "@mantine/hooks": "npm:^7.9.1"
-    "@tabler/icons-react": "npm:^3.3.0"
     "@types/react": "npm:^18.2.66"
     "@types/react-dom": "npm:^18.2.22"
     "@typescript-eslint/eslint-plugin": "npm:^7.2.0"
     "@typescript-eslint/parser": "npm:^7.2.0"
     "@vitejs/plugin-react-swc": "npm:^3.5.0"
-    crc32: "npm:^0.2.2"
     eslint: "npm:^8.57.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.6"
-    guid-ts: "npm:^1.1.2"
     postcss: "npm:^8.4.38"
     postcss-preset-mantine: "npm:^1.15.0"
     postcss-simple-vars: "npm:^7.0.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
-    ts-pattern: "npm:^5.1.1"
     typescript: "npm:^5.2.2"
     vite: "npm:^5.2.0"
     vite-plugin-top-level-await: "npm:^1.4.1"
@@ -2965,13 +2927,6 @@ __metadata:
   peerDependencies:
     typescript: ">=4.2.0"
   checksum: 10c0/f54a0ba9ed56ce66baea90a3fa087a484002e807f28a8ccb2d070c75e76bde64bd0f6dce98b3802834156306050871b67eec325cb4e918015a360a3f0868c77c
-  languageName: node
-  linkType: hard
-
-"ts-pattern@npm:^5.1.1":
-  version: 5.1.1
-  resolution: "ts-pattern@npm:5.1.1"
-  checksum: 10c0/20ec96d1d07b074585082c0378abdc1ecd0d9aaa3d4c2bf2d668f645693daad7b65734292704d90a8472a79080dfe8f2b36d8bdb01f6145d1f4351a51516e307
   languageName: node
   linkType: hard
 

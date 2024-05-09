@@ -14,12 +14,8 @@
     "@cloudpss/zstd": "^0.2.16",
     "@mantine/core": "^7.9.1",
     "@mantine/hooks": "^7.9.1",
-    "@tabler/icons-react": "^3.3.0",
-    "crc32": "^0.2.2",
-    "guid-ts": "^1.1.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "ts-pattern": "^5.1.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
