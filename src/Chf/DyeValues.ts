@@ -1,14 +1,14 @@
 import { BufferReader } from "../Utils/BufferReader";
 
 export type DyeValues = {
-  Key: string;
-  DyeAmount: number;
-  DyeGradient2: number;
-  NaturalColorSaturation: number;
-  NaturalColorRedness: number;
-  DyeVariation: number;
-  Unknown: number;
-  DyeGradient1: number;
+  key: string;
+  dyeAmount: number;
+  dyeGradient2: number;
+  naturalColorSaturation: number;
+  naturalColorRedness: number;
+  dyeVariation: number;
+  unknown: number;
+  dyeGradient1: number;
 };
 
 export function readDyeValues(reader: BufferReader): DyeValues | undefined {
@@ -22,13 +22,13 @@ export function readDyeValues(reader: BufferReader): DyeValues | undefined {
   if (count !== 7) throw new Error(`Unexpected count: ${count}`);
 
   return {
-    Key: unk1.toString(16).padStart(8, "0"),
-    DyeAmount: reader.readKeyedFloat32(0x4af6c15a),
-    DyeGradient2: reader.readKeyedFloat32(0xc3370bd9),
-    NaturalColorSaturation: reader.readKeyedFloat32(0xb9fa00a3),
-    NaturalColorRedness: reader.readKeyedFloat32(0x62fbf0af),
-    DyeVariation: reader.readKeyedFloat32(0x06084076),
-    Unknown: reader.readKeyedFloat32(0xa59aa7c8),
-    DyeGradient1: reader.readKeyedFloat32(0x027eb674),
+    key: unk1.toString(16).padStart(8, "0"),
+    dyeAmount: reader.readKeyedFloat32(0x4af6c15a),
+    dyeGradient2: reader.readKeyedFloat32(0xc3370bd9),
+    naturalColorSaturation: reader.readKeyedFloat32(0xb9fa00a3),
+    naturalColorRedness: reader.readKeyedFloat32(0x62fbf0af),
+    dyeVariation: reader.readKeyedFloat32(0x06084076),
+    unknown: reader.readKeyedFloat32(0xa59aa7c8),
+    dyeGradient1: reader.readKeyedFloat32(0x027eb674),
   };
 }

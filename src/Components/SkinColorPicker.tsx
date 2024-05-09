@@ -6,11 +6,11 @@ function SkinColorPicker() {
   const character = useCharacterContext();
 
   const areColorsEqual =
-    character.faceMaterial.faceColors.HeadColor ===
+    character.faceMaterial.faceColors.headColor ===
       character.bodyMaterial.limbColor &&
     character.bodyMaterial.limbColor === character.bodyMaterial.torsoColor;
   const [headColor, setHeadColor] = useState(
-    character.faceMaterial.faceColors.HeadColor
+    character.faceMaterial.faceColors.headColor
   );
   const [limbColor, setLimbColor] = useState(character.bodyMaterial.limbColor);
   const [torsoColor, setTorsoColor] = useState(
