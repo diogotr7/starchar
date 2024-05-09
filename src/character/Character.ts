@@ -1,6 +1,6 @@
 import { match } from "ts-pattern";
-import { BufferReader } from "../buffer-reader";
-import { StarCitizenBody, readBody } from "./StarCitizenBody";
+import { BufferReader } from "../BufferReader";
+import { Body, readBody } from "./Body";
 
 export function toHexString(byteArray: Uint8Array) {
   return Array.from(byteArray, function (byte) {
@@ -8,13 +8,13 @@ export function toHexString(byteArray: Uint8Array) {
   }).join("");
 }
 
-export type StarCitizenCharacter = {
+export type Character = {
   bodyType: "male" | "female";
   dna: string;
-  body: StarCitizenBody;
+  body: Body;
 };
 
-export function parse(bytes: Uint8Array): StarCitizenCharacter {
+export function readCharacter(bytes: Uint8Array): Character {
   const reader = new BufferReader(bytes.buffer);
   reader.expectUint32(2);
   reader.expectUint32(7);

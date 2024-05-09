@@ -1,18 +1,18 @@
 import { Code, Skeleton } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { extract } from "./chf";
-import { StarCitizenCharacter, parse } from "./character/StarCitizenCharacter";
+import { extractChf } from "./ChfFile";
+import { Character, readCharacter } from "./character/Character";
 
 type Props = {
   chf: File;
 };
 
 function ChfViewer({ chf }: Props) {
-  const [character, setCharacter] = useState<StarCitizenCharacter | null>(null);
+  const [character, setCharacter] = useState<Character | null>(null);
 
   useEffect(() => {
     chf.arrayBuffer().then((buffer) => {
-      const char = parse(extract(new Uint8Array(buffer)));
+      const char = readCharacter(extractChf(new Uint8Array(buffer)));
       setCharacter(char);
     });
   }, [chf]);

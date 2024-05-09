@@ -1,24 +1,24 @@
-import { BufferReader } from "../buffer-reader";
-import { StarCitizenFacialHair, readFacialHair } from "./StarCitizenFacialHair";
-import { StarCitizenEyelashes, readEyelashes } from "./StarCitizenEyelashes";
-import { StarCitizenEyebrows, readEyebrows } from "./StarCitizenEyebrows";
-import { StarCitizenHair, readHair } from "./StarCitizenHair";
-import { StarCitizenEyes, readEyes } from "./StarCitizenEyes";
+import { BufferReader } from "../BufferReader";
+import { FacialHair as FacialHair, readFacialHair } from "./FacialHair";
+import { Eyelashes as Eyelashes, readEyelashes } from "./Eyelashes";
+import { Eyebrows as Eyebrows, readEyebrows } from "./Eyebrows";
+import { Hair as Hair, readHair } from "./Hair";
+import { Eyes as Eyes, readEyes } from "./Eyes";
 
-export type StarCitizenHead = {
-  eyes?: StarCitizenEyes;
-  hair?: StarCitizenHair;
-  eyebrows?: StarCitizenEyebrows;
-  eyelashes?: StarCitizenEyelashes;
-  facialHair?: StarCitizenFacialHair;
+export type Head = {
+  eyes?: Eyes;
+  hair?: Hair;
+  eyebrows?: Eyebrows;
+  eyelashes?: Eyelashes;
+  facialHair?: FacialHair;
 };
 
-export function readHead(reader: BufferReader): StarCitizenHead {
+export function readHead(reader: BufferReader): Head {
   reader.expectUint32(0x47010db9);
   reader.expectGuid("1d5cfab3-bf80-4550-b4ab-39e896a7086e");
   const headParts = reader.readUint64();
 
-  const head: StarCitizenHead = {};
+  const head: Head = {};
   for (let i = 0; i < headParts; i++) {
     switch (reader.peekUint32()) {
       case 0xc5bb5550:

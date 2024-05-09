@@ -1,7 +1,7 @@
-import { BufferReader } from "../buffer-reader";
+import { BufferReader } from "../BufferReader";
 
-export type StarCitizenEyelashes = NonNullable<unknown>;
-export function readEyelashes(reader: BufferReader): StarCitizenEyelashes {
+export type Eyelashes = NonNullable<unknown>;
+export function readEyelashes(reader: BufferReader): Eyelashes {
   reader.expectUint32(0x190b04e2);
   reader.expectGuid("6217c113-a448-443b-82aa-1bb108ba8e11");
   reader.expectUint32(0x0);

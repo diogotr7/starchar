@@ -1,13 +1,14 @@
 import { crc32c } from "@aws-crypto/crc32c";
 import { decompress } from "@cloudpss/zstd/wasm";
-import { BufferReader, BufferWriter } from "./buffer-reader";
+import { BufferReader } from "./BufferReader";
+import { BufferWriter } from "./BufferWriter";
 import { compress } from "@cloudpss/zstd";
 
 const SIZE = 4096;
 const MAGIC = 0x00004242;
 const MYMAGIC = "diogotr7";
 
-export function extract(bytes: Uint8Array): Uint8Array {
+export function extractChf(bytes: Uint8Array): Uint8Array {
   if (bytes.length != SIZE) {
     throw new Error("bytes must be 4096 bytes long");
   }

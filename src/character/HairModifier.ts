@@ -1,8 +1,8 @@
-import { BufferReader } from "../buffer-reader";
+import { BufferReader } from "../BufferReader";
 
-export type StarCitizenHairPart = NonNullable<unknown>;
+export type HairModifier = NonNullable<unknown>;
 
-export function readHairPart(reader: BufferReader): StarCitizenHairPart {
+export function readHairModifier(reader: BufferReader): HairModifier {
   reader.expectUint32(0xe7809d46);
   reader.expectGuid("12ce4ce5-e49a-4dab-9d31-ad262faaddf2");
   reader.expectUint32(0x0);
