@@ -24,21 +24,21 @@ function MakeupColorPicker() {
           <ColorInput
             size="md"
             mt="md"
-            label="Eye Color 1"
+            label="Eye Makeup 1"
             value={eyeColor1}
             onChange={setEyeColor1}
           />
           <ColorInput
             mt="md"
             size="md"
-            label="Eye Color 2"
+            label="Eye Makeup 2"
             value={eyeColor2}
             onChange={setEyeColor2}
           />
           <ColorInput
             mt="md"
             size="md"
-            label="Eye Color 3"
+            label="Eye Makeup 3"
             value={eyeColor3}
             onChange={setEyeColor3}
           />
@@ -47,21 +47,21 @@ function MakeupColorPicker() {
           <ColorInput
             size="md"
             mt="md"
-            label="Cheek Color 1"
+            label="Cheek Makeup 1"
             value={cheekColor1}
             onChange={setCheekColor1}
           />
           <ColorInput
             mt="md"
             size="md"
-            label="Cheek Color 2"
+            label="Cheek Makeup 2"
             value={cheekColor2}
             onChange={setCheekColor2}
           />
           <ColorInput
             mt="md"
             size="md"
-            label="Cheek Color 3"
+            label="Cheek Makeup 3"
             value={cheekColor3}
             onChange={setCheekColor3}
           />
@@ -70,21 +70,21 @@ function MakeupColorPicker() {
           <ColorInput
             size="md"
             mt="md"
-            label="Lip Color 1"
+            label="Lip Makeup 1"
             value={lipColor1}
             onChange={setLipColor1}
           />
           <ColorInput
             mt="md"
             size="md"
-            label="Lip Color 2"
+            label="Lip Makeup 2"
             value={lipColor2}
             onChange={setLipColor2}
           />
           <ColorInput
             mt="md"
             size="md"
-            label="Lip Color 3"
+            label="Lip Makeup 3"
             value={lipColor3}
             onChange={setLipColor3}
           />

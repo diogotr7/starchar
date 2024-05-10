@@ -16,7 +16,6 @@ function CharacterContextProvider({ chf }: Props) {
   useEffect(() => {
     chf.arrayBuffer().then((buffer) => {
       const c = readCharacter(extractChf(new Uint8Array(buffer)))
-      // eslint-disable-next-line no-console
       console.log(c)
       dispatch({ type: 'setCharacter', payload: c })
     }).catch((e) => {

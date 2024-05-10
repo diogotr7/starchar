@@ -1,31 +1,26 @@
-import { ColorInput, Fieldset, Switch, Tooltip } from '@mantine/core'
+import { Center, ColorInput, Fieldset, Switch, Tooltip } from '@mantine/core'
 import { useState } from 'react'
 import { IconLock, IconLockOff } from '@tabler/icons-react'
 import { useCharacter } from '../Context/CharacterContext'
-import type { Character } from '../Chf/Character'
-
-function allColorsEqual(character: Character) {
-  return character.faceMaterial.faceColors.headColor === character.bodyMaterial.limbColor
-    && character.bodyMaterial.limbColor === character.bodyMaterial.torsoColor
-}
 
 function SkinColorPicker() {
   const [character, dispatch] = useCharacter()
-  const areColorsEqual = allColorsEqual(character)
-  const [locked, setLocked] = useState(areColorsEqual)
+  const [locked, setLocked] = useState(true)
 
   return (
     <Fieldset legend="Skin Colors">
-      <Tooltip label="Locks all body parts to have the same skin color" refProp="rootRef">
-        <Switch
-          label="Lock"
-          checked={locked}
-          size="md"
-          onChange={e => setLocked(e.currentTarget.checked)}
-          onLabel={<IconLock size={16} />}
-          offLabel={<IconLockOff size={16} />}
-        />
-      </Tooltip>
+      <Center>
+        <Tooltip label="Locks all body parts to have the same skin color" refProp="rootRef">
+          <Switch
+            label="Lock"
+            checked={locked}
+            size="md"
+            onChange={e => setLocked(e.currentTarget.checked)}
+            onLabel={<IconLock size={16} />}
+            offLabel={<IconLockOff size={16} />}
+          />
+        </Tooltip>
+      </Center>
       <ColorInput
         disabled={!locked}
         withEyeDropper={false}
