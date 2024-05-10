@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { AppShell, Center, FileInput, Group, Title } from '@mantine/core'
-import ChfViewer from './Components/ChfViewer'
+import CharacterContextProvider from './Context/CharacterContextProvider'
 
 function App() {
   const [chf, setChf] = useState<File | null>()
@@ -22,7 +22,7 @@ function App() {
       <AppShell.Main>
         {chf
           ? (
-            <ChfViewer chf={chf} />
+            <CharacterContextProvider chf={chf} />
             )
           : (
             <Center>

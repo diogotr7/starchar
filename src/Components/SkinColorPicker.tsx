@@ -1,74 +1,70 @@
-import { ColorInput, Fieldset, SegmentedControl } from '@mantine/core'
-import { useEffect, useState } from 'react'
+import { ColorInput, Fieldset, Switch, Tooltip } from '@mantine/core'
+import { useState } from 'react'
+import { IconLock, IconLockOff } from '@tabler/icons-react'
 import { useCharacter } from '../Context/CharacterContext'
+import type { Character } from '../Chf/Character'
+
+function allColorsEqual(character: Character) {
+  return character.faceMaterial.faceColors.headColor === character.bodyMaterial.limbColor
+    && character.bodyMaterial.limbColor === character.bodyMaterial.torsoColor
+}
 
 function SkinColorPicker() {
-  const [character] = useCharacter()
-
-  const areColorsEqual = character.faceMaterial.faceColors.headColor === character.bodyMaterial.limbColor
-    && character.bodyMaterial.limbColor === character.bodyMaterial.torsoColor
-  const [headColor, setHeadColor] = useState(character.faceMaterial.faceColors.headColor)
-  const [limbColor, setLimbColor] = useState(character.bodyMaterial.limbColor)
-
-  const [
-    torsoColor,
-    setTorsoColor,
-  ] = useState(character.bodyMaterial.torsoColor)
-  const [sharedColor, setSharedColor] = useState(areColorsEqual ? 'same' : 'diff')
-
-  // any of the above 3 *should* be fine here.
-  const [skinColor, setSkinColor] = useState(character.bodyMaterial.torsoColor)
-
-  useEffect(() => {
-    if (sharedColor === 'same') {
-      setHeadColor(skinColor)
-      setLimbColor(skinColor)
-      setTorsoColor(skinColor)
-    }
-  }, [sharedColor, skinColor])
+  const [character, dispatch] = useCharacter()
+  const areColorsEqual = allColorsEqual(character)
+  const [locked, setLocked] = useState(areColorsEqual)
 
   return (
     <Fieldset legend="Skin Colors">
-      <SegmentedControl
-        fullWidth
-        data={[
-          { value: 'same', label: 'Same' },
-          { value: 'diff', label: 'Different' },
-        ]}
-        value={sharedColor}
-        onChange={setSharedColor}
-      />
+      <Tooltip label="Locks all body parts to have the same skin color" refProp="rootRef">
+        <Switch
+          label="Lock"
+          checked={locked}
+          size="md"
+          onChange={e => setLocked(e.currentTarget.checked)}
+          onLabel={<IconLock size={16} />}
+          offLabel={<IconLockOff size={16} />}
+        />
+      </Tooltip>
       <ColorInput
-        disabled={sharedColor === 'diff'}
+        disabled={!locked}
+        withEyeDropper={false}
         size="md"
         mt="md"
-        label="Skin Color"
-        value={skinColor}
-        onChange={setSkinColor}
+        label="Skin"
+        w={120}
+        value={locked ? character.faceMaterial.faceColors.headColor : '#000000'}
+        onChange={(c) => { dispatch({ type: 'setSkinColor', payload: c }) }}
       />
       <ColorInput
-        disabled={sharedColor === 'same'}
+        disabled={locked}
+        withEyeDropper={false}
         size="md"
         mt="md"
-        label="Head Color"
-        value={headColor}
-        onChange={setHeadColor}
+        label="Head"
+        w={120}
+        value={character.faceMaterial.faceColors.headColor}
+        onChange={(c) => { dispatch({ type: 'setHeadColor', payload: c }) }}
       />
       <ColorInput
-        disabled={sharedColor === 'same'}
+        disabled={locked}
+        withEyeDropper={false}
         mt="md"
         size="md"
-        label="Limb Color"
-        value={limbColor}
-        onChange={setLimbColor}
+        label="Limb"
+        w={120}
+        value={character.bodyMaterial.limbColor}
+        onChange={(c) => { dispatch({ type: 'setLimbColor', payload: c }) }}
       />
       <ColorInput
-        disabled={sharedColor === 'same'}
+        disabled={locked}
+        withEyeDropper={false}
         mt="md"
         size="md"
-        label="Torso Color"
-        value={torsoColor}
-        onChange={setTorsoColor}
+        label="Torso"
+        w={120}
+        value={character.bodyMaterial.torsoColor}
+        onChange={(c) => { dispatch({ type: 'setTorsoColor', payload: c }) }}
       />
     </Fieldset>
   )

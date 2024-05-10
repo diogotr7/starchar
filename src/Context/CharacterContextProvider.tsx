@@ -1,24 +1,24 @@
 import { Skeleton } from '@mantine/core'
-import { useEffect, useState } from 'react'
-import CharacterContext from '../Context/CharacterContext'
-import type { Character } from '../Chf/Character'
+import { useEffect, useReducer } from 'react'
 import { readCharacter } from '../Chf/Character'
 import { extractChf } from '../Utils/ChfFile'
-import CharacterEditor from './CharacterEditor'
+import CharacterEditor from '../Components/CharacterEditor'
+import CharacterContext from './CharacterContext'
+import { reducer } from './reducer'
 
 interface Props {
   chf: File
 }
 
-function ChfViewer({ chf }: Props) {
-  const [character, setCharacter] = useState<Character>()
+function CharacterContextProvider({ chf }: Props) {
+  const [character, dispatch] = useReducer(reducer, undefined!)
 
   useEffect(() => {
     chf.arrayBuffer().then((buffer) => {
       const c = readCharacter(extractChf(new Uint8Array(buffer)))
       // eslint-disable-next-line no-console
       console.log(c)
-      setCharacter(c)
+      dispatch({ type: 'setCharacter', payload: c })
     }).catch((e) => {
       console.error(e)
     })
@@ -26,7 +26,7 @@ function ChfViewer({ chf }: Props) {
 
   return character
     ? (
-      <CharacterContext.Provider value={[character, setCharacter as any]}>
+      <CharacterContext.Provider value={[character, dispatch]}>
         <CharacterEditor />
       </CharacterContext.Provider>
       )
@@ -35,4 +35,4 @@ function ChfViewer({ chf }: Props) {
       )
 }
 
-export default ChfViewer
+export default CharacterContextProvider

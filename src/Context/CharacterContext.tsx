@@ -1,8 +1,9 @@
 import type React from 'react'
 import { createContext, useContext } from 'react'
 import type { Character } from '../Chf/Character'
+import type { SetCharacterAction } from './reducer'
 
-export type CharacterContextType = [Character, React.Dispatch<React.SetStateAction<Character>>]
+export type CharacterContextType = [Character, React.Dispatch<SetCharacterAction>]
 
 export const CharacterContext = createContext<CharacterContextType | undefined>(undefined)
 
