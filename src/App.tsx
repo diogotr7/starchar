@@ -6,7 +6,7 @@ import CharacterContext from './Context/CharacterContext.tsx'
 import CharacterEditor from './Components/CharacterEditor.tsx'
 import type { Character } from './Chf/Character.ts'
 import { readCharacter } from './Chf/Character.ts'
-import { extractChf } from './Chf/ChfFile.ts'
+import { createChf, extractChf } from './Chf/ChfFile.ts'
 
 function App() {
   const [chf, setChf] = useState<File | null>()
@@ -23,8 +23,7 @@ function App() {
         const newCharacter = readCharacter(extractChf(new Uint8Array(buffer)))
         updateCharacter(() => newCharacter)
       }
-      catch {
-        console.error('Failed to read character')
+      catch (e) {
         updateCharacter(() => undefined)
         setChf(null)
         notifications.show({
@@ -32,8 +31,8 @@ function App() {
           message: 'Please upload a valid .chf file',
           color: 'red',
           autoClose: 5000,
-
         })
+        console.error('Failed to read character', e)
       }
     }).catch((e) => {
       console.error(e)

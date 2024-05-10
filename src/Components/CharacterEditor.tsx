@@ -4,8 +4,10 @@ import { useCallback } from 'react'
 import { useCharacter } from '../Context/CharacterContext'
 import { createChf } from '../Chf/ChfFile'
 import SkinColorPicker from './SkinColorPicker'
+import { CharacterJsonDisplay } from './CharacterJsonDisplay'
 
 function CharacterEditor() {
+  const isDev = import.meta.env.DEV
   const [character] = useCharacter()
   const exportCharacter = useCallback(() => {
     const buffer = createChf(character)
@@ -22,6 +24,10 @@ function CharacterEditor() {
       <Stack justify="flex-start">
         <Group justify="space-evenly">
           <SkinColorPicker />
+
+          {isDev && (
+            <CharacterJsonDisplay />
+          )}
         </Group>
       </Stack>
       <Affix zIndex={900} position={{ bottom: 0, left: 0, right: 0 }}>
