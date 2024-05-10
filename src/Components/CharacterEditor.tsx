@@ -5,6 +5,7 @@ import { useCharacter } from '../Context/CharacterContext'
 import { createChf } from '../Chf/ChfFile'
 import SkinColorPicker from './SkinColorPicker'
 import { CharacterJsonDisplay } from './CharacterJsonDisplay'
+import { DnaPanel } from './DnaPanel'
 
 function CharacterEditor() {
   const isDev = import.meta.env.DEV
@@ -24,6 +25,8 @@ function CharacterEditor() {
       <Stack justify="flex-start">
         <Group justify="space-evenly">
           <SkinColorPicker />
+
+          <DnaPanel />
 
           {isDev && (
             <CharacterJsonDisplay />

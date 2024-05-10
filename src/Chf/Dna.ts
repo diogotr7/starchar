@@ -20,7 +20,7 @@ const idxPartRecord: Record<number, DnaFacePart> = {
   11: 'crown',
 }
 
-type DnaFacePart =
+export type DnaFacePart =
   'eyebrowLeft' |
   'eyebrowRight' |
   'eyeLeft' |
@@ -34,14 +34,25 @@ type DnaFacePart =
   'jaw' |
   'crown'
 
-interface DnaBlend {
+export interface DnaBlend {
   part: DnaFacePart
   headId: number
   percent: number
 }
 
-interface DnaBlends {
-  [key: number]: DnaBlend[]
+export interface DnaBlends {
+  eyebrowLeft: DnaBlend[]
+  eyebrowRight: DnaBlend[]
+  eyeLeft: DnaBlend[]
+  eyeRight: DnaBlend[]
+  nose: DnaBlend[]
+  earLeft: DnaBlend[]
+  earRight: DnaBlend[]
+  cheekLeft: DnaBlend[]
+  cheekRight: DnaBlend[]
+  mouth: DnaBlend[]
+  jaw: DnaBlend[]
+  crown: DnaBlend[]
 }
 
 export interface Dna {
@@ -71,7 +82,20 @@ export function readDna(parentReader: BufferReader, bodyType: BodyType): Dna {
   const childCount = reader.readByte()
   reader.expectByte(0x0)
 
-  const map: Record<number, DnaBlend[]> = {}
+  const map: DnaBlends = {
+    eyebrowLeft: [],
+    eyebrowRight: [],
+    eyeLeft: [],
+    eyeRight: [],
+    nose: [],
+    earLeft: [],
+    earRight: [],
+    cheekLeft: [],
+    cheekRight: [],
+    mouth: [],
+    jaw: [],
+    crown: [],
+  }
 
   for (let i = 0; i < partCount; i++) {
     const part = i % 12
@@ -82,10 +106,7 @@ export function readDna(parentReader: BufferReader, bodyType: BodyType): Dna {
     const percent = percentShort / 0xFFFF * 100
     const blend = { headId, percent, part: idxPartRecord[part] }
 
-    if (!map[part])
-      map[part] = []
-
-    map[part].push(blend)
+    map[idxPartRecord[part]].push(blend)
   }
 
   return {
