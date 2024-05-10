@@ -1,6 +1,6 @@
-import { createContext } from "react";
-import { Character } from "../Chf/Character";
+import { createContext } from 'react'
+import type { Character } from '../Chf/Character'
 
-export const CharacterContext = createContext<Character | null>(null);
+export const CharacterContext = createContext<Character | null>(null)
 
-export default CharacterContext;
+export default CharacterContext

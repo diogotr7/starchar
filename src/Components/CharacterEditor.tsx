@@ -1,7 +1,7 @@
-import { Group, Stack } from "@mantine/core";
-import SkinColorPicker from "./SkinColorPicker";
-import MakeupColorPicker from "./MakeupColorPicker";
-import { CharacterJsonDisplay } from "./CharacterJsonDisplay";
+import { Group, Stack } from '@mantine/core'
+import SkinColorPicker from './SkinColorPicker'
+import MakeupColorPicker from './MakeupColorPicker'
+import { CharacterJsonDisplay } from './CharacterJsonDisplay'
 
 function CharacterEditor() {
   return (
@@ -12,6 +12,6 @@ function CharacterEditor() {
       </Group>
       <CharacterJsonDisplay />
     </Stack>
-  );
+  )
 }
-export default CharacterEditor;
+export default CharacterEditor

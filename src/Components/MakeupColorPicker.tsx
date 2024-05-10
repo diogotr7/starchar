@@ -1,17 +1,14 @@
-import { ColorInput, Fieldset, Group, Stack } from "@mantine/core";
-import { useState } from "react";
-import { useCharacterContext } from "../Hooks/useCharacterContext";
+import { ColorInput, Fieldset, Group, Stack } from '@mantine/core'
+import { useState } from 'react'
+import { useCharacterContext } from '../Hooks/useCharacterContext'
 
 function MakeupColorPicker() {
-  const character = useCharacterContext();
+  const character = useCharacterContext()
 
-  const [headColor, setHeadColor] = useState(
-    character.faceMaterial.faceColors.HeadColor
-  );
-  const [limbColor, setLimbColor] = useState(character.bodyMaterial.limbColor);
-  const [torsoColor, setTorsoColor] = useState(
-    character.bodyMaterial.torsoColor
-  );
+  const [headColor, setHeadColor] = useState(character.faceMaterial.faceColors.headColor)
+  const [limbColor, setLimbColor] = useState(character.bodyMaterial.limbColor)
+  const [torsoColor, setTorsoColor] = useState(character.bodyMaterial.torsoColor)
+
   return (
     <Fieldset legend="Makeup Colors" h={350}>
       <Group>
@@ -63,7 +60,7 @@ function MakeupColorPicker() {
         </Stack>
       </Group>
     </Fieldset>
-  );
+  )
 }
 
-export default MakeupColorPicker;
+export default MakeupColorPicker

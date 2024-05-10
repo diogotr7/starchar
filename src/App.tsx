@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { AppShell, Center, FileInput, Group, Title } from "@mantine/core";
-import ChfViewer from "./Components/ChfViewer";
+import { useState } from 'react'
+import { AppShell, Center, FileInput, Group, Title } from '@mantine/core'
+import ChfViewer from './Components/ChfViewer'
 
 function App() {
-  const [chf, setChf] = useState<File | null>();
+  const [chf, setChf] = useState<File | null>()
 
   return (
     <AppShell header={{ height: 60 }} padding="md">
@@ -20,16 +20,18 @@ function App() {
         </Group>
       </AppShell.Header>
       <AppShell.Main>
-        {chf ? (
-          <ChfViewer chf={chf} />
-        ) : (
-          <Center>
-            <Title>Upload .chf file to begin!</Title>
-          </Center>
-        )}
+        {chf
+          ? (
+            <ChfViewer chf={chf} />
+            )
+          : (
+            <Center>
+              <Title>Upload .chf file to begin!</Title>
+            </Center>
+            )}
       </AppShell.Main>
     </AppShell>
-  );
+  )
 }
 
-export default App;
+export default App
