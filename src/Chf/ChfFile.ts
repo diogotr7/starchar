@@ -2,7 +2,7 @@ import { crc32c } from '@aws-crypto/crc32c'
 import { compress, decompress } from '@cloudpss/zstd/wasm'
 import { BufferReader } from '../Utils/BufferReader'
 import { BufferWriter } from '../Utils/BufferWriter'
-import { type Character, readCharacter, writeCharacter } from './Character'
+import { type Character, writeCharacter } from './Character'
 
 const SIZE = 4096
 const MAGIC = 0x00004242
@@ -30,16 +30,6 @@ export function extractChf(bytes: Uint8Array): Uint8Array {
     throw new Error('decompressed size does not match expected size')
 
   return decompressed
-}
-
-function arrayBufferToBase64(buffer: ArrayBuffer) {
-  let binary = ''
-  const bytes = new Uint8Array(buffer)
-  const len = bytes.byteLength
-  for (let i = 0; i < len; i++)
-    binary += String.fromCharCode(bytes[i])
-
-  return window.btoa(binary)
 }
 
 export function createChf(character: Character): ArrayBuffer {
