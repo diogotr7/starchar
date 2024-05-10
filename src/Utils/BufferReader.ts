@@ -90,9 +90,7 @@ export class BufferReader {
     const p = this.readByte()
 
     // I hate this
-    return `${H(h)}${H(g)}${H(f)}${H(e)}-${H(d)}${H(c)}-${H(b)}${H(a)}-${H(
-      p,
-    )}${H(o)}-${H(n)}${H(m)}${H(l)}${H(k)}${H(j)}${H(i)}`
+    return `${H(h)}${H(g)}${H(f)}${H(e)}-${H(d)}${H(c)}-${H(b)}${H(a)}-${H(p)}${H(o)}-${H(n)}${H(m)}${H(l)}${H(k)}${H(j)}${H(i)}`
   }
 
   readBytes(count: number): Uint8Array {
