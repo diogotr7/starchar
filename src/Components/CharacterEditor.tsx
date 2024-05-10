@@ -24,7 +24,7 @@ function CharacterEditor() {
           <SkinColorPicker />
         </Group>
       </Stack>
-      <Affix zIndex={1000} position={{ bottom: 0, left: 0, right: 0 }}>
+      <Affix zIndex={900} position={{ bottom: 0, left: 0, right: 0 }}>
         <Center p="xl">
           <Button
             size="xl"
