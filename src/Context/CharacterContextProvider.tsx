@@ -17,9 +17,19 @@ function CharacterContextProvider({ chf }: Props) {
 
   useEffect(() => {
     chf.arrayBuffer().then((buffer) => {
-      updateCharacter(() => readCharacter(extractChf(new Uint8Array(buffer))))
+      let newCharacter: Character | undefined
+      try {
+        newCharacter = readCharacter(extractChf(new Uint8Array(buffer)))
+      }
+      catch {
+        console.error('Failed to read character')
+        newCharacter = undefined
+      }
+
+      updateCharacter(() => newCharacter)
     }).catch((e) => {
       console.error(e)
+      updateCharacter(() => undefined)
     })
   }, [chf])
 
@@ -30,7 +40,7 @@ function CharacterContextProvider({ chf }: Props) {
       </CharacterContext.Provider>
       )
     : (
-      <Skeleton height={300} />
+      <></>
       )
 }
 

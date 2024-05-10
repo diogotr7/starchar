@@ -1,4 +1,4 @@
-import { Center, Fieldset, Switch, Tooltip } from '@mantine/core'
+import { Center, Divider, Fieldset, Switch, Tooltip } from '@mantine/core'
 import { useState } from 'react'
 import { IconLock, IconLockOff } from '@tabler/icons-react'
 import { useCharacter } from '../Context/CharacterContext'
@@ -9,7 +9,7 @@ function SkinColorPicker() {
   const [locked, setLocked] = useState(true)
 
   return (
-    <Fieldset legend="Body Colors">
+    <Fieldset legend="Colors">
       <Center>
         <Tooltip label="Locks all body parts to have the same skin color" refProp="rootRef">
           <Switch
@@ -51,6 +51,13 @@ function SkinColorPicker() {
         label="Torso"
         value={character.bodyMaterial.torsoColor}
         onChange={(c) => { updateCharacter((d) => { d.bodyMaterial.torsoColor = c }) }}
+      />
+
+      <Divider mt="lg" mb="sm" />
+      <SmallColorInput
+        label="Eye"
+        value={character.eyeMaterial.colors.color1}
+        onChange={(c) => { updateCharacter((d) => { d.eyeMaterial.colors.color1 = c }) }}
       />
 
     </Fieldset>

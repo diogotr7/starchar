@@ -1,11 +1,9 @@
-import { Affix, Button, Group, Stack } from '@mantine/core'
+import { Affix, Button, Center, Group, Stack } from '@mantine/core'
 import { IconDownload } from '@tabler/icons-react'
 import { useCallback } from 'react'
 import { useCharacter } from '../Context/CharacterContext'
 import { createChf } from '../Chf/ChfFile'
 import SkinColorPicker from './SkinColorPicker'
-import { FaceProperties } from './FaceProperties'
-import { CharacterJsonDisplay } from './CharacterJsonDisplay'
 
 function CharacterEditor() {
   const [character] = useCharacter()
@@ -24,19 +22,18 @@ function CharacterEditor() {
       <Stack justify="flex-start">
         <Group justify="space-evenly">
           <SkinColorPicker />
-          <FaceProperties />
         </Group>
-        <CharacterJsonDisplay />
       </Stack>
-      <Affix zIndex={1000}>
-        <Group p="xl">
+      <Affix zIndex={1000} position={{ bottom: 0, left: 0, right: 0 }}>
+        <Center p="xl">
           <Button
+            size="xl"
             rightSection={<IconDownload size={14} />}
             onClick={exportCharacter}
           >
             Export
           </Button>
-        </Group>
+        </Center>
       </Affix>
     </>
   )
