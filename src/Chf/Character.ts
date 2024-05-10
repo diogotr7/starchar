@@ -1,5 +1,5 @@
 import { BufferReader } from '../Utils/BufferReader'
-import { BufferWriter } from '../Utils/BufferWriter'
+import type { BufferWriter } from '../Utils/BufferWriter'
 import type { Body } from './Body'
 import { readBody, writeBody } from './Body'
 import type { BodyMaterial } from './BodyMaterial'
@@ -59,10 +59,7 @@ export function readCharacter(bytes: Uint8Array): Character {
   }
 }
 
-export function writeCharacter(character: Character): Uint8Array {
-  // size is not known, but 4096 is the abssolute upper limit
-  const data = new Uint8Array(4096)
-  const writer = new BufferWriter(data)
+export function writeCharacter(writer: BufferWriter, character: Character) {
   writer.writeUint32(2)
   writer.writeUint32(7)
   writeBodyType(writer, character.bodyType)
@@ -75,5 +72,4 @@ export function writeCharacter(character: Character): Uint8Array {
     writeDye(writer, dye)
   writeEyeMaterial(writer, character.eyeMaterial)
   writeBodyMaterial(writer, character.bodyMaterial, character.bodyType)
-  return data.slice(0, writer.getOffset())
 }

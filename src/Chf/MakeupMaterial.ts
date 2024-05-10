@@ -46,5 +46,5 @@ export function readMakeupMaterial(reader: BufferReader): MakeupMaterial {
 export function writeMakeupMaterial(writer: BufferWriter, makeup: MakeupMaterial) {
   writer.writeUint32(0)
   writer.writeByte(makeup.count)
-  writer.writeGuid(reverseMakeup[makeup.makeupType]!)
+  writer.writeGuid(reverseMakeup[makeup.makeupType] ?? '00000000-0000-0000-0000-000000000000')
 }

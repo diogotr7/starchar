@@ -74,12 +74,18 @@ export class BufferWriter {
   }
 
   writeGuid(value: string): void {
+    // XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
     const bytes = new Uint8Array(16)
     const parts = value.split('-')
-    parts.forEach((part, index) => {
-      const byte = Number.parseInt(part, 16)
-      bytes[index] = byte
-    })
+    if (parts.length !== 5)
+      throw new Error('Invalid guid format')
+
+    const hex = parts.join('')
+    if (hex.length !== 32)
+      throw new Error('Invalid guid format')
+
+    for (let i = 0; i < 16; i++)
+      bytes[i] = Number.parseInt(hex.slice(i * 2, i * 2 + 2), 16)
 
     this.writeByte(bytes[7])
     this.writeByte(bytes[6])

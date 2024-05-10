@@ -28,8 +28,11 @@ export function writeEyelashes(writer: BufferWriter, eyelashes: Eyelashes) {
   writer.writeUint32(0x190B04E2)
   writer.writeGuid('6217c113-a448-443b-82aa-1bb108ba8e11')
   writer.writeUint32(0x0)
+  writer.writeUint32(eyelashes.childCount)
+  if (eyelashes.childCount === 0)
+    return
 
-  if (eyelashes.childCount === 0 || (eyelashes.childCount >= 3 && eyelashes.childCount <= 6))
+  if (eyelashes.childCount >= 3 && eyelashes.childCount <= 6)
     writer.writeUint32(5)
   else
     throw new Error('Unknown eyelashes count')

@@ -83,8 +83,9 @@ export function writeFaceInfo(writer: BufferWriter, faceInfo: FaceInfo) {
   writer.writeKeyedFloat32(0x11A1A1D3, faceInfo.cheekOpacity)
   writer.writeKeyedFloat32(0x92571AC3, faceInfo.lipMetallic1)
   writer.writeKeyedFloat32(0xB7F8C9B0, faceInfo.lipMetallic2)
-  writer.writeKeyedFloat32(0x8209DDAC, faceInfo.lipSmoothness1)
-  writer.writeKeyedFloat32(0xAA9201E7, faceInfo.lipSmoothness2)
-  writer.writeKeyedFloat32(0x8F3DD294, faceInfo.lipSmoothness3)
-  writer.writeKeyedFloat32(0xBACCC688, faceInfo.lipOpacity)
+  writer.writeKeyedFloat32(0x8209DDAC, faceInfo.lipMetallic3)
+  writer.writeKeyedFloat32(0xAA9201E7, faceInfo.lipSmoothness1)
+  writer.writeKeyedFloat32(0x8F3DD294, faceInfo.lipSmoothness2)
+  writer.writeKeyedFloat32(0xBACCC688, faceInfo.lipSmoothness3)
+  writer.writeKeyedFloat32(0x589DDCF4, faceInfo.lipOpacity)
 }

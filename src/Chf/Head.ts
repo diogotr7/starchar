@@ -54,24 +54,18 @@ export function writeHead(writer: BufferWriter, head: Head) {
   writer.writeUint32(0x47010DB9)
   writer.writeGuid('1d5cfab3-bf80-4550-b4ab-39e896a7086e')
   writer.writeUint64(Object.keys(head).length)
-  if (head.eyes) {
-    writer.writeUint32(0xC5BB5550)
+  if (head.eyes)
     writeEyes(writer)
-  }
-  if (head.hair) {
-    writer.writeUint32(0x13601A95)
+
+  if (head.hair)
     writeHair(writer, head.hair)
-  }
-  if (head.eyebrows) {
-    writer.writeUint32(0x1787EE22)
+
+  if (head.eyebrows)
     writeEyebrows(writer, head.eyebrows)
-  }
-  if (head.eyelashes) {
-    writer.writeUint32(0x190B04E2)
+
+  if (head.eyelashes)
     writeEyelashes(writer, head.eyelashes)
-  }
-  if (head.facialHair) {
-    writer.writeUint32(0x98EFBB1C)
+
+  if (head.facialHair)
     writeFacialHair(writer, head.facialHair)
-  }
 }

@@ -1,8 +1,8 @@
 import { crc32c } from '@aws-crypto/crc32c'
-import { decompress } from '@cloudpss/zstd/wasm'
-import { compress } from '@cloudpss/zstd'
+import { compress, decompress } from '@cloudpss/zstd/wasm'
 import { BufferReader } from '../Utils/BufferReader'
 import { BufferWriter } from '../Utils/BufferWriter'
+import { type Character, readCharacter, writeCharacter } from './Character'
 
 const SIZE = 4096
 const MAGIC = 0x00004242
@@ -32,24 +32,42 @@ export function extractChf(bytes: Uint8Array): Uint8Array {
   return decompressed
 }
 
-export function createChf(bytes: Uint8Array): Uint8Array {
-  const data = new Uint8Array(SIZE)
-  const writer = new BufferWriter(data)
+function arrayBufferToBase64(buffer: ArrayBuffer) {
+  let binary = ''
+  const bytes = new Uint8Array(buffer)
+  const len = bytes.byteLength
+  for (let i = 0; i < len; i++)
+    binary += String.fromCharCode(bytes[i])
 
-  const compressed = compress(bytes)
-  const uncompressedSize = bytes.length
+  return window.btoa(binary)
+}
+
+export function createChf(character: Character): ArrayBuffer {
+  const tempBuffer = new ArrayBuffer(SIZE)
+  const tempWriter = new BufferWriter(tempBuffer)
+  writeCharacter(tempWriter, character)
+  const uncompressed = tempBuffer.slice(0, tempWriter.getOffset())
+
+  const compressed = compress(uncompressed, 0)
+  const chf = new ArrayBuffer(SIZE)
+  const chfWriter = new BufferWriter(chf)
+
+  const uncompressedSize = uncompressed.byteLength
   const compressedSize = compressed.length
-  writer.writeUint32(MAGIC)
-  writer.writeUint32(0) // placeholder for crc
-  writer.writeUint32(compressedSize)
-  writer.writeUint32(uncompressedSize)
-  writer.writeBytes(compressed)
+  chfWriter.writeUint32(MAGIC)
+  chfWriter.writeUint32(0) // placeholder for crc
+  chfWriter.writeUint32(compressedSize)
+  chfWriter.writeUint32(uncompressedSize)
+  chfWriter.writeBytes(compressed)
 
   const magicBytes = new TextEncoder().encode(MYMAGIC)
-  writer.writeBytesAt(SIZE - magicBytes.length, magicBytes)
+  chfWriter.writeBytesAt(SIZE - magicBytes.length, magicBytes)
 
-  const crc = crc32c(data.slice(16))
-  writer.writeUint32At(4, crc)
+  const crc = crc32c(new Uint8Array(chf.slice(16)))
+  chfWriter.writeUint32At(4, crc)
 
-  return data
+  // test
+  // const x = readCharacter(extractChf(new Uint8Array(chf)))
+
+  return chf
 }

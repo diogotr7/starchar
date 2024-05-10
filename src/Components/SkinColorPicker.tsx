@@ -9,12 +9,23 @@ function SkinColorPicker() {
   const [locked, setLocked] = useState(true)
 
   return (
-    <Fieldset legend="Skin Colors">
-
+    <Fieldset legend="Body Colors">
+      <Center>
+        <Tooltip label="Locks all body parts to have the same skin color" refProp="rootRef">
+          <Switch
+            label="Lock"
+            checked={locked}
+            size="md"
+            onChange={e => setLocked(e.currentTarget.checked)}
+            onLabel={<IconLock size={14} />}
+            offLabel={<IconLockOff size={14} />}
+          />
+        </Tooltip>
+      </Center>
       <SmallColorInput
         disabled={!locked}
         label="Skin"
-        value={locked ? character.faceMaterial.faceColors.headColor : '#000000'}
+        value={locked ? character.faceMaterial.faceColors.headColor : '#00000000'}
         onChange={(c) => {
           updateCharacter((d) => {
             d.bodyMaterial.limbColor = c
@@ -41,20 +52,7 @@ function SkinColorPicker() {
         value={character.bodyMaterial.torsoColor}
         onChange={(c) => { updateCharacter((d) => { d.bodyMaterial.torsoColor = c }) }}
       />
-      <Center
-        mt="lg"
-      >
-        <Tooltip label="Locks all body parts to have the same skin color" refProp="rootRef">
-          <Switch
-            label="Lock"
-            checked={locked}
-            size="md"
-            onChange={e => setLocked(e.currentTarget.checked)}
-            onLabel={<IconLock size={16} />}
-            offLabel={<IconLockOff size={16} />}
-          />
-        </Tooltip>
-      </Center>
+
     </Fieldset>
   )
 }
