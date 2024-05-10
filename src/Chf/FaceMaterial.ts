@@ -4,7 +4,7 @@ import type { FaceColors } from './FaceColors'
 import { readFaceColors, writeFaceColors } from './FaceColors'
 import type { FaceInfo } from './FaceInfo'
 import { readFaceInfo, writeFaceInfo } from './FaceInfo'
-import { HeadMaterialType } from './HeadMaterial'
+import type { HeadMaterialType } from './HeadMaterial'
 import type { MakeupMaterial } from './MakeupMaterial'
 import { readMakeupMaterial, writeMakeupMaterial } from './MakeupMaterial'
 
@@ -20,7 +20,7 @@ export function readFaceMaterial(
 ): FaceMaterial {
   // weird special case.
   reader.expectUint32(
-    headMaterialType === HeadMaterialType.HeadMaterialF11
+    headMaterialType === 'HeadMaterialF11'
       ? 0xA5378A05
       : 0x72129E8E,
   )
@@ -43,7 +43,7 @@ export function writeFaceMaterial(
   headMaterialType: HeadMaterialType,
 ) {
   writer.writeUint32(
-    headMaterialType === HeadMaterialType.HeadMaterialF11
+    headMaterialType === 'HeadMaterialF11'
       ? 0xA5378A05
       : 0x72129E8E,
   )
