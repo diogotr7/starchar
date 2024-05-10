@@ -95,8 +95,7 @@ export function readDna(parentReader: BufferReader, bodyType: BodyType): Dna {
   }
 }
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-export function writeDna(writer: BufferWriter, dna: Dna, bodyType: BodyType) {
+export function writeDna(writer: BufferWriter, dna: Dna, _bodyType: BodyType) {
   const bytes = fromHexStr(dna.dnaString)
   if (bytes.length !== dnaSize)
     throw new Error(`DNA string must be ${dnaSize} bytes long`)

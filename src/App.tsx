@@ -6,7 +6,7 @@ import CharacterContext from './Context/CharacterContext.tsx'
 import CharacterEditor from './Components/CharacterEditor.tsx'
 import type { Character } from './Chf/Character.ts'
 import { readCharacter } from './Chf/Character.ts'
-import { createChf, extractChf } from './Chf/ChfFile.ts'
+import { extractChf } from './Chf/ChfFile.ts'
 
 function App() {
   const [chf, setChf] = useState<File | null>()
