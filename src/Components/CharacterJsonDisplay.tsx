@@ -1,8 +1,8 @@
 import { Code } from '@mantine/core'
-import { useCharacterContext } from '../Hooks/useCharacterContext'
+import { useCharacter } from '../Context/CharacterContext'
 
 export function CharacterJsonDisplay() {
-  const character = useCharacterContext()
+  const [character] = useCharacter()
 
   return <Code block>{JSON.stringify(character, null, 2)}</Code>
 }

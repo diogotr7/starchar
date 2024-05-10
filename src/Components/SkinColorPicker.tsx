@@ -1,9 +1,9 @@
 import { ColorInput, Fieldset, SegmentedControl } from '@mantine/core'
 import { useEffect, useState } from 'react'
-import { useCharacterContext } from '../Hooks/useCharacterContext'
+import { useCharacter } from '../Context/CharacterContext'
 
 function SkinColorPicker() {
-  const character = useCharacterContext()
+  const [character] = useCharacter()
 
   const areColorsEqual = character.faceMaterial.faceColors.headColor === character.bodyMaterial.limbColor
     && character.bodyMaterial.limbColor === character.bodyMaterial.torsoColor
@@ -28,9 +28,8 @@ function SkinColorPicker() {
   }, [sharedColor, skinColor])
 
   return (
-    <Fieldset legend="Skin Colors" h={350}>
+    <Fieldset legend="Skin Colors">
       <SegmentedControl
-        transitionDuration={500}
         fullWidth
         data={[
           { value: 'same', label: 'Same' },
@@ -39,41 +38,38 @@ function SkinColorPicker() {
         value={sharedColor}
         onChange={setSharedColor}
       />
-      {sharedColor === 'same'
-        ? (
-          <ColorInput
-            size="md"
-            mt="md"
-            label="Skin Color"
-            value={skinColor}
-            onChange={setSkinColor}
-          />
-          )
-        : (
-          <>
-            <ColorInput
-              size="md"
-              mt="md"
-              label="Head Color"
-              value={headColor}
-              onChange={setHeadColor}
-            />
-            <ColorInput
-              mt="md"
-              size="md"
-              label="Limb Color"
-              value={limbColor}
-              onChange={setLimbColor}
-            />
-            <ColorInput
-              mt="md"
-              size="md"
-              label="Torso Color"
-              value={torsoColor}
-              onChange={setTorsoColor}
-            />
-          </>
-          )}
+      <ColorInput
+        disabled={sharedColor === 'diff'}
+        size="md"
+        mt="md"
+        label="Skin Color"
+        value={skinColor}
+        onChange={setSkinColor}
+      />
+      <ColorInput
+        disabled={sharedColor === 'same'}
+        size="md"
+        mt="md"
+        label="Head Color"
+        value={headColor}
+        onChange={setHeadColor}
+      />
+      <ColorInput
+        disabled={sharedColor === 'same'}
+        mt="md"
+        size="md"
+        label="Limb Color"
+        value={limbColor}
+        onChange={setLimbColor}
+      />
+      <ColorInput
+        disabled={sharedColor === 'same'}
+        mt="md"
+        size="md"
+        label="Torso Color"
+        value={torsoColor}
+        onChange={setTorsoColor}
+      />
     </Fieldset>
   )
 }
