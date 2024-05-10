@@ -1,92 +1,62 @@
-import { ColorInput, Fieldset, Group, Stack } from '@mantine/core'
-import { useState } from 'react'
+import { Fieldset, Group, Stack } from '@mantine/core'
 import { useCharacter } from '../Context/CharacterContext'
+import { SmallColorInput } from './SmallColorInput'
 
 function MakeupColorPicker() {
-  const [character] = useCharacter()
-
-  const [eyeColor1, setEyeColor1] = useState(character.faceMaterial.faceColors.eyeMakeupColor1)
-  const [eyeColor2, setEyeColor2] = useState(character.faceMaterial.faceColors.eyeMakeupColor2)
-  const [eyeColor3, setEyeColor3] = useState(character.faceMaterial.faceColors.eyeMakeupColor3)
-
-  const [cheekColor1, setCheekColor1] = useState(character.faceMaterial.faceColors.cheekMakeupColor1)
-  const [cheekColor2, setCheekColor2] = useState(character.faceMaterial.faceColors.cheekMakeupColor2)
-  const [cheekColor3, setCheekColor3] = useState(character.faceMaterial.faceColors.cheekMakeupColor3)
-
-  const [lipColor1, setLipColor1] = useState(character.faceMaterial.faceColors.lipMakeupColor1)
-  const [lipColor2, setLipColor2] = useState(character.faceMaterial.faceColors.lipMakeupColor2)
-  const [lipColor3, setLipColor3] = useState(character.faceMaterial.faceColors.lipMakeupColor3)
+  const [character, updateCharacter] = useCharacter()
 
   return (
-    <Fieldset legend="Makeup Colors" w={900}>
+    <Fieldset legend="Makeup Colors">
       <Group>
         <Stack>
-          <ColorInput
-            size="md"
-            mt="md"
+          <SmallColorInput
             label="Eye Makeup 1"
-            value={eyeColor1}
-            onChange={setEyeColor1}
+            value={character.faceMaterial.faceColors.eyeMakeupColor1}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.eyeMakeupColor1 = c }) }}
           />
-          <ColorInput
-            mt="md"
-            size="md"
+          <SmallColorInput
             label="Eye Makeup 2"
-            value={eyeColor2}
-            onChange={setEyeColor2}
+            value={character.faceMaterial.faceColors.eyeMakeupColor2}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.eyeMakeupColor2 = c }) }}
           />
-          <ColorInput
-            mt="md"
-            size="md"
+          <SmallColorInput
             label="Eye Makeup 3"
-            value={eyeColor3}
-            onChange={setEyeColor3}
+            value={character.faceMaterial.faceColors.eyeMakeupColor3}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.eyeMakeupColor3 = c }) }}
           />
         </Stack>
         <Stack>
-          <ColorInput
-            size="md"
-            mt="md"
+          <SmallColorInput
             label="Cheek Makeup 1"
-            value={cheekColor1}
-            onChange={setCheekColor1}
+            value={character.faceMaterial.faceColors.cheekMakeupColor1}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.cheekMakeupColor1 = c }) }}
           />
-          <ColorInput
-            mt="md"
-            size="md"
+          <SmallColorInput
             label="Cheek Makeup 2"
-            value={cheekColor2}
-            onChange={setCheekColor2}
+            value={character.faceMaterial.faceColors.cheekMakeupColor2}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.cheekMakeupColor2 = c }) }}
           />
-          <ColorInput
-            mt="md"
-            size="md"
+          <SmallColorInput
             label="Cheek Makeup 3"
-            value={cheekColor3}
-            onChange={setCheekColor3}
+            value={character.faceMaterial.faceColors.cheekMakeupColor3}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.cheekMakeupColor3 = c }) }}
           />
         </Stack>
         <Stack>
-          <ColorInput
-            size="md"
-            mt="md"
+          <SmallColorInput
             label="Lip Makeup 1"
-            value={lipColor1}
-            onChange={setLipColor1}
+            value={character.faceMaterial.faceColors.lipMakeupColor1}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.lipMakeupColor1 = c }) }}
           />
-          <ColorInput
-            mt="md"
-            size="md"
+          <SmallColorInput
             label="Lip Makeup 2"
-            value={lipColor2}
-            onChange={setLipColor2}
+            value={character.faceMaterial.faceColors.lipMakeupColor2}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.lipMakeupColor2 = c }) }}
           />
-          <ColorInput
-            mt="md"
-            size="md"
+          <SmallColorInput
             label="Lip Makeup 3"
-            value={lipColor3}
-            onChange={setLipColor3}
+            value={character.faceMaterial.faceColors.lipMakeupColor3}
+            onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.lipMakeupColor3 = c }) }}
           />
         </Stack>
       </Group>

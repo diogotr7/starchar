@@ -1,14 +1,15 @@
 import type { BufferReader } from '../Utils/BufferReader'
+import type { BufferWriter } from '../Utils/BufferWriter'
 import type { FacialHair } from './FacialHair'
-import { readFacialHair } from './FacialHair'
+import { readFacialHair, writeFacialHair } from './FacialHair'
 import type { Eyelashes } from './Eyelashes'
-import { readEyelashes } from './Eyelashes'
+import { readEyelashes, writeEyelashes } from './Eyelashes'
 import type { Eyebrows } from './Eyebrows'
-import { readEyebrows } from './Eyebrows'
+import { readEyebrows, writeEyebrows } from './Eyebrows'
 import type { Hair } from './Hair'
-import { readHair } from './Hair'
+import { readHair, writeHair } from './Hair'
 import type { Eyes } from './Eyes'
-import { readEyes } from './Eyes'
+import { readEyes, writeEyes } from './Eyes'
 
 export interface Head {
   eyes?: Eyes
@@ -47,4 +48,30 @@ export function readHead(reader: BufferReader): Head {
   }
 
   return head
+}
+
+export function writeHead(writer: BufferWriter, head: Head) {
+  writer.writeUint32(0x47010DB9)
+  writer.writeGuid('1d5cfab3-bf80-4550-b4ab-39e896a7086e')
+  writer.writeUint64(Object.keys(head).length)
+  if (head.eyes) {
+    writer.writeUint32(0xC5BB5550)
+    writeEyes(writer)
+  }
+  if (head.hair) {
+    writer.writeUint32(0x13601A95)
+    writeHair(writer, head.hair)
+  }
+  if (head.eyebrows) {
+    writer.writeUint32(0x1787EE22)
+    writeEyebrows(writer, head.eyebrows)
+  }
+  if (head.eyelashes) {
+    writer.writeUint32(0x190B04E2)
+    writeEyelashes(writer, head.eyelashes)
+  }
+  if (head.facialHair) {
+    writer.writeUint32(0x98EFBB1C)
+    writeFacialHair(writer, head.facialHair)
+  }
 }

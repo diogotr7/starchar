@@ -1,15 +1,49 @@
-import { Center, ColorInput, Fieldset, Switch, Tooltip } from '@mantine/core'
+import { Center, Fieldset, Switch, Tooltip } from '@mantine/core'
 import { useState } from 'react'
 import { IconLock, IconLockOff } from '@tabler/icons-react'
 import { useCharacter } from '../Context/CharacterContext'
+import { SmallColorInput } from './SmallColorInput'
 
 function SkinColorPicker() {
-  const [character, dispatch] = useCharacter()
+  const [character, updateCharacter] = useCharacter()
   const [locked, setLocked] = useState(true)
 
   return (
     <Fieldset legend="Skin Colors">
-      <Center>
+
+      <SmallColorInput
+        disabled={!locked}
+        label="Skin"
+        value={locked ? character.faceMaterial.faceColors.headColor : '#000000'}
+        onChange={(c) => {
+          updateCharacter((d) => {
+            d.bodyMaterial.limbColor = c
+            d.bodyMaterial.torsoColor = c
+            d.faceMaterial.faceColors.headColor = c
+          })
+        }}
+      />
+      <SmallColorInput
+        disabled={locked}
+        label="Head"
+        value={character.faceMaterial.faceColors.headColor}
+        onChange={(c) => { updateCharacter((d) => { d.faceMaterial.faceColors.headColor = c }) }}
+      />
+      <SmallColorInput
+        disabled={locked}
+        label="Limb"
+        value={character.bodyMaterial.limbColor}
+        onChange={(c) => { updateCharacter((d) => { d.bodyMaterial.limbColor = c }) }}
+      />
+      <SmallColorInput
+        disabled={locked}
+        label="Torso"
+        value={character.bodyMaterial.torsoColor}
+        onChange={(c) => { updateCharacter((d) => { d.bodyMaterial.torsoColor = c }) }}
+      />
+      <Center
+        mt="lg"
+      >
         <Tooltip label="Locks all body parts to have the same skin color" refProp="rootRef">
           <Switch
             label="Lock"
@@ -21,46 +55,6 @@ function SkinColorPicker() {
           />
         </Tooltip>
       </Center>
-      <ColorInput
-        disabled={!locked}
-        withEyeDropper={false}
-        size="md"
-        mt="md"
-        label="Skin"
-        w={120}
-        value={locked ? character.faceMaterial.faceColors.headColor : '#000000'}
-        onChange={(c) => { dispatch({ type: 'setSkinColor', payload: c }) }}
-      />
-      <ColorInput
-        disabled={locked}
-        withEyeDropper={false}
-        size="md"
-        mt="md"
-        label="Head"
-        w={120}
-        value={character.faceMaterial.faceColors.headColor}
-        onChange={(c) => { dispatch({ type: 'setHeadColor', payload: c }) }}
-      />
-      <ColorInput
-        disabled={locked}
-        withEyeDropper={false}
-        mt="md"
-        size="md"
-        label="Limb"
-        w={120}
-        value={character.bodyMaterial.limbColor}
-        onChange={(c) => { dispatch({ type: 'setLimbColor', payload: c }) }}
-      />
-      <ColorInput
-        disabled={locked}
-        withEyeDropper={false}
-        mt="md"
-        size="md"
-        label="Torso"
-        w={120}
-        value={character.bodyMaterial.torsoColor}
-        onChange={(c) => { dispatch({ type: 'setTorsoColor', payload: c }) }}
-      />
     </Fieldset>
   )
 }

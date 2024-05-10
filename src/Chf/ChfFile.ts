@@ -1,8 +1,8 @@
 import { crc32c } from '@aws-crypto/crc32c'
 import { decompress } from '@cloudpss/zstd/wasm'
 import { compress } from '@cloudpss/zstd'
-import { BufferReader } from './BufferReader'
-import { BufferWriter } from './BufferWriter'
+import { BufferReader } from '../Utils/BufferReader'
+import { BufferWriter } from '../Utils/BufferWriter'
 
 const SIZE = 4096
 const MAGIC = 0x00004242

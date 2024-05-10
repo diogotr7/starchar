@@ -1,23 +1,23 @@
 import { Skeleton } from '@mantine/core'
-import { useEffect, useReducer } from 'react'
+import { useEffect } from 'react'
+import { useImmer } from 'use-immer'
+import type { Character } from '../Chf/Character'
 import { readCharacter } from '../Chf/Character'
-import { extractChf } from '../Utils/ChfFile'
+import { extractChf } from '../Chf/ChfFile'
 import CharacterEditor from '../Components/CharacterEditor'
 import CharacterContext from './CharacterContext'
-import { reducer } from './reducer'
 
 interface Props {
   chf: File
 }
 
 function CharacterContextProvider({ chf }: Props) {
-  const [character, dispatch] = useReducer(reducer, undefined!)
+  // we only use the context after the character is loaded, we can force undefined here
+  const [character, updateCharacter] = useImmer<Character>(undefined!)
 
   useEffect(() => {
     chf.arrayBuffer().then((buffer) => {
-      const c = readCharacter(extractChf(new Uint8Array(buffer)))
-      console.log(c)
-      dispatch({ type: 'setCharacter', payload: c })
+      updateCharacter(() => readCharacter(extractChf(new Uint8Array(buffer))))
     }).catch((e) => {
       console.error(e)
     })
@@ -25,7 +25,7 @@ function CharacterContextProvider({ chf }: Props) {
 
   return character
     ? (
-      <CharacterContext.Provider value={[character, dispatch]}>
+      <CharacterContext.Provider value={[character, updateCharacter]}>
         <CharacterEditor />
       </CharacterContext.Provider>
       )

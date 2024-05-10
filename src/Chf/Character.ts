@@ -1,28 +1,25 @@
 import { BufferReader } from '../Utils/BufferReader'
+import { BufferWriter } from '../Utils/BufferWriter'
 import type { Body } from './Body'
-import { readBody } from './Body'
+import { readBody, writeBody } from './Body'
 import type { BodyMaterial } from './BodyMaterial'
-import { readBodyMaterial } from './BodyMaterial'
+import { readBodyMaterial, writeBodyMaterial } from './BodyMaterial'
+import { type BodyType, readBodyType, writeBodyType } from './BodyType'
+import type { Dna } from './Dna'
+import { readDna, writeDna } from './Dna'
 import type { Dye } from './Dye'
-import { readDye } from './Dye'
+import { readDye, writeDye } from './Dye'
 import type { EyeMaterial } from './EyeMaterial'
-import { readEyeMaterial } from './EyeMaterial'
+import { readEyeMaterial, writeEyeMaterial } from './EyeMaterial'
 import type { FaceMaterial } from './FaceMaterial'
-import { readFaceMaterial } from './FaceMaterial'
+import { readFaceMaterial, writeFaceMaterial } from './FaceMaterial'
 import type { HeadMaterial } from './HeadMaterial'
-import { readHeadMaterial } from './HeadMaterial'
-
-export function toHexString(byteArray: Uint8Array) {
-  return Array.from(byteArray, (byte) => {
-    return (`0${(byte & 0xFF).toString(16)}`).slice(-2)
-  }).join('')
-}
-
-type BodyType = 'male' | 'female'
+import { readHeadMaterial, writeHeadMaterial } from './HeadMaterial'
 
 export interface Character {
+  count: number
   bodyType: BodyType
-  dna: string
+  dna: Dna
   body: Body
   headMaterial: HeadMaterial
   faceMaterial: FaceMaterial
@@ -35,11 +32,9 @@ export function readCharacter(bytes: Uint8Array): Character {
   const reader = new BufferReader(bytes.buffer)
   reader.expectUint32(2)
   reader.expectUint32(7)
-  const bodyTypeGuid = reader.readGuid()
-  reader.expectEmptyGuid()
-  reader.expectUint64(0xD8)
-  const dnaBytes = reader.readBytes(0xD8)
-  reader.readUint64()
+  const bodyType = readBodyType(reader)
+  const dna = readDna(reader, bodyType)
+  const count = reader.readUint64()
   const body = readBody(reader)
   const headMaterial = readHeadMaterial(reader)
   const faceMaterial = readFaceMaterial(reader, headMaterial.materialType)
@@ -52,8 +47,9 @@ export function readCharacter(bytes: Uint8Array): Character {
   const bodyMaterial = readBodyMaterial(reader)
 
   return {
-    bodyType: readBodyType(bodyTypeGuid),
-    dna: toHexString(dnaBytes),
+    count,
+    bodyType,
+    dna,
     body,
     headMaterial,
     faceMaterial,
@@ -63,10 +59,21 @@ export function readCharacter(bytes: Uint8Array): Character {
   }
 }
 
-function readBodyType(guid: string): BodyType {
-  if (guid === '25f439d5-146b-4a61-a999-a486dfb68a49')
-    return 'male'
-  if (guid === 'd0794a94-efb0-4cad-ad38-2558b4d3c253')
-    return 'female'
-  throw new Error(`Unknown body type: ${guid}`)
+export function writeCharacter(character: Character): Uint8Array {
+  // size is not known, but 4096 is the abssolute upper limit
+  const data = new Uint8Array(4096)
+  const writer = new BufferWriter(data)
+  writer.writeUint32(2)
+  writer.writeUint32(7)
+  writeBodyType(writer, character.bodyType)
+  writeDna(writer, character.dna, character.bodyType)
+  writer.writeUint64(character.count)
+  writeBody(writer, character.body)
+  writeHeadMaterial(writer, character.headMaterial)
+  writeFaceMaterial(writer, character.faceMaterial, character.headMaterial.materialType)
+  for (const dye of character.dyes)
+    writeDye(writer, dye)
+  writeEyeMaterial(writer, character.eyeMaterial)
+  writeBodyMaterial(writer, character.bodyMaterial, character.bodyType)
+  return data.slice(0, writer.getOffset())
 }

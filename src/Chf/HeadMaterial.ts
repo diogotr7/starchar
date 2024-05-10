@@ -1,4 +1,5 @@
 import type { BufferReader } from '../Utils/BufferReader'
+import type { BufferWriter } from '../Utils/BufferWriter'
 
 export enum HeadMaterialType {
   HeadMaterialM01,
@@ -62,6 +63,8 @@ const headMaterialTypeMap: Record<string, HeadMaterialType> = {
   'e186048a-9a81-47b3-828e-71e957c65762': HeadMaterialType.HeadMaterialF14,
 }
 
+const reverseHeadMaterial = Object.fromEntries(Object.entries(headMaterialTypeMap).map(([k, v]) => [v, k]))
+
 export interface HeadMaterial {
   materialType: HeadMaterialType
   additionalParams: number
@@ -84,4 +87,16 @@ export function readHeadMaterial(reader: BufferReader): HeadMaterial {
   reader.expectUint32(5)
 
   return { materialType, additionalParams }
+}
+
+export function writeHeadMaterial(writer: BufferWriter, headMaterial: HeadMaterial) {
+  writer.writeUint32(0xA98BEB34)
+  writer.writeGuid(reverseHeadMaterial[headMaterial.materialType]!)
+  writer.writeUint32(headMaterial.additionalParams)
+  writer.writeUint32(0)
+  writer.writeUint32(0)
+  writer.writeUint32(0)
+  writer.writeUint32(0)
+  writer.writeUint32(1)
+  writer.writeUint32(5)
 }

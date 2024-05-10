@@ -3373,6 +3373,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^10.1.1":
+  version: 10.1.1
+  resolution: "immer@npm:10.1.1"
+  checksum: 10c0/b749e10d137ccae91788f41bd57e9387f32ea6d6ea8fd7eb47b23fd7766681575efc7f86ceef7fe24c3bc9d61e38ff5d2f49c2663b2b0c056e280a4510923653
+  languageName: node
+  linkType: hard
+
 "import-fresh@npm:^3.2.1":
   version: 3.3.0
   resolution: "import-fresh@npm:3.3.0"
@@ -5375,12 +5382,14 @@ __metadata:
     eslint-plugin-react: "npm:^7.34.1"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.6"
+    immer: "npm:^10.1.1"
     postcss: "npm:^8.4.38"
     postcss-preset-mantine: "npm:^1.15.0"
     postcss-simple-vars: "npm:^7.0.1"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
     typescript: "npm:^5.2.2"
+    use-immer: "npm:^0.9.0"
     vite: "npm:^5.2.0"
     vite-plugin-top-level-await: "npm:^1.4.1"
     vite-plugin-wasm: "npm:^3.3.0"
@@ -5836,6 +5845,16 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 10c0/e64ce52f4b18c020407636784192726807404a2552609acf7497b66a2b7070674fb5d2b950d426c4aa85f353e2bbecb02ebf9c5b865cd06797938c70bcbf5d26
+  languageName: node
+  linkType: hard
+
+"use-immer@npm:^0.9.0":
+  version: 0.9.0
+  resolution: "use-immer@npm:0.9.0"
+  peerDependencies:
+    immer: ">=2.0.0"
+    react: ^16.8.0 || ^17.0.1 || ^18.0.0
+  checksum: 10c0/f8309eec0fe493a4a79588cd9c7ed4b54e5d8fe96883543296aa3613c8b91f37c6055129c3578db0f598ebff22e020adf324cd12082a8d0d3dc81c3953dd61e8
   languageName: node
   linkType: hard
 

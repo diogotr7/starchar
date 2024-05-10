@@ -1,11 +1,12 @@
 import type { BufferReader } from '../Utils/BufferReader'
+import type { BufferWriter } from '../Utils/BufferWriter'
 import type { FaceColors } from './FaceColors'
-import { readFaceColors } from './FaceColors'
+import { readFaceColors, writeFaceColors } from './FaceColors'
 import type { FaceInfo } from './FaceInfo'
-import { readFaceInfo } from './FaceInfo'
+import { readFaceInfo, writeFaceInfo } from './FaceInfo'
 import { HeadMaterialType } from './HeadMaterial'
 import type { MakeupMaterial } from './MakeupMaterial'
-import { readMakeupMaterial } from './MakeupMaterial'
+import { readMakeupMaterial, writeMakeupMaterial } from './MakeupMaterial'
 
 export interface FaceMaterial {
   makeup: MakeupMaterial[]
@@ -34,4 +35,22 @@ export function readFaceMaterial(
   reader.expectUint32(5)
 
   return { makeup, faceColors, faceInfo }
+}
+
+export function writeFaceMaterial(
+  writer: BufferWriter,
+  faceMaterial: FaceMaterial,
+  headMaterialType: HeadMaterialType,
+) {
+  writer.writeUint32(
+    headMaterialType === HeadMaterialType.HeadMaterialF11
+      ? 0xA5378A05
+      : 0x72129E8E,
+  )
+  writer.writeUint32(faceMaterial.makeup.length)
+  for (const makeup of faceMaterial.makeup)
+    writeMakeupMaterial(writer, makeup)
+  writeFaceInfo(writer, faceMaterial.faceInfo)
+  writeFaceColors(writer, faceMaterial.faceColors)
+  writer.writeUint32(5)
 }

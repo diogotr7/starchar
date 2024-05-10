@@ -1,4 +1,5 @@
 import type { BufferReader } from '../Utils/BufferReader'
+import type { BufferWriter } from '../Utils/BufferWriter'
 
 export interface FaceColors {
   headColor: string
@@ -53,4 +54,31 @@ export function readFaceColors(reader: BufferReader): FaceColors {
     data20: reader.readKeyedUint32(0x7B8B1FD6),
     data21: reader.readKeyedUint32(0x68DBEC22),
   }
+}
+
+export function writeFaceColors(writer: BufferWriter, faceColors: FaceColors) {
+  writer.writeUint32(0x16)
+  writer.writeUint32(0)
+  writer.writeKeyedColor(0xBD530797, faceColors.headColor)
+  writer.writeKeyedColor(0xB29B1D90, faceColors.eyeMakeupColor1)
+  writer.writeKeyedColor(0xE3230E2F, faceColors.eyeMakeupColor2)
+  writer.writeKeyedColor(0x2EC0E736, faceColors.eyeMakeupColor3)
+  writer.writeKeyedColor(0x1A081A93, faceColors.cheekMakeupColor1)
+  writer.writeKeyedColor(0x4BB0092C, faceColors.cheekMakeupColor2)
+  writer.writeKeyedColor(0x8653E035, faceColors.cheekMakeupColor3)
+  writer.writeKeyedColor(0x7D86E792, faceColors.lipMakeupColor1)
+  writer.writeKeyedColor(0x2C3EF42D, faceColors.lipMakeupColor2)
+  writer.writeKeyedColor(0xE1DD1D34, faceColors.lipMakeupColor3)
+  writer.writeKeyedUint32(0x64A583EC, faceColors.data10)
+  writer.writeKeyedUint32(0x77F57018, faceColors.data11)
+  writer.writeKeyedUint32(0xE9F3E598, faceColors.data12)
+  writer.writeKeyedUint32(0xFAA3166C, faceColors.data13)
+  writer.writeKeyedUint32(0x3CB379F2, faceColors.data14)
+  writer.writeKeyedUint32(0x2FE38A06, faceColors.data15)
+  writer.writeKeyedUint32(0x32B762F1, faceColors.data16)
+  writer.writeKeyedUint32(0x21E79105, faceColors.data17)
+  writer.writeKeyedUint32(0xF7E50257, faceColors.data18)
+  writer.writeKeyedUint32(0xE4B5F1A3, faceColors.data19)
+  writer.writeKeyedUint32(0x7B8B1FD6, faceColors.data20)
+  writer.writeKeyedUint32(0x68DBEC22, faceColors.data21)
 }

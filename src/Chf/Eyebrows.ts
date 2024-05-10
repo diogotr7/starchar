@@ -1,4 +1,5 @@
 import type { BufferReader } from '../Utils/BufferReader'
+import type { BufferWriter } from '../Utils/BufferWriter'
 
 export enum EyebrowType {
   None,
@@ -19,6 +20,8 @@ const eyebrowTypeMap = new Map<string, EyebrowType>([
   ['03270dfe-71be-45ee-b51a-fb1dd7e67ba1', EyebrowType.Brows06],
 ])
 
+const reverseEyebrowTypeMap = Object.fromEntries(Object.entries(eyebrowTypeMap).map(([k, v]) => [v, k]))
+
 export interface Eyebrows {
   eyebrowsType: EyebrowType
 }
@@ -29,4 +32,10 @@ export function readEyebrows(reader: BufferReader): Eyebrows {
   reader.expectUint64(0)
   const eyebrowsType = eyebrowTypeMap.get(guid) ?? EyebrowType.None
   return { eyebrowsType }
+}
+
+export function writeEyebrows(writer: BufferWriter, eyebrows: Eyebrows) {
+  writer.writeUint32(0x1787EE22)
+  writer.writeGuid(reverseEyebrowTypeMap[eyebrows.eyebrowsType]!)
+  writer.writeUint64(0)
 }

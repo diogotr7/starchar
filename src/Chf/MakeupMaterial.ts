@@ -1,4 +1,5 @@
 import type { BufferReader } from '../Utils/BufferReader'
+import type { BufferWriter } from '../Utils/BufferWriter'
 
 export enum MakeupType {
   None,
@@ -27,6 +28,8 @@ const makeup: Record<string, MakeupType> = {
   'db723134-9142-43c1-84c0-ace36c176135': MakeupType.Lips05,
 }
 
+const reverseMakeup = Object.fromEntries(Object.entries(makeup).map(([k, v]) => [v, k]))
+
 export interface MakeupMaterial {
   count: number
   makeupType: MakeupType
@@ -39,4 +42,10 @@ export function readMakeupMaterial(reader: BufferReader): MakeupMaterial {
   const makeupType = makeup[makeupTypeId] ?? MakeupType.None
 
   return { count, makeupType }
+}
+
+export function writeMakeupMaterial(writer: BufferWriter, makeup: MakeupMaterial) {
+  writer.writeUint32(0)
+  writer.writeByte(makeup.count)
+  writer.writeGuid(reverseMakeup[makeup.makeupType]!)
 }

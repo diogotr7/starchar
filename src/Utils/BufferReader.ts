@@ -103,6 +103,12 @@ export class BufferReader {
     return bytes
   }
 
+  expectByte(value: number) {
+    const actual = this.readByte()
+    if (actual !== value)
+      throw new Error(`expected ${value}, got ${actual}`)
+  }
+
   expectUint32(value: number): void {
     const actual = this.readUint32()
     if (actual !== value)
