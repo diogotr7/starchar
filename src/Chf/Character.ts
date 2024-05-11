@@ -33,7 +33,7 @@ export function readCharacter(bytes: Uint8Array): Character {
   reader.expectUint32(2)
   reader.expectUint32(7)
   const bodyType = readBodyType(reader)
-  const dna = readDna(reader, bodyType)
+  const dna = readDna(reader)
   const count = reader.readUint64()
   const body = readBody(reader)
   const headMaterial = readHeadMaterial(reader)
