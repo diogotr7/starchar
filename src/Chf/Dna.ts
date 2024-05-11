@@ -35,7 +35,6 @@ export type DnaFacePart =
   'crown'
 
 export interface DnaBlend {
-  part: DnaFacePart
   headId: number
   percent: number
 }
@@ -61,59 +60,13 @@ export interface Dna {
   blends: DnaBlends
 }
 
-export function readDna(parentReader: BufferReader, bodyType: BodyType): Dna {
-  const isMale = bodyType === 'male'
+export function readDna(parentReader: BufferReader): Dna {
   parentReader.expectUint64(dnaSize)
 
   const bytes = parentReader.readBytes(dnaSize)
   const dnaString = toHexStr(bytes)
-  const reader = new BufferReader(bytes.buffer)
 
-  reader.expectUint32(0xFCD09394)
-  reader.expectUint32(isMale ? 0xDD6C67F6 : 0x9EF4EB54)
-  reader.expectUint32(isMale ? 0x65E740D3 : 0x65D75204)
-  reader.expectUint32(0)
-  reader.expectByte(0x0C)
-  reader.expectByte(0x0)
-  reader.expectByte(0x04)
-  reader.expectByte(0x0)
-  reader.expectByte(0x4)
-  reader.expectByte(0x0)
-  const childCount = reader.readByte()
-  reader.expectByte(0x0)
-
-  const map: DnaBlends = {
-    eyebrowLeft: [],
-    eyebrowRight: [],
-    eyeLeft: [],
-    eyeRight: [],
-    nose: [],
-    earLeft: [],
-    earRight: [],
-    cheekLeft: [],
-    cheekRight: [],
-    mouth: [],
-    jaw: [],
-    crown: [],
-  }
-
-  for (let i = 0; i < partCount; i++) {
-    const part = i % 12
-    const percentShort = reader.readUint16()
-    const headId = reader.readByte()
-    reader.expectByte(0)
-
-    const percent = percentShort / 0xFFFF * 100
-    const blend = { headId, percent, part: idxPartRecord[part] }
-
-    map[idxPartRecord[part]].push(blend)
-  }
-
-  return {
-    dnaString,
-    childCount,
-    blends: map,
-  }
+  return dnaFromString(dnaString)
 }
 
 export function writeDna(writer: BufferWriter, dna: Dna, _bodyType: BodyType) {
@@ -149,4 +102,52 @@ export function writeDna(writer: BufferWriter, dna: Dna, _bodyType: BodyType) {
   //   writer.writeByte(blend.headId)
   //   writer.writeByte(0)
   // }
+}
+
+export function dnaFromString(dnaString: string): Dna {
+  const reader = new BufferReader(fromHexStr(dnaString).buffer)
+  reader.expectUint32(0xFCD09394)
+  reader.readUint32()// skip keys. bad idea?
+  reader.readUint32()
+  reader.expectUint32(0)
+  reader.expectByte(0x0C)
+  reader.expectByte(0x0)
+  reader.expectByte(0x04)
+  reader.expectByte(0x0)
+  reader.expectByte(0x4)
+  reader.expectByte(0x0)
+  const childCount = reader.readByte()
+  reader.readByte()// might be 0 or ff for some reason?
+
+  const map: DnaBlends = {
+    eyebrowLeft: [],
+    eyebrowRight: [],
+    eyeLeft: [],
+    eyeRight: [],
+    nose: [],
+    earLeft: [],
+    earRight: [],
+    cheekLeft: [],
+    cheekRight: [],
+    mouth: [],
+    jaw: [],
+    crown: [],
+  }
+
+  for (let i = 0; i < partCount; i++) {
+    const part = i % 12
+    const percentShort = reader.readUint16()
+    const headId = reader.readByte()
+    reader.expectByte(0)
+
+    const percent = percentShort / 0xFFFF * 100
+
+    map[idxPartRecord[part]].push({ headId, percent })
+  }
+
+  return {
+    dnaString,
+    childCount,
+    blends: map,
+  }
 }

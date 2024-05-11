@@ -1,6 +1,7 @@
 import { Affix, Button, Center, Group, Stack } from '@mantine/core'
 import { IconDownload } from '@tabler/icons-react'
 import { useCallback } from 'react'
+import { useLocalStorage } from '@mantine/hooks'
 import { useCharacter } from '../Context/CharacterContext'
 import { createChf } from '../Chf/ChfFile'
 import SkinColorPicker from './SkinColorPicker'
@@ -8,7 +9,10 @@ import { CharacterJsonDisplay } from './CharacterJsonDisplay'
 import { DnaPanel } from './DnaPanel'
 
 function CharacterEditor() {
-  const isDev = import.meta.env.DEV
+  const [isDev] = useLocalStorage({
+    key: 'isDev',
+    defaultValue: false,
+  })
   const [character] = useCharacter()
   const exportCharacter = useCallback(() => {
     const buffer = createChf(character)
@@ -25,13 +29,9 @@ function CharacterEditor() {
       <Stack justify="flex-start">
         <Group justify="space-evenly">
           <SkinColorPicker />
-
-          <DnaPanel />
-
-          {isDev && (
-            <CharacterJsonDisplay />
-          )}
+          {isDev && <DnaPanel />}
         </Group>
+        {isDev && <CharacterJsonDisplay />}
       </Stack>
       <Affix zIndex={900} position={{ bottom: 0, left: 0, right: 0 }}>
         <Center p="xl">
