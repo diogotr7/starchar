@@ -107,8 +107,8 @@ function DnaPart({ label, part }: { label: string, part: DnaFacePart }) {
 
   // make this work properly. We want the sum of all the blend percentages to be 100
   // and the others to be updated accordingly when one is changed
-  const updateBlend = useCallback((sliderIndex: number, newValue: number) => {
-    console.log('updateBlend', sliderIndex, newValue)
+  const updateBlend = useCallback((_sliderIndex: number, _newValue: number) => {
+
   }, [blend, character, part, updateCharacter])
 
   const isValidHeadId = useCallback((headId: NumberFormatValues) => {
@@ -127,13 +127,13 @@ function DnaPart({ label, part }: { label: string, part: DnaFacePart }) {
           isAllowed={isValidHeadId}
           size="xs"
           w={50}
-          value={blend[index].headId}
           disabled
+          value={blend[index].headId}
           onValueChange={values => updateCharacter((d) => { d.dna.blends[part][index].headId = values.floatValue ?? 0 })}
         />
         <Slider
-          w="100"
           disabled
+          w="100"
           value={blend[index].percent}
           onChange={value => updateBlend(index, value)}
         />
