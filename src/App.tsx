@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { ActionIcon, AppShell, Button, Center, FileInput, Group, SimpleGrid, Stack, Title, em } from '@mantine/core'
+import { ActionIcon, AppShell, Button, Center, FileInput, Group, SimpleGrid, Stack, Text, Title, em } from '@mantine/core'
 import { useImmer } from 'use-immer'
 import { notifications } from '@mantine/notifications'
 import { IconBrandGithub, IconBrandPaypal } from '@tabler/icons-react'
@@ -123,10 +123,13 @@ function App() {
               )
             : (
               <Center mt="200">
-                <Title order={2}>Upload .chf file to begin!</Title>
+                <Stack gap="sm" align="center">
+                  <Title order={2}>Upload .chf file to begin</Title>
+                  <Text>You can find your character files in this folder:</Text>
+                  <Text>...\StarCitizen\LIVE\user\client\0\CustomCharacters</Text>
+                </Stack>
               </Center>
               )}
-
         </Stack>
       </AppShell.Main>
     </AppShell>
