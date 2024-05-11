@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import { ActionIcon, AppShell, Button, Center, FileInput, Group, Stack, Title, em } from '@mantine/core'
+import { useEffect, useMemo, useState } from 'react'
+import { ActionIcon, AppShell, Button, Center, FileInput, Group, SimpleGrid, Stack, Title, em } from '@mantine/core'
 import { useImmer } from 'use-immer'
 import { notifications } from '@mantine/notifications'
 import { IconBrandGithub, IconBrandPaypal } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
-import CharacterContext from './Context/CharacterContext.tsx'
+import CharacterContext from './Context/CharacterContext.ts'
 import CharacterEditor from './Components/CharacterEditor.tsx'
 import type { Character } from './Chf/Character.ts'
 import { readCharacter } from './Chf/Character.ts'
@@ -13,7 +13,7 @@ import { extractChf } from './Chf/ChfFile.ts'
 function App() {
   const [chf, setChf] = useState<File | null>()
   const [character, updateCharacter] = useImmer<Character>(undefined!)
-  const isMobile = useMediaQuery(`(max-width: ${em(750)})`)
+  const isMobile = useMediaQuery(`(max-width: ${em(850)})`)
 
   useEffect(() => {
     if (!chf) {
@@ -42,31 +42,33 @@ function App() {
     })
   }, [chf, updateCharacter, setChf])
 
+  const contextValue = useMemo(() => ({ character, updateCharacter }), [character, updateCharacter])
+
   return (
-    <AppShell header={{ height: 60 }} padding="md">
+    <AppShell header={{ height: 60 }}>
       <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
+        <SimpleGrid cols={3} m="sm">
           <Group>
             {isMobile
               ? (
                 <>
                   <ActionIcon
-                    w={50}
                     component="a"
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://github.com/diogotr7/starchar"
                     variant="subtle"
                   >
-                    <IconBrandGithub size="md" />
+                    <IconBrandGithub size={32} />
                   </ActionIcon>
                   <ActionIcon
-                    w={50}
                     component="a"
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://paypal.me/diogotr7"
                     variant="subtle"
                   >
-                    <IconBrandPaypal size="md" />
+                    <IconBrandPaypal size={32} />
                   </ActionIcon>
                 </>
                 )
@@ -75,6 +77,7 @@ function App() {
                   <Button
                     component="a"
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://github.com/diogotr7/starchar"
                     variant="outline"
                     rightSection={<IconBrandGithub size={18} />}
@@ -84,6 +87,7 @@ function App() {
                   <Button
                     component="a"
                     target="_blank"
+                    rel="noopener noreferrer"
                     href="https://paypal.me/diogotr7"
                     variant="outline"
                     rightSection={<IconBrandPaypal size={18} />}
@@ -93,9 +97,13 @@ function App() {
                 </>
                 )}
           </Group>
-          <Title>StarChar</Title>
+          <Center>
+            <Title order={2}>StarChar</Title>
+          </Center>
           <FileInput
-            w={isMobile ? 100 : 300}
+            ml="auto"
+            w={isMobile ? '100%' : 'auto'}
+
             color="orange"
             clearable
             accept=".chf"
@@ -103,13 +111,13 @@ function App() {
             value={chf}
             onChange={setChf}
           />
-        </Group>
+        </SimpleGrid>
       </AppShell.Header>
       <AppShell.Main>
         <Stack gap="md" justify="center">
           {character && chf
             ? (
-              <CharacterContext.Provider value={[character, updateCharacter]}>
+              <CharacterContext.Provider value={contextValue}>
                 <CharacterEditor />
               </CharacterContext.Provider>
               )

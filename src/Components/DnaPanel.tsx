@@ -1,6 +1,5 @@
 import { Button, Center, Fieldset, Group, Input, Modal, NumberInput, Slider, Stack, Text } from '@mantine/core'
 import { useCallback, useState } from 'react'
-import type { NumberFormatValues } from 'react-number-format'
 import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useCharacter } from '../Context/CharacterContext'
@@ -9,7 +8,7 @@ import { type DnaFacePart, dnaFromString } from '../Chf/Dna'
 export function DnaPanel() {
   const [opened, { toggle, close }] = useDisclosure(false)
   const [dnaString, setDnaString] = useState('')
-  const [character, updateCharacter] = useCharacter()
+  const { character, updateCharacter } = useCharacter()
 
   const importDna = useCallback(() => {
     updateCharacter((d) => {
@@ -102,51 +101,62 @@ export function DnaPanel() {
 }
 
 function DnaPart({ label, part }: { label: string, part: DnaFacePart }) {
-  const [character, updateCharacter] = useCharacter()
-  const blend = character.dna.blends[part]
+  const { updateCharacter } = useCharacter()
+  const updateBlend = useCallback((index: number, value: number) => {
+    console.log('updateBlend', part, index, value)
+    updateCharacter((d) => {
+      d.dna.blends[part][index].percent = value
+    })
+  }, [part, updateCharacter])
 
-  // make this work properly. We want the sum of all the blend percentages to be 100
-  // and the others to be updated accordingly when one is changed
-  const updateBlend = useCallback((_sliderIndex: number, _newValue: number) => {
+  const updateHeadId = useCallback((index: number, value: string | number) => {
+    if (typeof value === 'string')
+      return
 
-  }, [blend, character, part, updateCharacter])
-
-  const isValidHeadId = useCallback((headId: NumberFormatValues) => {
-    const id = headId.floatValue ?? 0
+    const id = value ?? 0
     // double check this
-    return id >= 0 && id <= 26 && Number.isInteger(id)
-  }, [])
-
-  function DnaBlend({ index }: { index: number }) {
-    return (
-      <Group>
-        <NumberInput
-          allowDecimal={false}
-          allowLeadingZeros={false}
-          allowNegative={false}
-          isAllowed={isValidHeadId}
-          size="xs"
-          w={50}
-          disabled
-          value={blend[index].headId}
-          onValueChange={values => updateCharacter((d) => { d.dna.blends[part][index].headId = values.floatValue ?? 0 })}
-        />
-        <Slider
-          disabled
-          w="100"
-          value={blend[index].percent}
-          onChange={value => updateBlend(index, value)}
-        />
-      </Group>
-    )
-  }
+    if (id >= 0 && id <= 26 && Number.isInteger(id))
+      updateCharacter((d) => { d.dna.blends[part][index].headId = id })
+  }, [part, updateCharacter])
 
   return (
     <Fieldset legend={label}>
-      <DnaBlend index={0} />
-      <DnaBlend index={1} />
-      <DnaBlend index={2} />
-      <DnaBlend index={3} />
+      <DnaBlend index={0} part={part} updateHeadId={updateHeadId} updateBlend={updateBlend} />
+      <DnaBlend index={1} part={part} updateHeadId={updateHeadId} updateBlend={updateBlend} />
+      <DnaBlend index={2} part={part} updateHeadId={updateHeadId} updateBlend={updateBlend} />
+      <DnaBlend index={3} part={part} updateHeadId={updateHeadId} updateBlend={updateBlend} />
     </Fieldset>
+  )
+}
+
+interface DnaBlendProps {
+  index: number
+  part: DnaFacePart
+  updateHeadId: (index: number, value: string | number) => void
+  updateBlend: (index: number, value: number) => void
+}
+
+function DnaBlend({ index, part, updateHeadId, updateBlend }: DnaBlendProps) {
+  const { character } = useCharacter()
+
+  return (
+    <Group wrap="nowrap">
+      <NumberInput
+        disabled
+        allowDecimal={false}
+        allowLeadingZeros={false}
+        allowNegative={false}
+        size="xs"
+        w={50}
+        value={character.dna.blends[part][index].headId}
+        onChange={value => updateHeadId(index, value)}
+      />
+      <Slider
+        disabled
+        w="100"
+        value={character.dna.blends[part][index].percent}
+        onChange={value => updateBlend(index, value)}
+      />
+    </Group>
   )
 }

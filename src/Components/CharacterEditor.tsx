@@ -5,7 +5,6 @@ import { useLocalStorage } from '@mantine/hooks'
 import { useCharacter } from '../Context/CharacterContext'
 import { createChf } from '../Chf/ChfFile'
 import SkinColorPicker from './SkinColorPicker'
-import { CharacterJsonDisplay } from './CharacterJsonDisplay'
 import { DnaPanel } from './DnaPanel'
 
 function CharacterEditor() {
@@ -13,7 +12,7 @@ function CharacterEditor() {
     key: 'isDev',
     defaultValue: false,
   })
-  const [character] = useCharacter()
+  const { character } = useCharacter()
   const exportCharacter = useCallback(() => {
     const buffer = createChf(character)
     const blob = new Blob([buffer], { type: 'application/octet-stream' })
@@ -31,7 +30,6 @@ function CharacterEditor() {
           <SkinColorPicker />
           {isDev && <DnaPanel />}
         </Group>
-        {isDev && <CharacterJsonDisplay />}
       </Stack>
       <Affix zIndex={900} position={{ bottom: 0, left: 0, right: 0 }}>
         <Center p="xl">

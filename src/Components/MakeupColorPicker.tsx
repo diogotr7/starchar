@@ -3,7 +3,7 @@ import { useCharacter } from '../Context/CharacterContext'
 import { SmallColorInput } from './SmallColorInput'
 
 function MakeupColorPicker() {
-  const [character, updateCharacter] = useCharacter()
+  const { character, updateCharacter } = useCharacter()
 
   return (
     <Fieldset legend="Makeup Colors">

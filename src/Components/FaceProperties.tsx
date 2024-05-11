@@ -3,7 +3,7 @@ import { useCharacter } from '../Context/CharacterContext'
 import { SliderInput } from './SliderInput'
 
 export function FaceProperties() {
-  const [character, updateCharacter] = useCharacter()
+  const { character, updateCharacter } = useCharacter()
 
   return (
     <Fieldset legend="Face Properties">

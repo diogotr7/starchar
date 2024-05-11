@@ -5,7 +5,7 @@ import { useCharacter } from '../Context/CharacterContext'
 import { SmallColorInput } from './SmallColorInput'
 
 function SkinColorPicker() {
-  const [character, updateCharacter] = useCharacter()
+  const { character, updateCharacter } = useCharacter()
   const [locked, setLocked] = useState(true)
 
   return (
