@@ -1,7 +1,8 @@
 import { BufferReader } from '../Utils/BufferReader'
-import type { BufferWriter } from '../Utils/BufferWriter'
+import { BufferWriter } from '../Utils/BufferWriter'
 import { fromHexStr, toHexStr } from '../Utils/hexString'
 import type { BodyType } from './BodyType'
+import type { Character } from './Character'
 
 const dnaSize = 0xD8
 const partCount = 12 * 4
@@ -36,7 +37,7 @@ export type DnaFacePart =
 
 export interface DnaBlend {
   headId: number
-  percent: number
+  value: number
 }
 
 export interface DnaBlends {
@@ -55,7 +56,6 @@ export interface DnaBlends {
 }
 
 export interface Dna {
-  dnaString: string
   childCount: number
   blends: DnaBlends
 }
@@ -69,39 +69,31 @@ export function readDna(parentReader: BufferReader): Dna {
   return dnaFromString(dnaString)
 }
 
-export function writeDna(writer: BufferWriter, dna: Dna, _bodyType: BodyType) {
-  const bytes = fromHexStr(dna.dnaString)
-  if (bytes.length !== dnaSize)
-    throw new Error(`DNA string must be ${dnaSize} bytes long`)
-
+export function writeDna(writer: BufferWriter, dna: Dna, bodyType: BodyType) {
+  const isMale = bodyType === 'male'
   writer.writeUint64(dnaSize)
-  writer.writeBytes(bytes)
 
-  // TODO: this is probably broken. Replace the above with this when fixed
-  // const isMale = bodyType === 'male'
-  // writer.writeUint32(0xFCD09394)
-  // writer.writeUint32(isMale ? 0xDD6C67F6 : 0x9EF4EB54)
-  // writer.writeUint32(isMale ? 0x65E740D3 : 0x65D75204)
-  // writer.writeUint32(0)
-  // writer.writeByte(0x0C)
-  // writer.writeByte(0x0)
-  // writer.writeByte(0x04)
-  // writer.writeByte(0x0)
-  // writer.writeByte(0x4)
-  // writer.writeByte(0x0)
-  // writer.writeByte(dna.childCount)
-  // writer.writeByte(0x0)
+  writer.writeUint32(0xFCD09394)
+  writer.writeUint32(isMale ? 0xDD6C67F6 : 0x9EF4EB54)
+  writer.writeUint32(isMale ? 0x65E740D3 : 0x65D75204)
+  writer.writeUint32(0)
+  writer.writeByte(0x0C)
+  writer.writeByte(0x0)
+  writer.writeByte(0x04)
+  writer.writeByte(0x0)
+  writer.writeByte(0x4)
+  writer.writeByte(0x0)
+  writer.writeByte(dna.childCount)
+  writer.writeByte(0x0)
 
-  // for (let i = 0; i < partCount; i++) {
-  //   const part = i % 12
-  //   const blends = dna.blends.get(part) || []
-  //   const blend = blends[i % blends.length]
+  for (let i = 0; i < partCount; i++) {
+    const blends = dna.blends[idxPartRecord[i % 12]]
+    const blend = blends[Math.floor(i / 12)]
 
-  //   const percentShort = blend.percent / 100 * 0xFFFF
-  //   writer.writeUint16(percentShort)
-  //   writer.writeByte(blend.headId)
-  //   writer.writeByte(0)
-  // }
+    writer.writeUint16(blend.value)
+    writer.writeByte(blend.headId)
+    writer.writeByte(0)
+  }
 }
 
 export function dnaFromString(dnaString: string): Dna {
@@ -119,7 +111,7 @@ export function dnaFromString(dnaString: string): Dna {
   const childCount = reader.readByte()
   reader.readByte()// might be 0 or ff for some reason?
 
-  const map: DnaBlends = {
+  const blends: DnaBlends = {
     eyebrowLeft: [],
     eyebrowRight: [],
     eyeLeft: [],
@@ -136,18 +128,25 @@ export function dnaFromString(dnaString: string): Dna {
 
   for (let i = 0; i < partCount; i++) {
     const part = i % 12
-    const percentShort = reader.readUint16()
+    const value = reader.readUint16()
     const headId = reader.readByte()
     reader.expectByte(0)
 
-    const percent = percentShort / 0xFFFF * 100
-
-    map[idxPartRecord[part]].push({ headId, percent })
+    blends[idxPartRecord[part]].push({ headId, value })
   }
 
   return {
-    dnaString,
     childCount,
-    blends: map,
+    blends,
   }
+}
+
+export function dnaToString(character: Character): string {
+  const buffer = new ArrayBuffer(dnaSize)
+  const writer = new BufferWriter(buffer)
+
+  writeDna(writer, character.dna, character.bodyType)
+
+  // slice skips dnaSize
+  return toHexStr(new Uint8Array(buffer).slice(8))
 }

@@ -3,7 +3,8 @@ import { useCallback, useState } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useCharacter } from '../Context/CharacterContext'
-import { type DnaFacePart, dnaFromString } from '../Chf/Dna'
+import type { DnaFacePart } from '../Chf/Dna'
+import { dnaFromString, dnaToString } from '../Chf/Dna'
 
 export function DnaPanel() {
   const [opened, { toggle, close }] = useDisclosure(false)
@@ -23,7 +24,7 @@ export function DnaPanel() {
   }, [toggle, setDnaString])
 
   const dnaStringClipboard = useCallback(() => {
-    navigator.clipboard.writeText(character.dna.dnaString)
+    navigator.clipboard.writeText(dnaToString(character))
     notifications.show({
       title: 'DNA String copied to clipboard',
       message: 'You can now share it with others or import it into another character.',
@@ -101,61 +102,84 @@ export function DnaPanel() {
 }
 
 function DnaPart({ label, part }: { label: string, part: DnaFacePart }) {
-  const { updateCharacter } = useCharacter()
+  const { character, updateCharacter } = useCharacter()
   const updateBlend = useCallback((index: number, value: number) => {
-    console.log('updateBlend', part, index, value)
     updateCharacter((d) => {
-      d.dna.blends[part][index].percent = value
+      d.dna.blends[part][index].value = value
     })
   }, [part, updateCharacter])
 
   const updateHeadId = useCallback((index: number, value: string | number) => {
     if (typeof value === 'string')
-      return
+      value = Number.parseInt(value) ?? 0
 
     const id = value ?? 0
     // double check this
-    if (id >= 0 && id <= 26 && Number.isInteger(id))
-      updateCharacter((d) => { d.dna.blends[part][index].headId = id })
+    // 44 = broken
+    // 43 = valid but seems unobtainable regularly
+    updateCharacter((d) => { d.dna.blends[part][index].headId = id })
   }, [part, updateCharacter])
 
   return (
     <Fieldset legend={label}>
-      <DnaBlend index={0} part={part} updateHeadId={updateHeadId} updateBlend={updateBlend} />
-      <DnaBlend index={1} part={part} updateHeadId={updateHeadId} updateBlend={updateBlend} />
-      <DnaBlend index={2} part={part} updateHeadId={updateHeadId} updateBlend={updateBlend} />
-      <DnaBlend index={3} part={part} updateHeadId={updateHeadId} updateBlend={updateBlend} />
+      <DnaBlend
+        valueNumber={character.dna.blends[part][0].headId}
+        onChangeNumber={v => updateHeadId(0, v)}
+        valueSlider={character.dna.blends[part][0].value}
+        onChangeSlider={v => updateBlend(0, v)}
+      />
+      <DnaBlend
+        valueNumber={character.dna.blends[part][1].headId}
+        onChangeNumber={v => updateHeadId(1, v)}
+        valueSlider={character.dna.blends[part][1].value}
+        onChangeSlider={v => updateBlend(1, v)}
+      />
+      <DnaBlend
+        valueNumber={character.dna.blends[part][2].headId}
+        onChangeNumber={v => updateHeadId(2, v)}
+        valueSlider={character.dna.blends[part][2].value}
+        onChangeSlider={v => updateBlend(2, v)}
+      />
+      <DnaBlend
+        valueNumber={character.dna.blends[part][3].headId}
+        onChangeNumber={v => updateHeadId(3, v)}
+        valueSlider={character.dna.blends[part][3].value}
+        onChangeSlider={v => updateBlend(3, v)}
+      />
     </Fieldset>
   )
 }
 
 interface DnaBlendProps {
-  index: number
-  part: DnaFacePart
-  updateHeadId: (index: number, value: string | number) => void
-  updateBlend: (index: number, value: number) => void
+  valueSlider: number
+  valueNumber: number
+  onChangeSlider: (value: number) => void
+  onChangeNumber: (value: number | string) => void
 }
 
-function DnaBlend({ index, part, updateHeadId, updateBlend }: DnaBlendProps) {
-  const { character } = useCharacter()
-
+function DnaBlend({ valueSlider, valueNumber, onChangeSlider, onChangeNumber }: DnaBlendProps) {
   return (
     <Group wrap="nowrap">
       <NumberInput
-        disabled
         allowDecimal={false}
         allowLeadingZeros={false}
+        inputMode="numeric"
         allowNegative={false}
         size="xs"
         w={50}
-        value={character.dna.blends[part][index].headId}
-        onChange={value => updateHeadId(index, value)}
+        min={0}
+        max={43}
+        value={valueNumber}
+        onChange={onChangeNumber}
       />
       <Slider
-        disabled
         w="100"
-        value={character.dna.blends[part][index].percent}
-        onChange={value => updateBlend(index, value)}
+        min={0}
+        max={65535}
+        step={1}
+        label={value => `${Math.round(value / 65535 * 100)}%`}
+        value={valueSlider}
+        onChange={onChangeSlider}
       />
     </Group>
   )
