@@ -29,4 +29,6 @@ export function writeHairModifier(writer: BufferWriter, hairModifier: HairModifi
   writer.writeGuid('12ce4ce5-e49a-4dab-9d31-ad262faaddf2')
   writer.writeUint32(0x0)
   writer.writeUint32(hairModifier.childCount)
+  if (hairModifier.childCount === 6)
+    writer.writeUint32(5)
 }
