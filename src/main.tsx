@@ -9,7 +9,7 @@ import '@mantine/core/styles.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <MantineProvider forceColorScheme="dark">
-      <Notifications position="top-center" zIndex={1000} />
+      <Notifications position="top-center" zIndex={9999} />
       <App />
     </MantineProvider>
   </React.StrictMode>,
