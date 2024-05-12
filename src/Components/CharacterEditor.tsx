@@ -1,19 +1,12 @@
-import { Affix, Button, Center, Group, Stack } from '@mantine/core'
+import { Affix, Button, Center, Tabs } from '@mantine/core'
 import { IconDownload } from '@tabler/icons-react'
 import { useCallback } from 'react'
-import { useLocalStorage } from '@mantine/hooks'
 import { useCharacterStore } from '../useCharacterStore'
 import SkinColorPicker from './SkinColorPicker'
 import { DnaPanel } from './DnaPanel'
 
 function CharacterEditor() {
   const getChf = useCharacterStore(state => state.getChf)
-
-  const [isDev] = useLocalStorage({
-    key: 'isDev',
-    defaultValue: false,
-  })
-
   const exportCharacter = useCallback(() => {
     const buffer = getChf()
     const blob = new Blob([buffer], { type: 'application/octet-stream' })
@@ -26,14 +19,29 @@ function CharacterEditor() {
 
   return (
     <>
-      <Stack justify="flex-start">
-        <Group justify="space-evenly">
-          <SkinColorPicker />
-          {isDev && <DnaPanel />}
-        </Group>
-      </Stack>
-      <Affix zIndex={900} position={{ bottom: 0, left: 0, right: 0 }}>
-        <Center p="xl">
+      <Tabs variant="outline" defaultValue="colors">
+        <Tabs.List justify="center">
+          <Tabs.Tab value="colors">
+            Colors
+          </Tabs.Tab>
+          <Tabs.Tab value="dna">
+            DNA (in development)
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="colors" m="md">
+          <Center>
+            <SkinColorPicker />
+          </Center>
+        </Tabs.Panel>
+        <Tabs.Panel value="dna" m="md">
+          <Center>
+            <DnaPanel />
+          </Center>
+        </Tabs.Panel>
+      </Tabs>
+      <Affix zIndex={900} position={{ bottom: 0, right: 0 }}>
+        <Center p="md">
           <Button
             size="xl"
             rightSection={<IconDownload size={14} />}

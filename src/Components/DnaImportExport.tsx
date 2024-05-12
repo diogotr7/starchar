@@ -1,6 +1,6 @@
 import { Button, Center, Chip, ChipGroup, Group, Menu, Modal, Stack, Text, TextInput } from '@mantine/core'
 import { useCallback, useState } from 'react'
-import { useDisclosure } from '@mantine/hooks'
+import { useClipboard, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useShallow } from 'zustand/react/shallow'
 import type { DnaFacePart } from '../Chf/Dna'
@@ -18,6 +18,7 @@ export function DnaImportExport() {
   const [opened, { toggle, close }] = useDisclosure(false)
   const [dnaString, setDnaString] = useState('')
   const [selectedParts, setSelectedParts] = useState<DnaFacePart[]>(allParts)
+  const clipboard = useClipboard()
 
   const importDna = useCallback(() => {
     const dna = dnaFromString(dnaString)
@@ -37,13 +38,13 @@ export function DnaImportExport() {
   }, [toggle, setDnaString])
 
   const dnaStringClipboard = useCallback(() => {
-    navigator.clipboard.writeText(getDnaString())
+    clipboard.copy(getDnaString())
     notifications.show({
       title: 'DNA String copied to clipboard',
       message: 'You can now share it with others or import it into another character.',
       autoClose: 2000,
     })
-  }, [getDnaString])
+  }, [clipboard, getDnaString])
 
   const canImport = dnaString.length === 432 && selectedParts.length > 0
 
@@ -54,7 +55,7 @@ export function DnaImportExport() {
           Import DNA String
         </Button>
         <Button onClick={dnaStringClipboard}>
-          Export to Clipboard
+          Copy to Clipboard
         </Button>
       </Group>
       <Modal

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { ActionIcon, AppShell, Button, Center, FileInput, Group, SimpleGrid, Stack, Text, Title, em } from '@mantine/core'
+import { ActionIcon, AppShell, Button, Center, FileInput, Group, SimpleGrid, Stack, Text, Title, em, useMantineColorScheme } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { IconBrandGithub, IconBrandPaypal } from '@tabler/icons-react'
+import { IconBrandGithub, IconBrandPaypal, IconMoon, IconSun } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
 import { useShallow } from 'zustand/react/shallow'
 import CharacterEditor from './Components/CharacterEditor.tsx'
@@ -10,6 +10,7 @@ import { extractChf } from './Chf/ChfFile.ts'
 import { useCharacterStore } from './useCharacterStore.ts'
 
 function App() {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const [chf, setChf] = useState<File | null>()
   const { isCharacterLoaded, loadCharacter, resetCharacter } = useCharacterStore(useShallow(state => ({
     isCharacterLoaded: state.isCharacterLoaded,
@@ -71,6 +72,9 @@ function App() {
                   >
                     <IconBrandPaypal size={32} />
                   </ActionIcon>
+                  <ActionIcon onClick={toggleColorScheme} variant="subtle">
+                    {colorScheme === 'dark' ? <IconSun size={32} /> : <IconMoon size={32} />}
+                  </ActionIcon>
                 </>
                 )
               : (
@@ -95,6 +99,13 @@ function App() {
                   >
                     Donate
                   </Button>
+                  <ActionIcon
+                    size="lg"
+                    onClick={toggleColorScheme}
+                    variant="outline"
+                  >
+                    {colorScheme === 'dark' ? <IconSun size={18} /> : <IconMoon size={18} />}
+                  </ActionIcon>
                 </>
                 )}
           </Group>

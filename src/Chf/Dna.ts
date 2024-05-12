@@ -141,7 +141,7 @@ export function dnaFromString(dnaString: string): Dna {
 }
 
 export function dnaToString(dna: Dna, bodyType: BodyType): string {
-  const buffer = new ArrayBuffer(dnaSize)
+  const buffer = new ArrayBuffer(dnaSize + 8)
   const writer = new BufferWriter(buffer)
 
   writeDna(writer, dna, bodyType)
