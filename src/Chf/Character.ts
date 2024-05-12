@@ -46,6 +46,9 @@ export function readCharacter(bytes: Uint8Array): Character {
   const eyeMaterial = readEyeMaterial(reader)
   const bodyMaterial = readBodyMaterial(reader)
 
+  if (reader.offset !== reader.view.byteLength)
+    console.warn('Character buffer not fully read')
+
   return {
     count,
     bodyType,

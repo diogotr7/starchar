@@ -3,8 +3,8 @@ function H(n: number): string {
 }
 
 export class BufferReader {
-  private view: DataView
-  private offset: number
+  view: DataView
+  offset: number
 
   constructor(buffer: ArrayBuffer) {
     this.view = new DataView(buffer)
