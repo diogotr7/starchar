@@ -2,8 +2,7 @@ import { Affix, Button, Center, Group, Stack } from '@mantine/core'
 import { IconDownload } from '@tabler/icons-react'
 import { useCallback } from 'react'
 import { useLocalStorage } from '@mantine/hooks'
-import { useCharacter } from '../Context/CharacterContext'
-import { createChf } from '../Chf/ChfFile'
+import { useCharacterStore } from '../useCharacterStore'
 import SkinColorPicker from './SkinColorPicker'
 import { DnaPanel } from './DnaPanel'
 
@@ -12,16 +11,16 @@ function CharacterEditor() {
     key: 'isDev',
     defaultValue: false,
   })
-  const { character } = useCharacter()
+  const getChf = useCharacterStore(state => state.getChf)
   const exportCharacter = useCallback(() => {
-    const buffer = createChf(character)
+    const buffer = getChf()
     const blob = new Blob([buffer], { type: 'application/octet-stream' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
     a.download = 'character.chf'
     a.click()
-  }, [character])
+  }, [getChf])
 
   return (
     <>

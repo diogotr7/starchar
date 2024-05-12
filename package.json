@@ -22,7 +22,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-number-format": "^5.3.4",
-    "use-immer": "^0.9.0"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.17.0",

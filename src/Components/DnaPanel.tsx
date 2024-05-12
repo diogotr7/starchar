@@ -2,19 +2,49 @@ import { Button, Center, Fieldset, Group, Input, Modal, NumberInput, Slider, Sta
 import { useCallback, useState } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import { useCharacter } from '../Context/CharacterContext'
+import { useShallow } from 'zustand/react/shallow'
 import type { DnaFacePart } from '../Chf/Dna'
-import { dnaFromString, dnaToString } from '../Chf/Dna'
+import { dnaFromString } from '../Chf/Dna'
+import { useCharacterStore } from '../useCharacterStore'
 
 export function DnaPanel() {
+  return (
+    <Fieldset legend="DNA">
+      <Stack>
+        <Group>
+          <DnaPart label="Left Eyebrow" part="eyebrowLeft" />
+          <DnaPart label="Right Eyebrow" part="eyebrowRight" />
+          <DnaPart label="Left Eye" part="eyeLeft" />
+          <DnaPart label="Right Eye" part="eyeRight" />
+        </Group>
+        <Group>
+          <DnaPart label="Left Ear" part="earLeft" />
+          <DnaPart label="Right Ear" part="earRight" />
+          <DnaPart label="Left Cheek" part="cheekLeft" />
+          <DnaPart label="Right Cheek" part="cheekRight" />
+        </Group>
+        <Group>
+          <DnaPart label="Nose" part="nose" />
+          <DnaPart label="Mouth" part="mouth" />
+          <DnaPart label="Jaw" part="jaw" />
+          <DnaPart label="Crown" part="crown" />
+        </Group>
+        <DnaImportExport />
+      </Stack>
+    </Fieldset>
+  )
+}
+
+function DnaImportExport() {
+  const { getDnaString, updateCharacter } = useCharacterStore(useShallow(state => ({
+    getDnaString: state.getDnaString,
+    updateCharacter: state.updateCharacter,
+  })))
   const [opened, { toggle, close }] = useDisclosure(false)
   const [dnaString, setDnaString] = useState('')
-  const { character, updateCharacter } = useCharacter()
 
   const importDna = useCallback(() => {
-    updateCharacter((d) => {
-      d.dna = dnaFromString(dnaString)
-    })
+    updateCharacter((d) => { d.dna = dnaFromString(dnaString) })
     close()
   }, [updateCharacter, close, dnaString])
 
@@ -24,46 +54,24 @@ export function DnaPanel() {
   }, [toggle, setDnaString])
 
   const dnaStringClipboard = useCallback(() => {
-    navigator.clipboard.writeText(dnaToString(character))
+    navigator.clipboard.writeText(getDnaString())
     notifications.show({
       title: 'DNA String copied to clipboard',
       message: 'You can now share it with others or import it into another character.',
       autoClose: 2000,
     })
-  }, [character])
+  }, [getDnaString])
 
   return (
     <>
-      <Fieldset legend="DNA">
-        <Stack>
-          <Group>
-            <DnaPart label="Left Eyebrow" part="eyebrowLeft" />
-            <DnaPart label="Right Eyebrow" part="eyebrowRight" />
-            <DnaPart label="Left Eye" part="eyeLeft" />
-            <DnaPart label="Right Eye" part="eyeRight" />
-          </Group>
-          <Group>
-            <DnaPart label="Left Ear" part="earLeft" />
-            <DnaPart label="Right Ear" part="earRight" />
-            <DnaPart label="Left Cheek" part="cheekLeft" />
-            <DnaPart label="Right Cheek" part="cheekRight" />
-          </Group>
-          <Group>
-            <DnaPart label="Nose" part="nose" />
-            <DnaPart label="Mouth" part="mouth" />
-            <DnaPart label="Jaw" part="jaw" />
-            <DnaPart label="Crown" part="crown" />
-          </Group>
-          <Group justify="center">
-            <Button onClick={dnaStringOpen}>
-              Import DNA String
-            </Button>
-            <Button onClick={dnaStringClipboard}>
-              Export to Clipboard
-            </Button>
-          </Group>
-        </Stack>
-      </Fieldset>
+      <Group justify="center">
+        <Button onClick={dnaStringOpen}>
+          Import DNA String
+        </Button>
+        <Button onClick={dnaStringClipboard}>
+          Export to Clipboard
+        </Button>
+      </Group>
       <Modal
         // export button z-index is 900
         zIndex={1000}
@@ -98,11 +106,15 @@ export function DnaPanel() {
         </Stack>
       </Modal>
     </>
+
   )
 }
 
 function DnaPart({ label, part }: { label: string, part: DnaFacePart }) {
-  const { character, updateCharacter } = useCharacter()
+  const { blend, updateCharacter } = useCharacterStore(useShallow(state => ({
+    blend: state.character.dna.blends[part],
+    updateCharacter: state.updateCharacter,
+  })))
   const updateBlend = useCallback((index: number, value: number) => {
     updateCharacter((d) => {
       d.dna.blends[part][index].value = value
@@ -123,27 +135,27 @@ function DnaPart({ label, part }: { label: string, part: DnaFacePart }) {
   return (
     <Fieldset legend={label}>
       <DnaBlend
-        valueNumber={character.dna.blends[part][0].headId}
+        valueNumber={blend[0].headId}
         onChangeNumber={v => updateHeadId(0, v)}
-        valueSlider={character.dna.blends[part][0].value}
+        valueSlider={blend[0].value}
         onChangeSlider={v => updateBlend(0, v)}
       />
       <DnaBlend
-        valueNumber={character.dna.blends[part][1].headId}
+        valueNumber={blend[1].headId}
         onChangeNumber={v => updateHeadId(1, v)}
-        valueSlider={character.dna.blends[part][1].value}
+        valueSlider={blend[1].value}
         onChangeSlider={v => updateBlend(1, v)}
       />
       <DnaBlend
-        valueNumber={character.dna.blends[part][2].headId}
+        valueNumber={blend[2].headId}
         onChangeNumber={v => updateHeadId(2, v)}
-        valueSlider={character.dna.blends[part][2].value}
+        valueSlider={blend[2].value}
         onChangeSlider={v => updateBlend(2, v)}
       />
       <DnaBlend
-        valueNumber={character.dna.blends[part][3].headId}
+        valueNumber={blend[3].headId}
         onChangeNumber={v => updateHeadId(3, v)}
-        valueSlider={character.dna.blends[part][3].value}
+        valueSlider={blend[3].value}
         onChangeSlider={v => updateBlend(3, v)}
       />
     </Fieldset>

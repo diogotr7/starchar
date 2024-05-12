@@ -1,33 +1,40 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ActionIcon, AppShell, Button, Center, FileInput, Group, SimpleGrid, Stack, Text, Title, em } from '@mantine/core'
-import { useImmer } from 'use-immer'
 import { notifications } from '@mantine/notifications'
 import { IconBrandGithub, IconBrandPaypal } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
-import CharacterContext from './Context/CharacterContext.ts'
+import { useShallow } from 'zustand/react/shallow'
 import CharacterEditor from './Components/CharacterEditor.tsx'
-import type { Character } from './Chf/Character.ts'
 import { readCharacter } from './Chf/Character.ts'
 import { extractChf } from './Chf/ChfFile.ts'
+import { useCharacterStore } from './useCharacterStore.ts'
 
 function App() {
   const [chf, setChf] = useState<File | null>()
-  const [character, updateCharacter] = useImmer<Character>(undefined!)
+  const { loaded, loadCharacter, reset } = useCharacterStore(useShallow(state => (
+    {
+      loaded: state.loaded,
+      loadCharacter: state.loadCharacter,
+      reset: state.reset,
+    }
+  )))
   const isMobile = useMediaQuery(`(max-width: ${em(850)})`)
 
   useEffect(() => {
     if (!chf) {
-      updateCharacter(() => undefined)
+      reset()
       return
     }
+
+    console.log('Reading character file', chf)
 
     chf.arrayBuffer().then((buffer) => {
       try {
         const newCharacter = readCharacter(extractChf(new Uint8Array(buffer)))
-        updateCharacter(() => newCharacter)
+        loadCharacter(newCharacter)
       }
       catch (e) {
-        updateCharacter(() => undefined)
+        reset()
         setChf(null)
         notifications.show({
           title: 'Failed to read character',
@@ -40,9 +47,7 @@ function App() {
     }).catch((e) => {
       console.error(e)
     })
-  }, [chf, updateCharacter, setChf])
-
-  const contextValue = useMemo(() => ({ character, updateCharacter }), [character, updateCharacter])
+  }, [chf, setChf, reset, loadCharacter])
 
   return (
     <AppShell header={{ height: 60 }}>
@@ -115,11 +120,9 @@ function App() {
       </AppShell.Header>
       <AppShell.Main>
         <Stack gap="md" justify="center">
-          {character && chf
+          {loaded && chf
             ? (
-              <CharacterContext.Provider value={contextValue}>
-                <CharacterEditor />
-              </CharacterContext.Provider>
+              <CharacterEditor />
               )
             : (
               <Center mt="200">

@@ -2,7 +2,6 @@ import { BufferReader } from '../Utils/BufferReader'
 import { BufferWriter } from '../Utils/BufferWriter'
 import { fromHexStr, toHexStr } from '../Utils/hexString'
 import type { BodyType } from './BodyType'
-import type { Character } from './Character'
 
 const dnaSize = 0xD8
 const partCount = 12 * 4
@@ -141,11 +140,11 @@ export function dnaFromString(dnaString: string): Dna {
   }
 }
 
-export function dnaToString(character: Character): string {
+export function dnaToString(dna: Dna, bodyType: BodyType): string {
   const buffer = new ArrayBuffer(dnaSize)
   const writer = new BufferWriter(buffer)
 
-  writeDna(writer, character.dna, character.bodyType)
+  writeDna(writer, dna, bodyType)
 
   // slice skips dnaSize
   return toHexStr(new Uint8Array(buffer).slice(8))
