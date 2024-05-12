@@ -25,7 +25,7 @@ export const useCharacterStore = create<CharacterState>()(devtools(
       return dnaToString(character.dna, character.bodyType)
     },
     updateCharacter: fn => set(state => fn(state.character), false, 'updateCharacter'),
-    loadCharacter: character => set({ isCharacterLoaded: true, character }),
-    resetCharacter: () => set({ isCharacterLoaded: false, character: undefined! }),
+    loadCharacter: character => set({ isCharacterLoaded: true, character }, false, 'resetCharacter'),
+    resetCharacter: () => set({ isCharacterLoaded: false, character: undefined! }, false, 'resetCharacter'),
   })),
 ))

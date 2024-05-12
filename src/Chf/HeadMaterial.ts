@@ -76,7 +76,7 @@ export function readHeadMaterial(reader: BufferReader): HeadMaterial {
 
   const materialType = headMaterialTypeMap[materialTypeGuid]
   if (materialType === undefined)
-    throw new Error(`Unknown head material type: ${materialTypeGuid}`)
+    throw new Error(`Unknown head material type\' ${materialTypeGuid}\' with params \'${additionalParams}\'`)
 
   reader.expectUint32(0)
   reader.expectUint32(0)

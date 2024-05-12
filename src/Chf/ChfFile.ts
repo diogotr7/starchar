@@ -56,8 +56,5 @@ export function createChf(character: Character): ArrayBuffer {
   const crc = crc32c(new Uint8Array(chf.slice(16)))
   chfWriter.writeUint32At(4, crc)
 
-  // test
-  // const x = readCharacter(extractChf(new Uint8Array(chf)))
-
   return chf
 }

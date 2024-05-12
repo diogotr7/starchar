@@ -14,11 +14,12 @@ export function readHairModifier(reader: BufferReader): HairModifier {
   switch (childCount) {
     case 0:
       break
+    case 4:
     case 6:
       reader.expectUint32(5)
       break
     default:
-      throw new Error('Unknown hair part count')
+      throw new Error(`Unknown hair part count ${childCount}`)
   }
 
   return { childCount }

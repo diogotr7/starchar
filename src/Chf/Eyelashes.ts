@@ -13,6 +13,7 @@ export function readEyelashes(reader: BufferReader): Eyelashes {
   switch (childCount) {
     case 0:
       return { childCount }
+    case 2:
     case 3:
     case 4:
     case 5:
@@ -20,7 +21,7 @@ export function readEyelashes(reader: BufferReader): Eyelashes {
       reader.expectUint32(5)
       return { childCount }
     default:
-      throw new Error('Unknown eyelashes count')
+      throw new Error(`Unknown eyelashes count ${childCount}`)
   }
 }
 
@@ -35,5 +36,5 @@ export function writeEyelashes(writer: BufferWriter, eyelashes: Eyelashes) {
   if (eyelashes.childCount >= 3 && eyelashes.childCount <= 6)
     writer.writeUint32(5)
   else
-    throw new Error('Unknown eyelashes count')
+    throw new Error(`Unknown eyelashes count ${eyelashes.childCount}`)
 }
