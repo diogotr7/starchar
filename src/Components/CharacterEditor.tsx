@@ -7,11 +7,13 @@ import SkinColorPicker from './SkinColorPicker'
 import { DnaPanel } from './DnaPanel'
 
 function CharacterEditor() {
+  const getChf = useCharacterStore(state => state.getChf)
+
   const [isDev] = useLocalStorage({
     key: 'isDev',
     defaultValue: false,
   })
-  const getChf = useCharacterStore(state => state.getChf)
+
   const exportCharacter = useCallback(() => {
     const buffer = getChf()
     const blob = new Blob([buffer], { type: 'application/octet-stream' })

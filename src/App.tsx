@@ -11,22 +11,18 @@ import { useCharacterStore } from './useCharacterStore.ts'
 
 function App() {
   const [chf, setChf] = useState<File | null>()
-  const { loaded, loadCharacter, reset } = useCharacterStore(useShallow(state => (
-    {
-      loaded: state.loaded,
-      loadCharacter: state.loadCharacter,
-      reset: state.reset,
-    }
-  )))
+  const { isCharacterLoaded, loadCharacter, resetCharacter } = useCharacterStore(useShallow(state => ({
+    isCharacterLoaded: state.isCharacterLoaded,
+    loadCharacter: state.loadCharacter,
+    resetCharacter: state.resetCharacter,
+  })))
   const isMobile = useMediaQuery(`(max-width: ${em(850)})`)
 
   useEffect(() => {
     if (!chf) {
-      reset()
+      resetCharacter()
       return
     }
-
-    console.log('Reading character file', chf)
 
     chf.arrayBuffer().then((buffer) => {
       try {
@@ -34,7 +30,7 @@ function App() {
         loadCharacter(newCharacter)
       }
       catch (e) {
-        reset()
+        resetCharacter()
         setChf(null)
         notifications.show({
           title: 'Failed to read character',
@@ -47,7 +43,7 @@ function App() {
     }).catch((e) => {
       console.error(e)
     })
-  }, [chf, setChf, reset, loadCharacter])
+  }, [chf, setChf, resetCharacter, loadCharacter])
 
   return (
     <AppShell header={{ height: 60 }}>
@@ -120,7 +116,7 @@ function App() {
       </AppShell.Header>
       <AppShell.Main>
         <Stack gap="md" justify="center">
-          {loaded && chf
+          {isCharacterLoaded && chf
             ? (
               <CharacterEditor />
               )
