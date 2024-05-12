@@ -15,6 +15,7 @@
     "@aws-crypto/crc32c": "^5.2.0",
     "@cloudpss/zstd": "^0.2.16",
     "@mantine/core": "^7.9.1",
+    "@mantine/dropzone": "^7.9.1",
     "@mantine/hooks": "^7.9.1",
     "@mantine/notifications": "^7.9.1",
     "@tabler/icons-react": "^3.3.0",
