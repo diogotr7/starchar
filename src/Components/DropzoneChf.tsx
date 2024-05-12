@@ -1,32 +1,32 @@
-import { Center, Group, Text, rem } from "@mantine/core";
-import { Dropzone } from "@mantine/dropzone";
-import "@mantine/dropzone/styles.css";
-import { IconFileUpload, IconUpload, IconX } from "@tabler/icons-react";
+import { Center, Group, Text, rem } from '@mantine/core'
+import { Dropzone } from '@mantine/dropzone'
+import '@mantine/dropzone/styles.css'
+import { IconFileUpload, IconUpload, IconX } from '@tabler/icons-react'
 
 interface DropzoneProps {
-  onDrop: (files: File) => void;
+  onDrop: (files: File) => void
 }
-export const DropzoneChf = ({ onDrop }: DropzoneProps) => {
+export function DropzoneChf({ onDrop }: DropzoneProps) {
   return (
     <Center mt="200">
       <Dropzone
         multiple={false}
-        onDrop={(files) => files[0] && onDrop(files[0])}
-        onReject={(files) => console.log("rejected files", files)}
+        onDrop={files => files[0] && onDrop(files[0])}
+        onReject={files => console.log('rejected files', files)}
       >
         <Group
           justify="center"
           gap="xl"
           mih={220}
           miw={420}
-          style={{ pointerEvents: "none" }}
+          style={{ pointerEvents: 'none' }}
         >
           <Dropzone.Accept>
             <IconUpload
               style={{
                 width: rem(52),
                 height: rem(52),
-                color: "var(--mantine-color-blue-6)",
+                color: 'var(--mantine-color-blue-6)',
               }}
               stroke={1.5}
             />
@@ -36,7 +36,7 @@ export const DropzoneChf = ({ onDrop }: DropzoneProps) => {
               style={{
                 width: rem(52),
                 height: rem(52),
-                color: "var(--mantine-color-red-6)",
+                color: 'var(--mantine-color-red-6)',
               }}
               stroke={1.5}
             />
@@ -46,7 +46,7 @@ export const DropzoneChf = ({ onDrop }: DropzoneProps) => {
               style={{
                 width: rem(52),
                 height: rem(52),
-                color: "var(--mantine-color-dimmed)",
+                color: 'var(--mantine-color-dimmed)',
               }}
               stroke={1.5}
             />
@@ -66,5 +66,5 @@ export const DropzoneChf = ({ onDrop }: DropzoneProps) => {
         </Group>
       </Dropzone>
     </Center>
-  );
-};
+  )
+}

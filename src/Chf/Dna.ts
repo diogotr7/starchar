@@ -151,7 +151,7 @@ export function dnaToString(dna: Dna, bodyType: BodyType): string {
   return toHexStr(new Uint8Array(buffer).slice(8))
 }
 
-export function getRandDna(): Dna {
+export function getRandDna(bodyType: BodyType): Dna {
   const dna: Dna = {
     childCount: 0,
     blends: {
@@ -181,7 +181,7 @@ export function getRandDna(): Dna {
     const r4 = max - r1 - r2 - r3
 
     const values = [r1, r2, r3, r4]
-    const headIds = Array.from({ length: 42 }, (_, i) => i)
+    const headIds = Array.from({ length: maxHeadIdForBodyType(bodyType) }, (_, i) => i)
     shuffle(headIds)
 
     for (let j = 0; j < 4; j++)
@@ -236,4 +236,8 @@ function shuffle(array: any[]) {
     array[j] = temp
   }
   return array
+}
+
+export function maxHeadIdForBodyType(bodyType: BodyType) {
+  return bodyType === 'male' ? 34 : 43
 }

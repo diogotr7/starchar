@@ -1,5 +1,6 @@
 import { Group, NumberInput, Slider } from '@mantine/core'
 import { useCharacterStore } from '../useCharacterStore'
+import { maxHeadIdForBodyType } from '../Chf/Dna'
 
 export interface DnaBlendProps {
   headId: number
@@ -20,7 +21,7 @@ export function DnaBlend({ headId, value, onChangeSlider, onChangeNumber }: DnaB
         size="xs"
         w={50}
         min={0}
-        max={bodyType === 'male' ? 34 : 43}
+        max={maxHeadIdForBodyType(bodyType)}
         value={headId}
         onChange={onChangeNumber}
       />

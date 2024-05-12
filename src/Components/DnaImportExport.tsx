@@ -4,7 +4,7 @@ import { useClipboard, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useShallow } from 'zustand/react/shallow'
 import type { DnaFacePart } from '../Chf/Dna'
-import { dnaFromString, getFaceDna, getRandDna } from '../Chf/Dna'
+import { dnaFromString, getFaceDna, getRandDna, maxHeadIdForBodyType } from '../Chf/Dna'
 import { useCharacterStore } from '../useCharacterStore'
 import { ruto, teciaPacheco } from '../Utils/dnaStrings'
 
@@ -64,7 +64,7 @@ export function DnaImportExport() {
         <Button onClick={dnaStringClipboard}>
           Copy to Clipboard
         </Button>
-        <Button onClick={() => updateCharacter((draft) => { draft.dna = getRandDna() })}>
+        <Button onClick={() => updateCharacter((draft) => { draft.dna = getRandDna(bodyType) })}>
           Randomize DNA
         </Button>
         <Paper withBorder p="xs">
@@ -80,7 +80,7 @@ export function DnaImportExport() {
               w={60}
               value={faceId}
               min={0}
-              max={bodyType === 'male' ? 34 : 43}
+              max={maxHeadIdForBodyType(bodyType)}
               allowDecimal={false}
               allowLeadingZeros={false}
               allowNegative={false}
