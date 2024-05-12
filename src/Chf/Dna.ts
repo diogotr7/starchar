@@ -89,7 +89,7 @@ export function writeDna(writer: BufferWriter, dna: Dna, bodyType: BodyType) {
     const blends = dna.blends[idxPartRecord[i % 12]]
     const blend = blends[Math.floor(i / 12)]
 
-    writer.writeUint16(blend.value)
+    writer.writeUint16(Math.floor(blend.value))
     writer.writeByte(blend.headId)
     writer.writeByte(0)
   }

@@ -12,22 +12,17 @@ export function DnaPart({ label, part }: { label: string, part: DnaFacePart }) {
   })))
 
   const updateBlend = useCallback((index: number, value: number) => {
-    const total = 65535
-    // when changing one slider, add/sub the others to keep the total value the same
+    // kind of ugly but it works well enough and i dont want to spend more time on it
     const diff = value - blend[index].value
     const otherIndices = [0, 1, 2, 3].filter(i => i !== index)
     const otherValues = otherIndices.map(i => blend[i].value)
     const otherTotal = otherValues.reduce((acc, v) => acc + v, 0)
     const otherNewTotal = otherTotal - diff
-    const otherNewValues = otherValues.map(v => Math.max(v / otherTotal * otherNewTotal, 1))
+    const otherNewValues = otherValues.map(v => v / otherTotal * otherNewTotal)
     const newValues = [...otherNewValues]
     newValues.splice(index, 0, value)
     const newBlends = newValues.map((v, i) => ({ headId: blend[i].headId, value: v }))
     updateCharacter((d) => { d.dna.blends[part] = newBlends })
-
-    // updateCharacter((d) => {
-    //   d.dna.blends[part][index].value = value
-    // })
   }, [blend, part, updateCharacter])
 
   const updateHeadId = useCallback((index: number, value: string | number) => {
@@ -37,8 +32,6 @@ export function DnaPart({ label, part }: { label: string, part: DnaFacePart }) {
 
   return (
     <Fieldset legend={label}>
-      Sum:
-      {blend.reduce((acc, v) => acc + v.value, 0).toFixed(0)}
       <DnaBlend
         headId={blend[0].headId}
         value={blend[0].value}

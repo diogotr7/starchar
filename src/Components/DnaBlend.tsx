@@ -24,7 +24,7 @@ export function DnaBlend({ headId, value, onChangeSlider, onChangeNumber }: DnaB
       />
       <Slider
         w="100"
-        min={0}
+        min={1}
         max={65535}
         step={1}
         label={value => `${Math.round(value / 65535 * 100)}%`}
