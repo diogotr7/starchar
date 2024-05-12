@@ -115,8 +115,6 @@ function App() {
           <FileInput
             ml="auto"
             w={isMobile ? '100%' : 'auto'}
-
-            color="orange"
             clearable
             accept=".chf"
             placeholder="Upload Chf"
