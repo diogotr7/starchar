@@ -131,7 +131,8 @@ export function dnaFromString(dnaString: string): Dna {
     const headId = reader.readByte()
     reader.expectByte(0)
 
-    blends[idxPartRecord[part]].push({ headId, value })
+    // hacky but at least it won't break my shitty ui /shrug
+    blends[idxPartRecord[part]].push({ headId, value: Math.max(value, 1) })
   }
 
   return {
