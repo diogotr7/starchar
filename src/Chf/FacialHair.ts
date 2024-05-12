@@ -87,7 +87,7 @@ export function readFacialHair(reader: BufferReader): FacialHair {
   switch (childCount) {
     case 0: {
       const count2 = reader.readUint32()
-      if (count2 !== 5 && count2 !== 6)
+      if (count2 !== 4 && count2 !== 5 && count2 !== 6)
         throw new Error('Unknown facial hair count')
 
       reader.expectUint32(5)
