@@ -24,10 +24,12 @@ dist-ssr
 *.sw?
 
 #yarn
+.pnp.*
 .yarn/*
-.yarn/install-state.gz
-!.yarn/releases
+!.yarn/patches
 !.yarn/plugins
+!.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-.pnp.*
+
+src/tests/test-chf/
