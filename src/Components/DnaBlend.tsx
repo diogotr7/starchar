@@ -1,4 +1,5 @@
 import { Group, NumberInput, Slider } from '@mantine/core'
+import { useCharacterStore } from '../useCharacterStore'
 
 export interface DnaBlendProps {
   headId: number
@@ -8,6 +9,7 @@ export interface DnaBlendProps {
 }
 
 export function DnaBlend({ headId, value, onChangeSlider, onChangeNumber }: DnaBlendProps) {
+  const bodyType = useCharacterStore(state => state.character.bodyType)
   return (
     <Group wrap="nowrap">
       <NumberInput
@@ -18,7 +20,7 @@ export function DnaBlend({ headId, value, onChangeSlider, onChangeNumber }: DnaB
         size="xs"
         w={50}
         min={0}
-        max={43}
+        max={bodyType === 'male' ? 34 : 43}
         value={headId}
         onChange={onChangeNumber}
       />

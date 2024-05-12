@@ -150,3 +150,90 @@ export function dnaToString(dna: Dna, bodyType: BodyType): string {
   // slice skips dnaSize
   return toHexStr(new Uint8Array(buffer).slice(8))
 }
+
+export function getRandDna(): Dna {
+  const dna: Dna = {
+    childCount: 0,
+    blends: {
+      eyebrowLeft: [],
+      eyebrowRight: [],
+      eyeLeft: [],
+      eyeRight: [],
+      nose: [],
+      earLeft: [],
+      earRight: [],
+      cheekLeft: [],
+      cheekRight: [],
+      mouth: [],
+      jaw: [],
+      crown: [],
+    },
+  }
+
+  for (let i = 0; i < partCount; i++) {
+    const part = i % 12
+    const blends = dna.blends[idxPartRecord[part]]
+
+    const max = 65534
+    const r1 = randombetween(1, max - 3)
+    const r2 = randombetween(1, max - 2 - r1)
+    const r3 = randombetween(1, max - 1 - r1 - r2)
+    const r4 = max - r1 - r2 - r3
+
+    const values = [r1, r2, r3, r4]
+    const headIds = Array.from({ length: 42 }, (_, i) => i)
+    shuffle(headIds)
+
+    for (let j = 0; j < 4; j++)
+      blends.push({ headId: headIds[j], value: values[j] })
+  }
+
+  return dna
+}
+
+export function getFaceDna(faceId: number): Dna {
+  const dna: Dna = {
+    childCount: 0,
+    blends: {
+      eyebrowLeft: [],
+      eyebrowRight: [],
+      eyeLeft: [],
+      eyeRight: [],
+      nose: [],
+      earLeft: [],
+      earRight: [],
+      cheekLeft: [],
+      cheekRight: [],
+      mouth: [],
+      jaw: [],
+      crown: [],
+    },
+  }
+
+  for (let i = 0; i < partCount; i++) {
+    const part = i % 12
+    const blends = dna.blends[idxPartRecord[part]]
+
+    const values = [65534, 0, 0, 0]
+    const headIds = [faceId, 0, 0, 0]
+
+    for (let j = 0; j < 4; j++)
+      blends.push({ headId: headIds[j], value: values[j] })
+  }
+
+  return dna
+}
+
+function randombetween(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+function shuffle(array: any[]) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    const temp = array[i]
+    array[i] = array[j]
+    array[j] = temp
+  }
+  return array
+}

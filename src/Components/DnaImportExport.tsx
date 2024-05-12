@@ -1,24 +1,31 @@
-import { Button, Center, Chip, ChipGroup, Group, Menu, Modal, Stack, Text, TextInput } from '@mantine/core'
-import { useCallback, useState } from 'react'
+import { Button, Center, Chip, ChipGroup, Group, Menu, Modal, NumberInput, Paper, Stack, Text, TextInput } from '@mantine/core'
+import { useCallback, useEffect, useState } from 'react'
 import { useClipboard, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useShallow } from 'zustand/react/shallow'
 import type { DnaFacePart } from '../Chf/Dna'
-import { dnaFromString } from '../Chf/Dna'
+import { dnaFromString, getFaceDna, getRandDna } from '../Chf/Dna'
 import { useCharacterStore } from '../useCharacterStore'
 import { ruto, teciaPacheco } from '../Utils/dnaStrings'
 
 const allParts: DnaFacePart[] = ['eyebrowLeft', 'eyebrowRight', 'eyeLeft', 'eyeRight', 'earLeft', 'earRight', 'cheekLeft', 'cheekRight', 'nose', 'mouth', 'jaw', 'crown']
 
 export function DnaImportExport() {
-  const { getDnaString, updateCharacter } = useCharacterStore(useShallow(state => ({
+  const { getDnaString, updateCharacter, bodyType } = useCharacterStore(useShallow(state => ({
     getDnaString: state.getDnaString,
     updateCharacter: state.updateCharacter,
+    bodyType: state.character.bodyType,
   })))
   const [opened, { toggle, close }] = useDisclosure(false)
   const [dnaString, setDnaString] = useState('')
   const [selectedParts, setSelectedParts] = useState<DnaFacePart[]>(allParts)
   const clipboard = useClipboard()
+  const [faceId, setFaceId] = useState(0)
+
+  useEffect(() => {
+    // make sure the face id is within bounds when changing body type
+    setFaceId(0)
+  }, [bodyType])
 
   const importDna = useCallback(() => {
     const dna = dnaFromString(dnaString)
@@ -57,6 +64,30 @@ export function DnaImportExport() {
         <Button onClick={dnaStringClipboard}>
           Copy to Clipboard
         </Button>
+        <Button onClick={() => updateCharacter((draft) => { draft.dna = getRandDna() })}>
+          Randomize DNA
+        </Button>
+        <Paper withBorder p="xs">
+          <Group>
+            <Button
+              size="xs"
+              onClick={() => updateCharacter((draft) => { draft.dna = getFaceDna(faceId) })}
+            >
+              Set to face id
+            </Button>
+            <NumberInput
+              size="xs"
+              w={60}
+              value={faceId}
+              min={0}
+              max={bodyType === 'male' ? 34 : 43}
+              allowDecimal={false}
+              allowLeadingZeros={false}
+              allowNegative={false}
+              onChange={v => setFaceId(typeof v === 'string' ? Number.parseInt(v) : v)}
+            />
+          </Group>
+        </Paper>
       </Group>
       <Modal
         // export button z-index is 900
