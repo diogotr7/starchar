@@ -1,5 +1,5 @@
-import { BufferReader } from '../Utils/BufferReader'
-import type { BufferWriter } from '../Utils/BufferWriter'
+import { BufferReader } from '../BufferReader'
+import type { BufferWriter } from '../BufferWriter'
 import type { Body } from './Body'
 import { readBody, writeBody } from './Body'
 import type { BodyMaterial } from './BodyMaterial'

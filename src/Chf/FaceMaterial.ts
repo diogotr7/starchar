@@ -1,5 +1,5 @@
-import type { BufferReader } from '../Utils/BufferReader'
-import type { BufferWriter } from '../Utils/BufferWriter'
+import type { BufferReader } from '../BufferReader'
+import type { BufferWriter } from '../BufferWriter'
 import type { FaceColors } from './FaceColors'
 import { readFaceColors, writeFaceColors } from './FaceColors'
 import type { FaceInfo } from './FaceInfo'

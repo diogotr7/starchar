@@ -1,5 +1,5 @@
-import type { BufferReader } from '../Utils/BufferReader'
-import type { BufferWriter } from '../Utils/BufferWriter'
+import type { BufferReader } from '../BufferReader'
+import type { BufferWriter } from '../BufferWriter'
 import type { DyeColors } from './DyeColors'
 import { readDyeColors, writeDyeColors } from './DyeColors'
 import type { DyeValues } from './DyeValues'

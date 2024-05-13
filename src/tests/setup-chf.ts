@@ -1,7 +1,8 @@
 import { createWriteStream, existsSync, mkdirSync } from 'node:fs'
 import path from 'node:path'
+import process from 'node:process'
 
-const outputDir = path.join(path.dirname(__filename), 'test-chf')
+const outputDir = path.join(path.dirname(process.env.npm_package_json!), 'test-chf')
 
 interface SccRoot {
   body: SccBody
@@ -42,12 +43,14 @@ export async function setupChf() {
     mkdirSync(outputDir)
 
   for (const head of heads) {
-    const dna = await fetch(head.dnaUrl)
     const fileName = path.join(outputDir, `${head.title}-${head.id}.chf`)
 
-    if (existsSync(fileName))
+    if (existsSync(fileName)) {
+      console.log(`Skipping ${fileName}`)
       continue
+    }
 
+    const dna = await fetch(head.dnaUrl)
     const fs = createWriteStream(fileName)
     fs.write(new Uint8Array(await dna.arrayBuffer()))
     fs.close()

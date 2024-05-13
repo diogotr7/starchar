@@ -1,6 +1,6 @@
 import { Group, NumberInput, Slider } from '@mantine/core'
 import { useCharacterStore } from '../useCharacterStore'
-import { maxHeadIdForBodyType } from '../Chf/Dna'
+import { maxHeadIdForBodyType } from '../chf/Dna'
 
 export interface DnaBlendProps {
   headId: number

@@ -1,9 +1,9 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { devtools } from 'zustand/middleware'
-import type { Character } from './Chf/Character'
-import { createChf } from './Chf/ChfFile'
-import { dnaToString } from './Chf/Dna'
+import type { Character } from './chf/Character'
+import { createChf } from './chf/ChfFile'
+import { dnaToString } from './chf/Dna'
 
 interface CharacterState {
   isCharacterLoaded: boolean

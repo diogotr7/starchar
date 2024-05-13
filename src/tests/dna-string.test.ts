@@ -1,13 +1,16 @@
 import { describe, it } from 'vitest'
 
-import * as dna from '../Chf/Dna'
-import { ruto, teciaPacheco } from '../Utils/dnaStrings'
+import { hurston, ruto, teciaPacheco } from '../dnaStrings'
+import { dnaFromString } from '../chf/Dna'
 
 describe('dna string tests', () => {
   it('teciaPacheco', () => {
-    dna.dnaFromString(teciaPacheco)
+    dnaFromString(teciaPacheco)
   })
   it('ruto', () => {
-    dna.dnaFromString(ruto)
+    dnaFromString(ruto)
+  })
+  it('hurston', () => {
+    dnaFromString(hurston)
   })
 })

@@ -1,7 +1,8 @@
-import type { BufferReader } from '../Utils/BufferReader'
-import type { BufferWriter } from '../Utils/BufferWriter'
+import type { BufferReader } from '../BufferReader'
+import type { BufferWriter } from '../BufferWriter'
 
 export type HeadMaterialType =
+  'Unknown' |
   'HeadMaterialM01' |
   'HeadMaterialM02' |
   'HeadMaterialM04' |
@@ -60,6 +61,7 @@ const headMaterialTypeMap: Record<string, HeadMaterialType> = {
   '24c9f393-3240-4bd3-a13a-078abd68375b': 'HeadMaterialF12',
   '35b1f87f-14e7-4ece-acf0-6d8d436941b9': 'HeadMaterialF13',
   'e186048a-9a81-47b3-828e-71e957c65762': 'HeadMaterialF14',
+  '00000000-0000-0000-0000-000000000000': 'Unknown',
 }
 
 const reverseHeadMaterial = Object.fromEntries(Object.entries(headMaterialTypeMap).map(([k, v]) => [v, k]))

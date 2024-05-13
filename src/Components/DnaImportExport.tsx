@@ -3,10 +3,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { useClipboard, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useShallow } from 'zustand/react/shallow'
-import type { DnaFacePart } from '../Chf/Dna'
-import { dnaFromString, getFaceDna, getRandDna, maxHeadIdForBodyType } from '../Chf/Dna'
+import type { DnaFacePart } from '../chf/Dna'
+import { dnaFromString, getFaceDna, getRandDna, maxHeadIdForBodyType } from '../chf/Dna'
 import { useCharacterStore } from '../useCharacterStore'
-import { ruto, teciaPacheco } from '../Utils/dnaStrings'
+import { hurston, ruto, teciaPacheco } from '../dnaStrings'
 
 const allParts: DnaFacePart[] = ['eyebrowLeft', 'eyebrowRight', 'eyeLeft', 'eyeRight', 'earLeft', 'earRight', 'cheekLeft', 'cheekRight', 'nose', 'mouth', 'jaw', 'crown']
 
@@ -124,6 +124,9 @@ export function DnaImportExport() {
                 </Menu.Item>
                 <Menu.Item onClick={_ => setDnaString(ruto)}>
                   Ruto
+                </Menu.Item>
+                <Menu.Item onClick={_ => setDnaString(hurston)}>
+                  Hurston
                 </Menu.Item>
               </Menu.Dropdown>
             </Menu>

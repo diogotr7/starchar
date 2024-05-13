@@ -1,6 +1,6 @@
-import { BufferReader } from '../Utils/BufferReader'
-import { BufferWriter } from '../Utils/BufferWriter'
-import { fromHexStr, toHexStr } from '../Utils/hexString'
+import { BufferReader } from '../BufferReader'
+import { BufferWriter } from '../BufferWriter'
+import { fromHexStr, toHexStr } from '../hexString'
 import type { BodyType } from './BodyType'
 
 const dnaSize = 0xD8

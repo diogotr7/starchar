@@ -11,7 +11,7 @@
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
     "test": "vitest",
-    "test:setup": "esrun ./src/tests/setup-chf.ts"
+    "test:setup": "tsx ./src/tests/setup-chf.ts"
   },
   "dependencies": {
     "@cloudpss/zstd": "^0.2.16",
@@ -39,10 +39,10 @@
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-    "esrun": "^3.2.26",
     "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.15.0",
     "postcss-simple-vars": "^7.0.1",
+    "tsx": "^4.10.2",
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-plugin-top-level-await": "^1.4.1",

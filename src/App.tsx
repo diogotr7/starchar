@@ -4,11 +4,11 @@ import { notifications } from '@mantine/notifications'
 import { IconBrandGithub, IconBrandPaypal, IconMoon, IconSun } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
 import { useShallow } from 'zustand/react/shallow'
-import CharacterEditor from './Components/CharacterEditor.tsx'
-import { extractChf } from './Chf/ChfFile.ts'
+import CharacterEditor from './components/CharacterEditor.tsx'
+import { extractChf } from './chf/ChfFile.ts'
 import { useCharacterStore } from './useCharacterStore.ts'
-import { readCharacter } from './Chf/Character.ts'
-import { DropzoneChf } from './Components/DropzoneChf.tsx'
+import { readCharacter } from './chf/Character.ts'
+import { DropzoneChf } from './components/DropzoneChf.tsx'
 
 function App() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()

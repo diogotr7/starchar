@@ -1,5 +1,5 @@
-import type { BufferReader } from '../Utils/BufferReader'
-import type { BufferWriter } from '../Utils/BufferWriter'
+import type { BufferReader } from '../BufferReader'
+import type { BufferWriter } from '../BufferWriter'
 
 export interface DyeColors {
   color1?: string

@@ -1,5 +1,5 @@
-import type { BufferReader } from '../Utils/BufferReader'
-import type { BufferWriter } from '../Utils/BufferWriter'
+import type { BufferReader } from '../BufferReader'
+import type { BufferWriter } from '../BufferWriter'
 import type { FacialHair } from './FacialHair'
 import { readFacialHair, writeFacialHair } from './FacialHair'
 import type { Eyelashes } from './Eyelashes'

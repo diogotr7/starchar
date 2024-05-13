@@ -1,7 +1,7 @@
 import { Fieldset } from '@mantine/core'
 import { useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
-import type { DnaFacePart } from '../Chf/Dna'
+import type { DnaFacePart } from '../chf/Dna'
 import { useCharacterStore } from '../useCharacterStore'
 import { DnaBlend } from './DnaBlend'
 

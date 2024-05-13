@@ -3,10 +3,10 @@ import { readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { readdirSync } from 'node:fs'
 import { assert, describe, it } from 'vitest'
-import { createChf, extractChf } from '../Chf/ChfFile'
-import { readCharacter } from '../Chf/Character'
+import { createChf, extractChf } from '../chf/ChfFile'
+import { readCharacter } from '../chf/Character'
 
-const outputDir = path.join(path.dirname(__filename), 'test-chf')
+const outputDir = path.join(path.dirname(process.env.npm_package_json!), 'test-chf')
 const testFiles = readdirSync(outputDir)
 
 describe('read All Chf Files', () => {
