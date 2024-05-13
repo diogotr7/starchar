@@ -104,38 +104,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-crypto/crc32c@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@aws-crypto/crc32c@npm:5.2.0"
-  dependencies:
-    "@aws-crypto/util": "npm:^5.2.0"
-    "@aws-sdk/types": "npm:^3.222.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/223efac396cdebaf5645568fa9a38cd0c322c960ae1f4276bedfe2e1031d0112e49d7d39225d386354680ecefae29f39af469a84b2ddfa77cb6692036188af77
-  languageName: node
-  linkType: hard
-
-"@aws-crypto/util@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "@aws-crypto/util@npm:5.2.0"
-  dependencies:
-    "@aws-sdk/types": "npm:^3.222.0"
-    "@smithy/util-utf8": "npm:^2.0.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/0362d4c197b1fd64b423966945130207d1fe23e1bb2878a18e361f7743c8d339dad3f8729895a29aa34fff6a86c65f281cf5167c4bf253f21627ae80b6dd2951
-  languageName: node
-  linkType: hard
-
-"@aws-sdk/types@npm:^3.222.0":
-  version: 3.567.0
-  resolution: "@aws-sdk/types@npm:3.567.0"
-  dependencies:
-    "@smithy/types": "npm:^2.12.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/c034c4895e01f39891f9f2701f69f117f6ad0434f0a49d785ce1e26d43e1f2dae6a56235f0d3cfe0cfc6db23d01700afbf32875470af1ed3a9571b039883b106
-  languageName: node
-  linkType: hard
-
 "@babel/code-frame@npm:^7.0.0":
   version: 7.24.2
   resolution: "@babel/code-frame@npm:7.24.2"
@@ -1080,44 +1048,6 @@ __metadata:
   version: 0.27.8
   resolution: "@sinclair/typebox@npm:0.27.8"
   checksum: 10c0/ef6351ae073c45c2ac89494dbb3e1f87cc60a93ce4cde797b782812b6f97da0d620ae81973f104b43c9b7eaa789ad20ba4f6a1359f1cc62f63729a55a7d22d4e
-  languageName: node
-  linkType: hard
-
-"@smithy/is-array-buffer@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@smithy/is-array-buffer@npm:2.2.0"
-  dependencies:
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/2f2523cd8cc4538131e408eb31664983fecb0c8724956788b015aaf3ab85a0c976b50f4f09b176f1ed7bbe79f3edf80743be7a80a11f22cd9ce1285d77161aaf
-  languageName: node
-  linkType: hard
-
-"@smithy/types@npm:^2.12.0":
-  version: 2.12.0
-  resolution: "@smithy/types@npm:2.12.0"
-  dependencies:
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/3530ba5b4f4e52a4028679f73e133af928cf6ea22a16d29669b8c67ea540ed46ab15dc6d391598fbdfd476884cdc57881c480168e2dbe7c5bb007f5afad01531
-  languageName: node
-  linkType: hard
-
-"@smithy/util-buffer-from@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@smithy/util-buffer-from@npm:2.2.0"
-  dependencies:
-    "@smithy/is-array-buffer": "npm:^2.2.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/223d6a508b52ff236eea01cddc062b7652d859dd01d457a4e50365af3de1e24a05f756e19433f6ccf1538544076b4215469e21a4ea83dc1d58d829725b0dbc5a
-  languageName: node
-  linkType: hard
-
-"@smithy/util-utf8@npm:^2.0.0":
-  version: 2.3.0
-  resolution: "@smithy/util-utf8@npm:2.3.0"
-  dependencies:
-    "@smithy/util-buffer-from": "npm:^2.2.0"
-    tslib: "npm:^2.6.2"
-  checksum: 10c0/e18840c58cc507ca57fdd624302aefd13337ee982754c9aa688463ffcae598c08461e8620e9852a424d662ffa948fc64919e852508028d09e89ced459bd506ab
   languageName: node
   linkType: hard
 
@@ -6122,7 +6052,6 @@ __metadata:
   resolution: "starchar@workspace:."
   dependencies:
     "@antfu/eslint-config": "npm:^2.17.0"
-    "@aws-crypto/crc32c": "npm:^5.2.0"
     "@cloudpss/zstd": "npm:^0.2.16"
     "@eslint-react/eslint-plugin": "npm:^1.5.11"
     "@mantine/core": "npm:^7.9.1"
@@ -6437,7 +6366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.3.1, tslib@npm:^2.6.2":
+"tslib@npm:^2.0.0, tslib@npm:^2.1.0, tslib@npm:^2.3.1":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: 10c0/e03a8a4271152c8b26604ed45535954c0a45296e32445b4b87f8a5abdb2421f40b59b4ca437c4346af0f28179780d604094eb64546bee2019d903d01c6c19bdb

@@ -1,7 +1,7 @@
-import { crc32c } from '@aws-crypto/crc32c'
 import { compress, decompress } from '@cloudpss/zstd/wasm'
 import { BufferReader } from '../Utils/BufferReader'
 import { BufferWriter } from '../Utils/BufferWriter'
+import { crc32c } from '../Utils/crc32'
 import { type Character, writeCharacter } from './Character'
 
 const SIZE = 4096
