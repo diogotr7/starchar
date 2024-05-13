@@ -7,7 +7,7 @@ import { createChf, extractChf } from '../chf/ChfFile'
 import { readCharacter } from '../chf/Character'
 
 const outputDir = path.join(path.dirname(process.env.npm_package_json!), 'test-chf')
-const testFiles = readdirSync(outputDir)
+const testFiles = readdirSync(outputDir, { withFileTypes: true }).filter(f => f.isFile()).map(f => f.name)
 
 describe('read All Chf Files', () => {
   it.each(testFiles)('read %s', async (file) => {
