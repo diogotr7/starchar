@@ -3,6 +3,8 @@ import path from 'node:path'
 import process from 'node:process'
 
 const outputDir = path.join(path.dirname(process.env.npm_package_json!), 'test-chf')
+// Date at which i uploaded the first modded file to the website. anything before this date is not modded
+const cuttoffDate = '2024-05-08T23:27:56.506Z'
 
 interface SccRoot {
   body: SccBody
@@ -15,6 +17,7 @@ interface SccBody {
 
 interface SccCharacter {
   id: string
+  createdAt: string
   title: string
   dnaUrl: string
 }
@@ -43,6 +46,11 @@ export async function setupChf() {
     mkdirSync(outputDir)
 
   for (const head of heads) {
+    if (new Date(head.createdAt) > new Date(cuttoffDate)) {
+      console.log(`Skipping ${head.title} created at ${head.createdAt}`)
+      continue
+    }
+
     const fileName = path.join(outputDir, `${head.title}-${head.id}.chf`)
 
     if (existsSync(fileName)) {

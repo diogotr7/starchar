@@ -9,7 +9,7 @@ export interface EyeMaterial {
 
 export function readEyeMaterial(reader: BufferReader): EyeMaterial {
   if (reader.peekUint32() !== 0xA047885E)
-    return { colors: { color1: '#44536d', color2: undefined } }
+    return { colors: { color1: '#000000', color2: undefined } }
 
   reader.expectUint32(0xA047885E)
   reader.expectEmptyGuid()

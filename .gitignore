@@ -33,3 +33,4 @@ dist-ssr
 !.yarn/versions
 
 test-chf/
+test-chf-all/

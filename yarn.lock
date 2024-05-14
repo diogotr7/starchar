@@ -1935,6 +1935,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"colord@npm:^2.9.3":
+  version: 2.9.3
+  resolution: "colord@npm:2.9.3"
+  checksum: 10c0/9699e956894d8996b28c686afe8988720785f476f59335c80ce852ded76ab3ebe252703aec53d9bef54f6219aea6b960fb3d9a8300058a1d0c0d4026460cd110
+  languageName: node
+  linkType: hard
+
 "comment-parser@npm:1.4.1":
   version: 1.4.1
   resolution: "comment-parser@npm:1.4.1"
@@ -5754,6 +5761,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^7.2.0"
     "@vitejs/plugin-react-swc": "npm:^3.5.0"
     "@vitest/ui": "npm:^1.6.0"
+    colord: "npm:^2.9.3"
     eslint: "npm:^8.57.0"
     eslint-plugin-react: "npm:^7.34.1"
     eslint-plugin-react-hooks: "npm:^4.6.0"
