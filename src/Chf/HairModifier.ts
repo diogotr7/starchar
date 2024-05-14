@@ -15,6 +15,7 @@ export function readHairModifier(reader: BufferReader): HairModifier {
     case 0:
       break
     case 4:
+    case 5:
     case 6:
       reader.expectUint32(5)
       break

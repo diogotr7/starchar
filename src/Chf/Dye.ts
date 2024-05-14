@@ -22,6 +22,8 @@ const reverseMap: Record<DyeType, number> = {
   beard: 0x9B274D93,
 }
 
+export const dyeKeys = Object.keys(map).map(Number)
+
 export interface Dye {
   type: DyeType
   unknown: number

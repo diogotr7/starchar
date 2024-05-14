@@ -8,7 +8,7 @@ import { type BodyType, readBodyType, writeBodyType } from './BodyType'
 import type { Dna } from './Dna'
 import { readDna, writeDna } from './Dna'
 import type { Dye } from './Dye'
-import { readDye, writeDye } from './Dye'
+import { dyeKeys, readDye, writeDye } from './Dye'
 import type { EyeMaterial } from './EyeMaterial'
 import { readEyeMaterial, writeEyeMaterial } from './EyeMaterial'
 import type { FaceMaterial } from './FaceMaterial'
@@ -40,7 +40,7 @@ export function readCharacter(bytes: Uint8Array): Character {
   const faceMaterial = readFaceMaterial(reader, headMaterial.materialType)
 
   const dyes: Dye[] = []
-  while (reader.peekUint32() !== 0xA047885E)
+  while (dyeKeys.includes(reader.peekUint32()))
     dyes.push(readDye(reader))
 
   const eyeMaterial = readEyeMaterial(reader)
