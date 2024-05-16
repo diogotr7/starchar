@@ -1,10 +1,10 @@
-import process from 'node:process'
 import path from 'node:path'
 import { readFileSync, readdirSync, writeFileSync } from 'node:fs'
 import type { HsvColor } from 'colord'
 import { colord } from 'colord'
-import { extractChf } from '../chf/ChfFile'
 import { readCharacter } from '../chf/Character'
+import { extractChf } from '../chf/ChfFile'
+import { downloadedDir, scratchDir } from './paths'
 
 interface ColorInfo {
   hsvColor: HsvColor
@@ -18,10 +18,7 @@ interface Item {
   limbColors: ColorInfo
 }
 
-const base = path.dirname(process.env.npm_package_json!)
-const chfDir = path.join(base, 'test-chf')
-const revEngDir = path.join(base, 'src', 'rev-eng')
-const testFiles = readdirSync(chfDir, { withFileTypes: true }).filter(f => f.isFile()).map(f => f.name)
+const testFiles = readdirSync(downloadedDir, { withFileTypes: true }).filter(f => f.isFile()).map(f => f.name)
 
 const desmosRgb: string[] = []
 const desmosHsv: string[] = []
@@ -29,7 +26,7 @@ const desmosHsv: string[] = []
 const items: Item[] = []
 
 for (const file of testFiles) {
-  const buffer = readFileSync(path.join(chfDir, file))
+  const buffer = readFileSync(path.join(downloadedDir, file))
   const c = readCharacter(extractChf(new Uint8Array(buffer)))
 
   const body = colord(c.bodyMaterial.limbColor)
@@ -63,6 +60,6 @@ for (const file of testFiles) {
   desmosHsv.push(`(${bodyHsv.h}, ${bodyHsv.s}, ${bodyHsv.v})`)
 }
 
-writeFileSync(path.join(revEngDir, 'items.js'), `const items = ${JSON.stringify(items, null, 2)}`)
-writeFileSync(path.join(revEngDir, 'desmosRgb.txt'), desmosRgb.join('\n'))
-writeFileSync(path.join(revEngDir, 'desmosHsv.txt'), desmosHsv.join('\n'))
+writeFileSync(path.join(scratchDir, 'items.js'), `const items = ${JSON.stringify(items, null, 2)}`)
+writeFileSync(path.join(scratchDir, 'desmosRgb.txt'), desmosRgb.join('\n'))
+writeFileSync(path.join(scratchDir, 'desmosHsv.txt'), desmosHsv.join('\n'))

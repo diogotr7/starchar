@@ -4,10 +4,10 @@ import { notifications } from '@mantine/notifications'
 import { IconBrandGithub, IconBrandPaypal, IconMoon, IconSun } from '@tabler/icons-react'
 import { useMediaQuery } from '@mantine/hooks'
 import { useShallow } from 'zustand/react/shallow'
-import CharacterEditor from './components/CharacterEditor.tsx'
-import { extractChf } from './chf/ChfFile.ts'
 import { useCharacterStore } from './useCharacterStore.ts'
 import { readCharacter } from './chf/Character.ts'
+import { extractChf } from './chf/ChfFile.ts'
+import CharacterEditor from './components/CharacterEditor.tsx'
 import { DropzoneChf } from './components/DropzoneChf.tsx'
 
 function App() {
@@ -165,7 +165,7 @@ function App() {
       </AppShell.Header>
       <AppShell.Main>
         <Stack gap="md" justify="center">
-          {isCharacterLoaded && chf
+          {isCharacterLoaded
             ? <CharacterEditor />
             : <DropzoneChf onDrop={setChf} />}
         </Stack>
