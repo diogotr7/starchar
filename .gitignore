@@ -34,3 +34,5 @@ dist-ssr
 
 test-chf/
 test-chf-all/
+
+src/rev-eng/dump-eye-chf/

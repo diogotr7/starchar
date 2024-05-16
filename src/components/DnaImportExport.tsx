@@ -1,4 +1,4 @@
-import { Button, Center, Chip, ChipGroup, Fieldset, Group, Image, Menu, Modal, NumberInput, Paper, Stack, Text, TextInput } from '@mantine/core'
+import { Button, Center, Chip, ChipGroup, Fieldset, Group, Image, Menu, Modal, NumberInput, Stack, Text, TextInput } from '@mantine/core'
 import { useCallback, useEffect, useState } from 'react'
 import { useClipboard, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
