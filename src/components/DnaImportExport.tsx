@@ -1,4 +1,4 @@
-import { Button, Center, Chip, ChipGroup, Group, Menu, Modal, NumberInput, Paper, Stack, Text, TextInput } from '@mantine/core'
+import { Button, Center, Chip, ChipGroup, Fieldset, Group, Image, Menu, Modal, NumberInput, Paper, Stack, Text, TextInput } from '@mantine/core'
 import { useCallback, useEffect, useState } from 'react'
 import { useClipboard, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
@@ -6,7 +6,7 @@ import { useShallow } from 'zustand/react/shallow'
 import type { DnaFacePart } from '../chf/Dna'
 import { dnaFromString, getFaceDna, getRandDna, maxHeadIdForBodyType } from '../chf/Dna'
 import { useCharacterStore } from '../useCharacterStore'
-import { hurston, ruto, teciaPacheco } from '../dnaStrings'
+import { dnaStrings } from '../dnaStrings'
 
 const allParts: DnaFacePart[] = ['eyebrowLeft', 'eyebrowRight', 'eyeLeft', 'eyeRight', 'earLeft', 'earRight', 'cheekLeft', 'cheekRight', 'nose', 'mouth', 'jaw', 'crown']
 
@@ -57,18 +57,10 @@ export function DnaImportExport() {
 
   return (
     <>
-      <Group justify="center">
-        <Button onClick={dnaStringOpen}>
-          Import DNA String
-        </Button>
-        <Button onClick={dnaStringClipboard}>
-          Copy to Clipboard
-        </Button>
-        <Button onClick={() => updateCharacter((draft) => { draft.dna = getRandDna(bodyType) })}>
-          Randomize DNA
-        </Button>
-        <Paper withBorder p="xs">
-          <Group>
+      <Stack w={335}>
+        <Fieldset p="md" legend="Head Id Preview">
+          <Image radius="sm" mb="sm" src={`/${bodyType === 'male' ? 'm' : 'f'}_head_ids/${faceId.toString().padStart(2, '0')}.webp`} />
+          <Group justify="space-around">
             <Button
               size="xs"
               onClick={() => updateCharacter((draft) => { draft.dna = getFaceDna(faceId) })}
@@ -87,8 +79,17 @@ export function DnaImportExport() {
               onChange={v => setFaceId(typeof v === 'string' ? Number.parseInt(v) : v)}
             />
           </Group>
-        </Paper>
-      </Group>
+        </Fieldset>
+        <Button onClick={dnaStringOpen}>
+          Import DNA String
+        </Button>
+        <Button onClick={dnaStringClipboard}>
+          Copy to Clipboard
+        </Button>
+        <Button onClick={() => updateCharacter((draft) => { draft.dna = getRandDna(bodyType) })}>
+          Randomize DNA
+        </Button>
+      </Stack>
       <Modal
         // export button z-index is 900
         zIndex={1000}
@@ -119,15 +120,11 @@ export function DnaImportExport() {
                 <Button w={100} variant="default">Presets</Button>
               </Menu.Target>
               <Menu.Dropdown>
-                <Menu.Item onClick={_ => setDnaString(teciaPacheco)}>
-                  Tecia Pacheco
-                </Menu.Item>
-                <Menu.Item onClick={_ => setDnaString(ruto)}>
-                  Ruto
-                </Menu.Item>
-                <Menu.Item onClick={_ => setDnaString(hurston)}>
-                  Hurston
-                </Menu.Item>
+                {dnaStrings.map(({ name, dna }, _) => (
+                  <Menu.Item key={name} onClick={_ => setDnaString(dna)}>
+                    {name}
+                  </Menu.Item>
+                ))}
               </Menu.Dropdown>
             </Menu>
           </Group>
