@@ -96,6 +96,9 @@ export function writeDna(writer: BufferWriter, dna: Dna, bodyType: BodyType) {
 }
 
 export function dnaFromString(dnaString: string): Dna {
+  if (dnaString.length !== dnaSize * 2)
+    throw new Error('Invalid dna string length')
+
   const reader = new BufferReader(fromHexStr(dnaString).buffer)
   reader.expectUint32(0xFCD09394)
   reader.readUint32()// skip keys. bad idea?
@@ -137,6 +140,43 @@ export function dnaFromString(dnaString: string): Dna {
 
   return {
     childCount,
+    blends,
+  }
+}
+
+export function dnaFromStringOld(dnaString: string): Dna {
+  if (dnaString.length !== 384)
+    throw new Error('Invalid dna string length')
+
+  const reader = new BufferReader(fromHexStr(dnaString).buffer)
+
+  const blends: DnaBlends = {
+    eyebrowLeft: [],
+    eyebrowRight: [],
+    eyeLeft: [],
+    eyeRight: [],
+    nose: [],
+    earLeft: [],
+    earRight: [],
+    cheekLeft: [],
+    cheekRight: [],
+    mouth: [],
+    jaw: [],
+    crown: [],
+  }
+
+  for (let i = 0; i < partCount; i++) {
+    const part = i % 12
+    reader.expectByte(0)
+    const headId = reader.readByte()
+    const value = reader.readUint16Le()
+
+    // hacky but at least it won't break my shitty ui /shrug
+    blends[idxPartRecord[part]].push({ headId, value: Math.max(value, 1) })
+  }
+
+  return {
+    childCount: 48,
     blends,
   }
 }

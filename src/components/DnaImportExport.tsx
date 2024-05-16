@@ -3,8 +3,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { useClipboard, useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import { useShallow } from 'zustand/react/shallow'
-import type { DnaFacePart } from '../chf/Dna'
-import { dnaFromString, getFaceDna, getRandDna, maxHeadIdForBodyType } from '../chf/Dna'
+import type { Dna, DnaFacePart } from '../chf/Dna'
+import { dnaFromString, dnaFromStringOld, getFaceDna, getRandDna, maxHeadIdForBodyType } from '../chf/Dna'
 import { useCharacterStore } from '../useCharacterStore'
 import { dnaStrings } from '../dnaStrings'
 
@@ -28,11 +28,18 @@ export function DnaImportExport() {
   }, [bodyType])
 
   const importDna = useCallback(() => {
-    const dna = dnaFromString(dnaString)
+    let newDna: Dna
+    if (dnaString.length === 384) {
+      // partial dna string, old format. need to fix and convert to new format
+      newDna = dnaFromStringOld(dnaString)
+    }
+    else {
+      newDna = dnaFromString(dnaString)
+    }
 
     updateCharacter((d) => {
       for (const part of selectedParts)
-        d.dna.blends[part] = dna.blends[part]
+        d.dna.blends[part] = newDna.blends[part]
     })
     close()
   }, [selectedParts, updateCharacter, close, dnaString])
@@ -53,7 +60,7 @@ export function DnaImportExport() {
     })
   }, [clipboard, getDnaString])
 
-  const canImport = dnaString.length === 432 && selectedParts.length > 0
+  const canImport = (dnaString.length === 432 || dnaString.length === 384) && selectedParts.length > 0
 
   return (
     <>
@@ -111,7 +118,7 @@ export function DnaImportExport() {
             <TextInput
               value={dnaString}
               onChange={event => setDnaString(event.currentTarget.value)}
-              error={dnaString.length !== 432 && dnaString.length > 0}
+              error={(!canImport && dnaString.length > 0) ? 'Invalid DNA string' : null}
               w="100%"
               placeholder="9493D0FC...."
             />

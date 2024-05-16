@@ -27,6 +27,12 @@ export class BufferReader {
     return value
   }
 
+  readUint16Le(): number {
+    const value = this.view.getUint16(this.offset, false)
+    this.offset += Int16Array.BYTES_PER_ELEMENT
+    return value
+  }
+
   readUint32(): number {
     const value = this.view.getUint32(this.offset, true)
     this.offset += Int32Array.BYTES_PER_ELEMENT
