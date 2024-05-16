@@ -144,7 +144,7 @@ export function dnaFromString(dnaString: string): Dna {
   }
 }
 
-export function dnaFromStringOld(dnaString: string): Dna {
+export function dnaFromStringOld(dnaString: string, bodyType: BodyType): Dna {
   if (dnaString.length !== 384)
     throw new Error('Invalid dna string length')
 
@@ -165,11 +165,16 @@ export function dnaFromStringOld(dnaString: string): Dna {
     crown: [],
   }
 
+  const maxHeadId = maxHeadIdForBodyType(bodyType)
+
   for (let i = 0; i < partCount; i++) {
     const part = i % 12
     reader.expectByte(0)
     const headId = reader.readByte()
     const value = reader.readUint16Le()
+
+    if (headId > maxHeadId)
+      throw new Error('Invalid head id')
 
     // hacky but at least it won't break my shitty ui /shrug
     blends[idxPartRecord[part]].push({ headId, value: Math.max(value, 1) })

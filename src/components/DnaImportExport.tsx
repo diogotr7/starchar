@@ -31,7 +31,17 @@ export function DnaImportExport() {
     let newDna: Dna
     if (dnaString.length === 384) {
       // partial dna string, old format. need to fix and convert to new format
-      newDna = dnaFromStringOld(dnaString)
+      try {
+        newDna = dnaFromStringOld(dnaString, bodyType)
+      }
+      catch (e) {
+        notifications.show({
+          title: 'Invalid DNA String',
+          message: 'The DNA string you entered has a Head ID too high. Perhaps it\'s a female dna string applied to a male character?',
+          autoClose: 5000,
+        })
+        return
+      }
     }
     else {
       newDna = dnaFromString(dnaString)
@@ -42,7 +52,7 @@ export function DnaImportExport() {
         d.dna.blends[part] = newDna.blends[part]
     })
     close()
-  }, [selectedParts, updateCharacter, close, dnaString])
+  }, [dnaString, updateCharacter, close, bodyType, selectedParts])
 
   const dnaStringOpen = useCallback(() => {
     // reset the modal to default when reopening
