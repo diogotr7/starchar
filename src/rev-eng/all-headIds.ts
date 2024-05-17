@@ -28,7 +28,7 @@ for (let i = 0; i <= fHeadMax; i++) {
 
 for (let i = 0; i <= mHeadMax; i++) {
   const headId = zeroPad(i, 3)
-  const headM = path.join(headsDir, `m_head${headId}b.chf`)
+  const headM = path.join(headsDir, `m_head${headId}.chf`)
   const dna = getFaceDna(i)
 
   const c = {
