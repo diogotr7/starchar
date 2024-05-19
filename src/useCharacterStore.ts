@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import type { Character } from "./chf/Character";
 import { createChf } from "./chf/ChfFile";
 import { dnaToString } from "./chf/Dna";
+import { mutative } from "zustand-mutative";
 
 interface CharacterState {
   isCharacterLoaded: boolean;
@@ -17,7 +17,7 @@ interface CharacterState {
 
 export const useCharacterStore = create<CharacterState>()(
   devtools(
-    immer((set, get) => ({
+    mutative((set, get) => ({
       isCharacterLoaded: false,
       character: undefined!,
       getChf: () => createChf(get().character),
@@ -26,7 +26,7 @@ export const useCharacterStore = create<CharacterState>()(
         return dnaToString(character.dna, character.bodyType);
       },
       updateCharacter: (fn) => set((state) => fn(state.character), false, "updateCharacter"),
-      loadCharacter: (character) => set({ isCharacterLoaded: true, character }, false, "resetCharacter"),
+      loadCharacter: (character) => set({ isCharacterLoaded: true, character }, false, "loadCharacter"),
       resetCharacter: () => set({ isCharacterLoaded: false, character: undefined! }, false, "resetCharacter"),
     })),
   ),

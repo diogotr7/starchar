@@ -19,10 +19,11 @@
     "@mantine/hooks": "^7.9.1",
     "@mantine/notifications": "^7.9.1",
     "@tabler/icons-react": "^3.3.0",
-    "immer": "^10.1.1",
+    "mutative": "^1.0.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.2",
+    "zustand-mutative": "^1.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.7.3",
