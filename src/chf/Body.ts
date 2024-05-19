@@ -1,21 +1,23 @@
-import type { BufferReader } from '../BufferReader'
-import type { BufferWriter } from '../BufferWriter'
-import type { Head } from './Head'
-import { readHead, writeHead } from './Head'
+import type { BufferReader } from "../BufferReader";
+import type { BufferWriter } from "../BufferWriter";
+import type { Head } from "./Head";
+import { readHead, writeHead } from "./Head";
 
-export interface Body { head: Head }
+export interface Body {
+  head: Head;
+}
 export function readBody(reader: BufferReader): Body {
-  reader.expectUint32(0xAB6341AC)
-  reader.expectGuid('dbaa8a7d-755f-4104-8b24-7b58fd1e76f6')
-  reader.expectUint64(1)
-  const head = readHead(reader)
+  reader.expectUint32(0xab6341ac);
+  reader.expectGuid("dbaa8a7d-755f-4104-8b24-7b58fd1e76f6");
+  reader.expectUint64(1);
+  const head = readHead(reader);
 
-  return { head }
+  return { head };
 }
 
 export function writeBody(writer: BufferWriter, body: Body) {
-  writer.writeUint32(0xAB6341AC)
-  writer.writeGuid('dbaa8a7d-755f-4104-8b24-7b58fd1e76f6')
-  writer.writeUint64(1)
-  writeHead(writer, body.head)
+  writer.writeUint32(0xab6341ac);
+  writer.writeGuid("dbaa8a7d-755f-4104-8b24-7b58fd1e76f6");
+  writer.writeUint64(1);
+  writeHead(writer, body.head);
 }

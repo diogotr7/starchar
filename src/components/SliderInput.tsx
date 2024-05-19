@@ -1,19 +1,23 @@
-import { useCallback } from 'react'
-import { NumberInput, Slider } from '@mantine/core'
+import { NumberInput, Slider } from "@mantine/core";
+import { useCallback } from "react";
 
 interface SliderInputProps {
-  label: string
-  value: number
-  onChange: (value: number) => void
+  label: string;
+  value: number;
+  onChange: (value: number) => void;
 }
 
 export function SliderInput({ label, value: propValue, onChange }: SliderInputProps) {
-  const handleValueChange = useCallback((newValue: number | string) => {
-    if (typeof newValue === 'string')
-      onChange(0)
-    else
-      onChange(newValue)
-  }, [onChange])
+  const handleValueChange = useCallback(
+    (newValue: number | string) => {
+      if (typeof newValue === "string") {
+        onChange(0);
+      } else {
+        onChange(newValue);
+      }
+    },
+    [onChange],
+  );
 
   return (
     <div>
@@ -28,15 +32,9 @@ export function SliderInput({ label, value: propValue, onChange }: SliderInputPr
         label={label}
         min={0}
         max={100}
-        hideControls
+        hideControls={true}
       />
-      <Slider
-        max={100}
-        min={0}
-        label={null}
-        value={typeof propValue === 'string' ? 0 : propValue}
-        onChange={handleValueChange}
-      />
+      <Slider max={100} min={0} label={null} value={typeof propValue === "string" ? 0 : propValue} onChange={handleValueChange} />
     </div>
-  )
+  );
 }

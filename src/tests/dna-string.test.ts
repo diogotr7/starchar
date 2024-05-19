@@ -1,16 +1,10 @@
-import { describe, it } from 'vitest'
+import { describe, it } from "vitest";
 
-import { hurston, ruto, teciaPacheco } from '../dnaStrings'
-import { dnaFromString } from '../chf/Dna'
+import { dnaFromString } from "../chf/Dna";
+import { dnaStrings } from "../dnaStrings";
 
-describe('dna string tests', () => {
-  it('teciaPacheco', () => {
-    dnaFromString(teciaPacheco)
-  })
-  it('ruto', () => {
-    dnaFromString(ruto)
-  })
-  it('hurston', () => {
-    dnaFromString(hurston)
-  })
-})
+describe("dna string tests", () => {
+  it.each(dnaStrings)("dnaFromString $name", ({ dna }) => {
+    dnaFromString(dna);
+  });
+});

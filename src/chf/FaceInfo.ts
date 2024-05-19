@@ -1,91 +1,91 @@
-import type { BufferReader } from '../BufferReader'
-import type { BufferWriter } from '../BufferWriter'
+import type { BufferReader } from "../BufferReader";
+import type { BufferWriter } from "../BufferWriter";
 
 export interface FaceInfo {
-  freckleAmount: number
-  freckleOpacity: number
-  sunSpotsAmount: number
-  sunSpotOpacity: number
-  eyeMetallic1: number
-  eyeMetallic2: number
-  eyeMetallic3: number
-  eyeSmoothness1: number
-  eyeSmoothness2: number
-  eyeSmoothness3: number
-  eyeOpacity: number
-  cheekMetallic1: number
-  cheekMetallic2: number
-  cheekMetallic3: number
-  cheekSmoothness1: number
-  cheekSmoothness2: number
-  cheekSmoothness3: number
-  cheekOpacity: number
-  lipMetallic1: number
-  lipMetallic2: number
-  lipMetallic3: number
-  lipSmoothness1: number
-  lipSmoothness2: number
-  lipSmoothness3: number
-  lipOpacity: number
+  freckleAmount: number;
+  freckleOpacity: number;
+  sunSpotsAmount: number;
+  sunSpotOpacity: number;
+  eyeMetallic1: number;
+  eyeMetallic2: number;
+  eyeMetallic3: number;
+  eyeSmoothness1: number;
+  eyeSmoothness2: number;
+  eyeSmoothness3: number;
+  eyeOpacity: number;
+  cheekMetallic1: number;
+  cheekMetallic2: number;
+  cheekMetallic3: number;
+  cheekSmoothness1: number;
+  cheekSmoothness2: number;
+  cheekSmoothness3: number;
+  cheekOpacity: number;
+  lipMetallic1: number;
+  lipMetallic2: number;
+  lipMetallic3: number;
+  lipSmoothness1: number;
+  lipSmoothness2: number;
+  lipSmoothness3: number;
+  lipOpacity: number;
 }
 export function readFaceInfo(reader: BufferReader): FaceInfo {
-  reader.expectUint32(0x19)
-  reader.expectUint32(0)
+  reader.expectUint32(0x19);
+  reader.expectUint32(0);
   return {
-    freckleAmount: reader.readKeyedFloat32(0xE87727E2),
-    freckleOpacity: reader.readKeyedFloat32(0x9361CB58),
-    sunSpotsAmount: reader.readKeyedFloat32(0x554AD20F),
-    sunSpotOpacity: reader.readKeyedFloat32(0xCFC41264),
-    eyeMetallic1: reader.readKeyedFloat32(0xB95883B0),
-    eyeMetallic2: reader.readKeyedFloat32(0x9CF750C3),
-    eyeMetallic3: reader.readKeyedFloat32(0xA90644DF),
-    eyeSmoothness1: reader.readKeyedFloat32(0xC871A987),
-    eyeSmoothness2: reader.readKeyedFloat32(0xEDDE7AF4),
-    eyeSmoothness3: reader.readKeyedFloat32(0xD82F6EE8),
-    eyeOpacity: reader.readKeyedFloat32(0xCAE526BA),
-    cheekMetallic1: reader.readKeyedFloat32(0x0526ED02),
-    cheekMetallic2: reader.readKeyedFloat32(0x20893E71),
-    cheekMetallic3: reader.readKeyedFloat32(0x15782A6D),
-    cheekSmoothness1: reader.readKeyedFloat32(0x9BE3D5D7),
-    cheekSmoothness2: reader.readKeyedFloat32(0xBE4C06A4),
-    cheekSmoothness3: reader.readKeyedFloat32(0x8BBD12B8),
-    cheekOpacity: reader.readKeyedFloat32(0x11A1A1D3),
-    lipMetallic1: reader.readKeyedFloat32(0x92571AC3),
-    lipMetallic2: reader.readKeyedFloat32(0xB7F8C9B0),
-    lipMetallic3: reader.readKeyedFloat32(0x8209DDAC),
-    lipSmoothness1: reader.readKeyedFloat32(0xAA9201E7),
-    lipSmoothness2: reader.readKeyedFloat32(0x8F3DD294),
-    lipSmoothness3: reader.readKeyedFloat32(0xBACCC688),
-    lipOpacity: reader.readKeyedFloat32(0x589DDCF4),
-  }
+    freckleAmount: reader.readKeyedFloat32(0xe87727e2),
+    freckleOpacity: reader.readKeyedFloat32(0x9361cb58),
+    sunSpotsAmount: reader.readKeyedFloat32(0x554ad20f),
+    sunSpotOpacity: reader.readKeyedFloat32(0xcfc41264),
+    eyeMetallic1: reader.readKeyedFloat32(0xb95883b0),
+    eyeMetallic2: reader.readKeyedFloat32(0x9cf750c3),
+    eyeMetallic3: reader.readKeyedFloat32(0xa90644df),
+    eyeSmoothness1: reader.readKeyedFloat32(0xc871a987),
+    eyeSmoothness2: reader.readKeyedFloat32(0xedde7af4),
+    eyeSmoothness3: reader.readKeyedFloat32(0xd82f6ee8),
+    eyeOpacity: reader.readKeyedFloat32(0xcae526ba),
+    cheekMetallic1: reader.readKeyedFloat32(0x0526ed02),
+    cheekMetallic2: reader.readKeyedFloat32(0x20893e71),
+    cheekMetallic3: reader.readKeyedFloat32(0x15782a6d),
+    cheekSmoothness1: reader.readKeyedFloat32(0x9be3d5d7),
+    cheekSmoothness2: reader.readKeyedFloat32(0xbe4c06a4),
+    cheekSmoothness3: reader.readKeyedFloat32(0x8bbd12b8),
+    cheekOpacity: reader.readKeyedFloat32(0x11a1a1d3),
+    lipMetallic1: reader.readKeyedFloat32(0x92571ac3),
+    lipMetallic2: reader.readKeyedFloat32(0xb7f8c9b0),
+    lipMetallic3: reader.readKeyedFloat32(0x8209ddac),
+    lipSmoothness1: reader.readKeyedFloat32(0xaa9201e7),
+    lipSmoothness2: reader.readKeyedFloat32(0x8f3dd294),
+    lipSmoothness3: reader.readKeyedFloat32(0xbaccc688),
+    lipOpacity: reader.readKeyedFloat32(0x589ddcf4),
+  };
 }
 
 export function writeFaceInfo(writer: BufferWriter, faceInfo: FaceInfo) {
-  writer.writeUint32(0x19)
-  writer.writeUint32(0)
-  writer.writeKeyedFloat32(0xE87727E2, faceInfo.freckleAmount)
-  writer.writeKeyedFloat32(0x9361CB58, faceInfo.freckleOpacity)
-  writer.writeKeyedFloat32(0x554AD20F, faceInfo.sunSpotsAmount)
-  writer.writeKeyedFloat32(0xCFC41264, faceInfo.sunSpotOpacity)
-  writer.writeKeyedFloat32(0xB95883B0, faceInfo.eyeMetallic1)
-  writer.writeKeyedFloat32(0x9CF750C3, faceInfo.eyeMetallic2)
-  writer.writeKeyedFloat32(0xA90644DF, faceInfo.eyeMetallic3)
-  writer.writeKeyedFloat32(0xC871A987, faceInfo.eyeSmoothness1)
-  writer.writeKeyedFloat32(0xEDDE7AF4, faceInfo.eyeSmoothness2)
-  writer.writeKeyedFloat32(0xD82F6EE8, faceInfo.eyeSmoothness3)
-  writer.writeKeyedFloat32(0xCAE526BA, faceInfo.eyeOpacity)
-  writer.writeKeyedFloat32(0x0526ED02, faceInfo.cheekMetallic1)
-  writer.writeKeyedFloat32(0x20893E71, faceInfo.cheekMetallic2)
-  writer.writeKeyedFloat32(0x15782A6D, faceInfo.cheekMetallic3)
-  writer.writeKeyedFloat32(0x9BE3D5D7, faceInfo.cheekSmoothness1)
-  writer.writeKeyedFloat32(0xBE4C06A4, faceInfo.cheekSmoothness2)
-  writer.writeKeyedFloat32(0x8BBD12B8, faceInfo.cheekSmoothness3)
-  writer.writeKeyedFloat32(0x11A1A1D3, faceInfo.cheekOpacity)
-  writer.writeKeyedFloat32(0x92571AC3, faceInfo.lipMetallic1)
-  writer.writeKeyedFloat32(0xB7F8C9B0, faceInfo.lipMetallic2)
-  writer.writeKeyedFloat32(0x8209DDAC, faceInfo.lipMetallic3)
-  writer.writeKeyedFloat32(0xAA9201E7, faceInfo.lipSmoothness1)
-  writer.writeKeyedFloat32(0x8F3DD294, faceInfo.lipSmoothness2)
-  writer.writeKeyedFloat32(0xBACCC688, faceInfo.lipSmoothness3)
-  writer.writeKeyedFloat32(0x589DDCF4, faceInfo.lipOpacity)
+  writer.writeUint32(0x19);
+  writer.writeUint32(0);
+  writer.writeKeyedFloat32(0xe87727e2, faceInfo.freckleAmount);
+  writer.writeKeyedFloat32(0x9361cb58, faceInfo.freckleOpacity);
+  writer.writeKeyedFloat32(0x554ad20f, faceInfo.sunSpotsAmount);
+  writer.writeKeyedFloat32(0xcfc41264, faceInfo.sunSpotOpacity);
+  writer.writeKeyedFloat32(0xb95883b0, faceInfo.eyeMetallic1);
+  writer.writeKeyedFloat32(0x9cf750c3, faceInfo.eyeMetallic2);
+  writer.writeKeyedFloat32(0xa90644df, faceInfo.eyeMetallic3);
+  writer.writeKeyedFloat32(0xc871a987, faceInfo.eyeSmoothness1);
+  writer.writeKeyedFloat32(0xedde7af4, faceInfo.eyeSmoothness2);
+  writer.writeKeyedFloat32(0xd82f6ee8, faceInfo.eyeSmoothness3);
+  writer.writeKeyedFloat32(0xcae526ba, faceInfo.eyeOpacity);
+  writer.writeKeyedFloat32(0x0526ed02, faceInfo.cheekMetallic1);
+  writer.writeKeyedFloat32(0x20893e71, faceInfo.cheekMetallic2);
+  writer.writeKeyedFloat32(0x15782a6d, faceInfo.cheekMetallic3);
+  writer.writeKeyedFloat32(0x9be3d5d7, faceInfo.cheekSmoothness1);
+  writer.writeKeyedFloat32(0xbe4c06a4, faceInfo.cheekSmoothness2);
+  writer.writeKeyedFloat32(0x8bbd12b8, faceInfo.cheekSmoothness3);
+  writer.writeKeyedFloat32(0x11a1a1d3, faceInfo.cheekOpacity);
+  writer.writeKeyedFloat32(0x92571ac3, faceInfo.lipMetallic1);
+  writer.writeKeyedFloat32(0xb7f8c9b0, faceInfo.lipMetallic2);
+  writer.writeKeyedFloat32(0x8209ddac, faceInfo.lipMetallic3);
+  writer.writeKeyedFloat32(0xaa9201e7, faceInfo.lipSmoothness1);
+  writer.writeKeyedFloat32(0x8f3dd294, faceInfo.lipSmoothness2);
+  writer.writeKeyedFloat32(0xbaccc688, faceInfo.lipSmoothness3);
+  writer.writeKeyedFloat32(0x589ddcf4, faceInfo.lipOpacity);
 }

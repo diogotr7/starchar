@@ -1,12 +1,13 @@
-import { Fieldset, Group, Stack, Text } from '@mantine/core'
-import { DnaImportExport } from './DnaImportExport'
-import { DnaPart } from './DnaPart'
+import { Fieldset, Group, Stack, Text } from "@mantine/core";
+import { DnaImportExport } from "./DnaImportExport";
+import { DnaPart } from "./DnaPart";
 
 export function DnaPanel() {
   return (
     <Fieldset legend="DNA">
       <Text maw="1100" ta="center">
-        This panel adjusts the overall face shape. Each face part can be changed fully independently unlike the game (you can have two different eyes for example). You can also import and export DNA strings to share your characters with others.
+        This panel adjusts the overall face shape. Each face part can be changed fully independently unlike the game (you can have two different eyes for
+        example). You can also import and export DNA strings to share your characters with others.
         <br />
         Each face part can be a blend of 4 different heads. The sliders control the blend amount and the dropdowns control which head is used.
       </Text>
@@ -34,5 +35,5 @@ export function DnaPanel() {
         <DnaImportExport />
       </Group>
     </Fieldset>
-  )
+  );
 }
