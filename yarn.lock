@@ -2586,7 +2586,6 @@ __metadata:
     tsx: "npm:^4.10.2"
     typescript: "npm:^5.2.2"
     vite: "npm:^5.2.0"
-    vite-plugin-biome: "npm:^1.0.9"
     vite-plugin-top-level-await: "npm:^1.4.1"
     vite-plugin-wasm: "npm:^3.3.0"
     vitest: "npm:^1.6.0"
@@ -2916,15 +2915,6 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: 10c0/0807e6501ac7763e0efa2b4bd484ce99fb207e92c98624c9f8999d1f6727ac026e457994260fa7fdb7060d87546d197081e46a705d05b0136a38b6f03715cbc2
-  languageName: node
-  linkType: hard
-
-"vite-plugin-biome@npm:^1.0.9":
-  version: 1.0.9
-  resolution: "vite-plugin-biome@npm:1.0.9"
-  peerDependencies:
-    "@biomejs/biome": ^1.4.1
-  checksum: 10c0/11a6148bf8bcdcb2562960303876d9414780c9babb5cba0ca739b42a1078d1eec5efde07e316007e13b8d5945befb5db3008f1a5937ba7ac31b112b1fcbaf9f9
   languageName: node
   linkType: hard
 
