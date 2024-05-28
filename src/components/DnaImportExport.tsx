@@ -2,7 +2,6 @@ import { Button, Center, Chip, ChipGroup, Fieldset, Group, Image, Menu, Modal, N
 import { useClipboard, useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { useCallback, useEffect, useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import type { Dna, DnaFacePart } from "../chf/Dna";
 import { dnaFromString, dnaFromStringOld, getFaceDna, getRandDna, maxHeadIdForBodyType } from "../chf/Dna";
 import { dnaStrings } from "../dnaStrings";
@@ -24,13 +23,11 @@ const allParts: DnaFacePart[] = [
 ];
 
 export function DnaImportExport() {
-  const { getDnaString, updateCharacter, bodyType } = useCharacterStore(
-    useShallow((state) => ({
-      getDnaString: state.getDnaString,
-      updateCharacter: state.updateCharacter,
-      bodyType: state.character.bodyType,
-    })),
-  );
+  const { getDnaString, updateCharacter, bodyType } = useCharacterStore((state) => ({
+    getDnaString: state.getDnaString,
+    updateCharacter: state.updateCharacter,
+    bodyType: state.character.bodyType,
+  }));
   const [opened, { toggle, close }] = useDisclosure(false);
   const [dnaString, setDnaString] = useState("");
   const [selectedParts, setSelectedParts] = useState<DnaFacePart[]>(allParts);

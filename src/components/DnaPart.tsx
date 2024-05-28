@@ -1,17 +1,14 @@
 import { Fieldset } from "@mantine/core";
 import { useCallback } from "react";
-import { useShallow } from "zustand/react/shallow";
 import type { DnaFacePart } from "../chf/Dna";
 import { useCharacterStore } from "../useCharacterStore";
 import { DnaBlend } from "./DnaBlend";
 
 export function DnaPart({ label, part }: { label: string; part: DnaFacePart }) {
-  const { blend, updateCharacter } = useCharacterStore(
-    useShallow((state) => ({
-      blend: state.character.dna.blends[part],
-      updateCharacter: state.updateCharacter,
-    })),
-  );
+  const { blend, updateCharacter } = useCharacterStore((state) => ({
+    blend: state.character.dna.blends[part],
+    updateCharacter: state.updateCharacter,
+  }));
 
   const updateBlend = useCallback(
     (index: number, value: number) => {

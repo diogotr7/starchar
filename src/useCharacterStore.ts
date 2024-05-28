@@ -1,9 +1,10 @@
-import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import type { Character } from "./chf/Character";
 import { createChf } from "./chf/ChfFile";
 import { dnaToString } from "./chf/Dna";
 import { mutative } from "zustand-mutative";
+import { createWithEqualityFn } from "zustand/traditional";
+import { shallow } from "zustand/shallow";
 
 interface CharacterState {
   isCharacterLoaded: boolean;
@@ -15,7 +16,7 @@ interface CharacterState {
   resetCharacter: () => void;
 }
 
-export const useCharacterStore = create<CharacterState>()(
+export const useCharacterStore = createWithEqualityFn<CharacterState>()(
   devtools(
     mutative((set, get) => ({
       isCharacterLoaded: false,
@@ -30,4 +31,5 @@ export const useCharacterStore = create<CharacterState>()(
       resetCharacter: () => set({ isCharacterLoaded: false, character: undefined! }, false, "resetCharacter"),
     })),
   ),
+  shallow,
 );
