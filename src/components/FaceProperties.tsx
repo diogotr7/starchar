@@ -1,17 +1,12 @@
 import { Fieldset, Group, Stack } from "@mantine/core";
-import { useShallow } from "zustand/react/shallow";
 import { useCharacterStore } from "../useCharacterStore";
 import { SliderInput } from "./SliderInput";
 
 export function FaceProperties() {
-  const { faceMaterial, updateCharacter } = useCharacterStore(
-    useShallow((state) => {
-      return {
-        faceMaterial: state.character.faceMaterial,
-        updateCharacter: state.updateCharacter,
-      };
-    }),
-  );
+  const { faceMaterial, updateCharacter } = useCharacterStore((state) => ({
+    faceMaterial: state.character.faceMaterial,
+    updateCharacter: state.updateCharacter,
+  }));
 
   return (
     <Fieldset legend="Face Properties">

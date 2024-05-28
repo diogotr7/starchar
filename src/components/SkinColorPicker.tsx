@@ -1,27 +1,22 @@
 import { Center, Divider, Fieldset, Switch, Tooltip } from "@mantine/core";
 import { IconLock, IconLockOff } from "@tabler/icons-react";
 import { useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { useCharacterStore } from "../useCharacterStore";
 import { SmallColorInput } from "./SmallColorInput";
 
 export function SkinColorPicker() {
-  const { bodyMaterial, faceMaterial, eyeMaterial, updateCharacter } = useCharacterStore(
-    useShallow((state) => {
-      return {
-        bodyMaterial: state.character.bodyMaterial,
-        faceMaterial: state.character.faceMaterial,
-        eyeMaterial: state.character.eyeMaterial,
-        updateCharacter: state.updateCharacter,
-      };
-    }),
-  );
+  const { bodyMaterial, faceMaterial, eyeMaterial, updateCharacter } = useCharacterStore((state) => ({
+    bodyMaterial: state.character.bodyMaterial,
+    faceMaterial: state.character.faceMaterial,
+    eyeMaterial: state.character.eyeMaterial,
+    updateCharacter: state.updateCharacter,
+  }));
   const [locked, setLocked] = useState(true);
 
   return (
     <Fieldset legend="Colors">
       <Center>
-        <Tooltip label="Locks all body parts to have the same skin color" refProp="rootRef">
+        <Tooltip label="Locks all body parts to have the same skin color">
           <Switch
             label="Lock"
             checked={locked}

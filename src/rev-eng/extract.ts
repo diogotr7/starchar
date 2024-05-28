@@ -60,5 +60,6 @@ for (const file of testFiles) {
 }
 
 writeFileSync(path.join(scratchDir, "items.js"), `const items = ${JSON.stringify(items, null, 2)}`);
+
 writeFileSync(path.join(scratchDir, "desmosRgb.txt"), desmosRgb.join("\n"));
 writeFileSync(path.join(scratchDir, "desmosHsv.txt"), desmosHsv.join("\n"));
