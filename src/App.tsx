@@ -3,7 +3,6 @@ import { useMediaQuery } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { IconBrandGithub, IconBrandPaypal, IconMoon, IconSun } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
-import { useShallow } from "zustand/react/shallow";
 import { readCharacter } from "./chf/Character.ts";
 import { extractChf } from "./chf/ChfFile.ts";
 import { CharacterEditor } from "./components/CharacterEditor.tsx";
@@ -13,13 +12,11 @@ import { useCharacterStore } from "./useCharacterStore.ts";
 export function App() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [chf, setChf] = useState<File | null>();
-  const { isCharacterLoaded, loadCharacter, resetCharacter } = useCharacterStore(
-    useShallow((state) => ({
-      isCharacterLoaded: state.isCharacterLoaded,
-      loadCharacter: state.loadCharacter,
-      resetCharacter: state.resetCharacter,
-    })),
-  );
+  const { isCharacterLoaded, loadCharacter, resetCharacter } = useCharacterStore((state) => ({
+    isCharacterLoaded: state.isCharacterLoaded,
+    loadCharacter: state.loadCharacter,
+    resetCharacter: state.resetCharacter,
+  }));
   const isMobile = useMediaQuery(`(max-width: ${em(850)})`);
 
   const extract = (file: File | null) => {
