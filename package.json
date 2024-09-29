@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
-    "test:setup": "tsx ./src/tests/setup-chf.ts",
+    "test:setup": "tsx ./src/rev-eng/setup-chf.ts",
     "format": "biome format --write ."
   },
   "dependencies": {
