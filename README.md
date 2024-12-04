@@ -12,8 +12,6 @@ I'm working on some features that are either not ready or not safe to be used by
 - Vite
 - Mantine UI
 
-The webpage is statically build and hosted on GitHub Pages.
-
 ## Running Locally
 
 ```bash

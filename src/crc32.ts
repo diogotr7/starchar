@@ -22,20 +22,7 @@ const aLookupTable = [
   0x27a40b9e, 0x79b737ba, 0x8bdcb4b9, 0x988c474d, 0x6ae7c44e, 0xbe2da0a5, 0x4c4623a6, 0x5f16d052, 0xad7d5351,
 ];
 
-const lookupTable: Uint32Array = uint32ArrayFrom(aLookupTable);
-
-function uint32ArrayFrom(aLookUpTable: number[]): Uint32Array {
-  if (!Uint32Array.from) {
-    const returnArray = new Uint32Array(aLookUpTable.length);
-    let aIndex = 0;
-    while (aIndex < aLookUpTable.length) {
-      returnArray[aIndex] = aLookUpTable[aIndex];
-      aIndex += 1;
-    }
-    return returnArray;
-  }
-  return Uint32Array.from(aLookUpTable);
-}
+const lookupTable: Uint32Array = Uint32Array.from(aLookupTable);
 
 export function crc32c(data: Uint8Array): number {
   let crc = 0xffffffff;

@@ -119,7 +119,7 @@ export class BufferReader {
   expectUint32(value: number): void {
     const actual = this.readUint32();
     if (actual !== value) {
-      throw new Error(`expected ${value}, got ${actual}`);
+      throw new Error(`expected 0x${value.toString(16)}, got 0x${actual.toString(16)}`);
     }
   }
 
