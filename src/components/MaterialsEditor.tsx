@@ -1,11 +1,4 @@
-import {
-  ColorInput,
-  Fieldset,
-  Group,
-  NumberInput,
-  SimpleGrid,
-  Stack,
-} from "@mantine/core";
+import { ColorInput, Fieldset, Group, NumberInput, Stack } from "@mantine/core";
 import { useChf, useChfUpdate } from "../useChfStore";
 import { GuidDisplay } from "./GuidDisplay";
 import { HashDisplay } from "./HashDisplay";
@@ -27,17 +20,17 @@ function SubMaterialDisplay({
       {subMaterial.textures.length > 0 && (
         <Fieldset legend="Textures">
           {subMaterial.textures.map((tex, i) => (
-            <SimpleGrid key={i} cols={2}>
+            <Group key={i} justify="space-between">
               <p>{tex.tex_index}</p>
               <GuidDisplay guid={tex.tex_id} />
-            </SimpleGrid>
+            </Group>
           ))}
         </Fieldset>
       )}
       {subMaterial.material_params.length > 0 && (
         <Fieldset legend="Parameters">
           {subMaterial.material_params.map((param, i) => (
-            <SimpleGrid key={i} cols={2} p={2}>
+            <Group key={i} justify="space-between" p={2}>
               <HashDisplay hash={param.value_hash} />
               <NumberInput
                 value={param.value}
@@ -52,14 +45,14 @@ function SubMaterialDisplay({
                   });
                 }}
               />
-            </SimpleGrid>
+            </Group>
           ))}
         </Fieldset>
       )}
       {subMaterial.material_colors.length > 0 && (
         <Fieldset legend="Colors">
           {subMaterial.material_colors.map((color, i) => (
-            <SimpleGrid key={i} cols={2} p={2}>
+            <Group key={i} justify="space-between" p={2}>
               <HashDisplay hash={color.value_hash} />
               <ColorInput
                 withEyeDropper={false}
@@ -73,7 +66,7 @@ function SubMaterialDisplay({
                   });
                 }}
               />
-            </SimpleGrid>
+            </Group>
           ))}
         </Fieldset>
       )}

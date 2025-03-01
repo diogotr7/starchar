@@ -97,7 +97,7 @@ export function DnaImportExport() {
 
   return (
     <>
-      <Stack w={335}>
+      <Stack w={200}>
         <Fieldset p="md" legend="Head Id Preview">
           <Image
             radius="sm"
@@ -106,20 +106,10 @@ export function DnaImportExport() {
               .toString()
               .padStart(2, "0")}.webp`}
           />
-          <Group justify="space-around">
-            <Button
-              size="xs"
-              onClick={() =>
-                updateCharacter((draft) => {
-                  draft.dna = getFaceDna(draft.dna, faceId);
-                })
-              }
-            >
-              Set to face id
-            </Button>
+          <Group>
             <NumberInput
               size="xs"
-              w={60}
+              w={45}
               value={faceId}
               min={0}
               //max={maxHeadIdForBodyType(bodyType)}
@@ -130,19 +120,34 @@ export function DnaImportExport() {
                 setFaceId(typeof v === "string" ? Number.parseInt(v) : v)
               }
             />
+            <Button
+              size="xs"
+              onClick={() =>
+                updateCharacter((draft) => {
+                  draft.dna = getFaceDna(draft.dna, faceId);
+                })
+              }
+            >
+              Use Head ID
+            </Button>
           </Group>
         </Fieldset>
-        <Button onClick={dnaStringOpen}>Import DNA String</Button>
-        <Button onClick={dnaStringClipboard}>Copy to Clipboard</Button>
-        {/* <Button
-          onClick={() => {
-            updateCharacter((draft) => {
-              draft.dna = getRandDna(bodyType);
-            });
-          }}
-        >
-          Randomize DNA
-        </Button> */}
+        <Fieldset legend="DNA String (WIP)" p="md" disabled>
+          <Stack gap="sm" p="0">
+            <Button onClick={dnaStringOpen}>Import DNA String</Button>
+            <Button onClick={dnaStringClipboard}>Copy DNA String</Button>
+            <Button
+
+            // onClick={() => {
+            //   updateCharacter((draft) => {
+            //     draft.dna = getRandDna(bodyType);
+            //   });
+            // }}
+            >
+              Randomize DNA
+            </Button>
+          </Stack>
+        </Fieldset>
       </Stack>
       <Modal
         // export button z-index is 900

@@ -11,7 +11,7 @@ export function ChfEditor() {
 
   return (
     <>
-      <Tabs defaultValue="bodyType" mx="auto">
+      <Tabs defaultValue="bodyType" mx="auto" maw="1200">
         <Tabs.List grow>
           <Tabs.Tab value="bodyType">Body Type</Tabs.Tab>
           <Tabs.Tab value="dna">DNA</Tabs.Tab>
