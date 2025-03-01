@@ -1,6 +1,6 @@
-import { BufferReader } from "../BufferReader";
-import { BufferWriter } from "../BufferWriter";
-import { fromHexStr, toHexStr } from "../hexString";
+import { BufferReader } from "../utils/BufferReader";
+import { BufferWriter } from "../utils/BufferWriter";
+import { fromHexStr, toHexStr } from "../utils/hexString";
 import type { BodyType } from "./BodyType";
 
 const dnaSize = 0xd8;
@@ -55,7 +55,7 @@ export interface DnaBlends {
 }
 
 export interface Dna {
-  childCount: number;
+  highestHeadId: number;
   blends: DnaBlends;
 }
 
@@ -82,8 +82,7 @@ export function writeDna(writer: BufferWriter, dna: Dna, bodyType: BodyType) {
   writer.writeByte(0x0);
   writer.writeByte(0x4);
   writer.writeByte(0x0);
-  writer.writeByte(dna.childCount);
-  writer.writeByte(0x0);
+  writer.writeUint16(dna.highestHeadId);
 
   for (let i = 0; i < partCount; i++) {
     const blends = dna.blends[idxPartRecord[i % 12]];
@@ -111,8 +110,7 @@ export function dnaFromString(dnaString: string): Dna {
   reader.expectByte(0x0);
   reader.expectByte(0x4);
   reader.expectByte(0x0);
-  const childCount = reader.readByte();
-  reader.readByte(); // might be 0 or ff for some reason?
+  const childCount = reader.readUint16();
 
   const blends: DnaBlends = {
     eyebrowLeft: [],
@@ -139,8 +137,10 @@ export function dnaFromString(dnaString: string): Dna {
     blends[idxPartRecord[part]].push({ headId, value: Math.max(value, 1) });
   }
 
+  console.log("asdas", childCount);
+
   return {
-    childCount,
+    highestHeadId: childCount,
     blends,
   };
 }
@@ -151,6 +151,7 @@ export function dnaFromStringOld(dnaString: string, bodyType: BodyType): Dna {
   }
 
   const reader = new BufferReader(fromHexStr(dnaString).buffer);
+  console.log(reader.view.buffer);
 
   const blends: DnaBlends = {
     eyebrowLeft: [],
@@ -171,9 +172,8 @@ export function dnaFromStringOld(dnaString: string, bodyType: BodyType): Dna {
 
   for (let i = 0; i < partCount; i++) {
     const part = i % 12;
-    reader.expectByte(0);
-    const headId = reader.readByte();
-    const value = reader.readUint16Le();
+    const headId = reader.readUint16Be();
+    const value = reader.readUint16Be();
 
     if (headId > maxHeadId) {
       throw new Error("Invalid head id");
@@ -183,8 +183,18 @@ export function dnaFromStringOld(dnaString: string, bodyType: BodyType): Dna {
     blends[idxPartRecord[part]].push({ headId, value: Math.max(value, 1) });
   }
 
+  let highestHeadId = 0;
+  // find the highest head id where the part is not 0
+  for (const [_, bodyPart] of Object.entries(blends)) {
+    for (const blend of bodyPart) {
+      if (blend.value > 0) {
+        highestHeadId = Math.max(highestHeadId, blend.headId);
+      }
+    }
+  }
+
   return {
-    childCount: 48,
+    highestHeadId,
     blends,
   };
 }
@@ -201,7 +211,7 @@ export function dnaToString(dna: Dna, bodyType: BodyType): string {
 
 export function getRandDna(bodyType: BodyType): Dna {
   const dna: Dna = {
-    childCount: 0,
+    highestHeadId: 0,
     blends: {
       eyebrowLeft: [],
       eyebrowRight: [],
@@ -229,7 +239,10 @@ export function getRandDna(bodyType: BodyType): Dna {
     const r4 = max - r1 - r2 - r3;
 
     const values = [r1, r2, r3, r4];
-    const headIds = Array.from({ length: maxHeadIdForBodyType(bodyType) }, (_, i) => i);
+    const headIds = Array.from(
+      { length: maxHeadIdForBodyType(bodyType) },
+      (_, i) => i
+    );
     shuffle(headIds);
 
     for (let j = 0; j < 4; j++) {
@@ -242,7 +255,7 @@ export function getRandDna(bodyType: BodyType): Dna {
 
 export function getFaceDna(faceId: number): Dna {
   const dna: Dna = {
-    childCount: 0,
+    highestHeadId: 0,
     blends: {
       eyebrowLeft: [],
       eyebrowRight: [],

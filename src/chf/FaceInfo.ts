@@ -1,5 +1,5 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 
 export interface FaceInfo {
   freckleAmount: number;
@@ -27,9 +27,14 @@ export interface FaceInfo {
   lipSmoothness2: number;
   lipSmoothness3: number;
   lipOpacity: number;
+  tatooAge?: number;
+  tatooHueRotation?: number;
 }
 export function readFaceInfo(reader: BufferReader): FaceInfo {
-  reader.expectUint32(0x19);
+  const tag = reader.readUint32();
+  if (tag !== 25 && tag !== 27)
+    throw new Error(`Expected FaceInfo tag 0x19 but got ${tag}`);
+
   reader.expectUint32(0);
   return {
     freckleAmount: reader.readKeyedFloat32(0xe87727e2),
@@ -57,6 +62,9 @@ export function readFaceInfo(reader: BufferReader): FaceInfo {
     lipSmoothness2: reader.readKeyedFloat32(0x8f3dd294),
     lipSmoothness3: reader.readKeyedFloat32(0xbaccc688),
     lipOpacity: reader.readKeyedFloat32(0x589ddcf4),
+    tatooAge: tag === 27 ? reader.readKeyedFloat32(0x064c1127) : undefined,
+    tatooHueRotation:
+      tag === 27 ? reader.readKeyedFloat32(0xec67c07d) : undefined,
   };
 }
 

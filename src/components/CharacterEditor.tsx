@@ -6,7 +6,10 @@ import { DnaPanel } from "./DnaPanel";
 import { SkinColorPicker } from "./SkinColorPicker";
 
 export function CharacterEditor() {
-  const getChf = useCharacterStore((state) => state.getChf);
+  const { getChf } = useCharacterStore((state) => ({
+    getChf: state.getChf,
+  }));
+
   const exportCharacter = useCallback(() => {
     const buffer = getChf();
     const blob = new Blob([buffer], { type: "application/octet-stream" });
@@ -19,7 +22,7 @@ export function CharacterEditor() {
 
   return (
     <>
-      <Tabs variant="outline" defaultValue="colors">
+      <Tabs variant="default" defaultValue="colors" bg={"blue"}>
         <Tabs.List justify="center">
           <Tabs.Tab value="colors">Colors</Tabs.Tab>
           <Tabs.Tab value="dna">DNA (in development)</Tabs.Tab>
@@ -38,7 +41,11 @@ export function CharacterEditor() {
       </Tabs>
       <Affix zIndex={900} position={{ bottom: 0, right: 0 }}>
         <Center p="md">
-          <Button size="xl" rightSection={<IconDownload size={14} />} onClick={exportCharacter}>
+          <Button
+            size="xl"
+            rightSection={<IconDownload size={14} />}
+            onClick={exportCharacter}
+          >
             Export
           </Button>
         </Center>

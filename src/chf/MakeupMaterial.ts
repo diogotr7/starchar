@@ -1,7 +1,18 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 
-export type MakeupType = "None" | "Eyes01" | "Eyes02" | "Eyes03" | "Eyes04" | "Eyes05" | "Lips01" | "Lips02" | "Lips03" | "Lips04" | "Lips05";
+export type MakeupType =
+  | "None"
+  | "Eyes01"
+  | "Eyes02"
+  | "Eyes03"
+  | "Eyes04"
+  | "Eyes05"
+  | "Lips01"
+  | "Lips02"
+  | "Lips03"
+  | "Lips04"
+  | "Lips05";
 
 const makeup: Record<string, MakeupType> = {
   "b643f3b3-21bc-4f44-95e5-0de140fd7954": "Eyes01",
@@ -16,7 +27,9 @@ const makeup: Record<string, MakeupType> = {
   "db723134-9142-43c1-84c0-ace36c176135": "Lips05",
 };
 
-const reverseMakeup = Object.fromEntries(Object.entries(makeup).map(([k, v]) => [v, k]));
+const reverseMakeup = Object.fromEntries(
+  Object.entries(makeup).map(([k, v]) => [v, k])
+);
 
 export interface MakeupMaterial {
   count: number;
@@ -32,8 +45,13 @@ export function readMakeupMaterial(reader: BufferReader): MakeupMaterial {
   return { count, makeupType };
 }
 
-export function writeMakeupMaterial(writer: BufferWriter, makeup: MakeupMaterial) {
+export function writeMakeupMaterial(
+  writer: BufferWriter,
+  makeup: MakeupMaterial
+) {
   writer.writeUint32(0);
   writer.writeByte(makeup.count);
-  writer.writeGuid(reverseMakeup[makeup.makeupType] ?? "00000000-0000-0000-0000-000000000000");
+  writer.writeGuid(
+    reverseMakeup[makeup.makeupType] ?? "00000000-0000-0000-0000-000000000000"
+  );
 }

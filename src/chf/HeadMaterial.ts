@@ -1,5 +1,5 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 
 export type HeadMaterialType =
   | "Unknown"
@@ -64,7 +64,9 @@ const headMaterialTypeMap: Record<string, HeadMaterialType> = {
   "00000000-0000-0000-0000-000000000000": "Unknown",
 };
 
-const reverseHeadMaterial = Object.fromEntries(Object.entries(headMaterialTypeMap).map(([k, v]) => [v, k]));
+const reverseHeadMaterial = Object.fromEntries(
+  Object.entries(headMaterialTypeMap).map(([k, v]) => [v, k])
+);
 
 export interface HeadMaterial {
   materialType: HeadMaterialType;
@@ -78,7 +80,9 @@ export function readHeadMaterial(reader: BufferReader): HeadMaterial {
 
   const materialType = headMaterialTypeMap[materialTypeGuid];
   if (materialType === undefined) {
-    throw new Error(`Unknown head material type\' ${materialTypeGuid}\' with params \'${additionalParams}\'`);
+    throw new Error(
+      `Unknown head material type\' ${materialTypeGuid}\' with params \'${additionalParams}\'`
+    );
   }
 
   reader.expectUint32(0);
@@ -91,9 +95,15 @@ export function readHeadMaterial(reader: BufferReader): HeadMaterial {
   return { materialType, additionalParams };
 }
 
-export function writeHeadMaterial(writer: BufferWriter, headMaterial: HeadMaterial) {
+export function writeHeadMaterial(
+  writer: BufferWriter,
+  headMaterial: HeadMaterial
+) {
   writer.writeUint32(0xa98beb34);
-  writer.writeGuid(reverseHeadMaterial[headMaterial.materialType] ?? new Error(`Unknown head material type: ${headMaterial.materialType}`));
+  writer.writeGuid(
+    reverseHeadMaterial[headMaterial.materialType] ??
+      new Error(`Unknown head material type: ${headMaterial.materialType}`)
+  );
   writer.writeUint32(headMaterial.additionalParams);
   writer.writeUint32(0);
   writer.writeUint32(0);

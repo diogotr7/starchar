@@ -8,30 +8,28 @@
     "dev": "vite --port 4000",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest",
-    "test:setup": "tsx ./src/rev-eng/setup-chf.ts",
-    "format": "biome format --write ."
+    "wasm": "wasm-pack build chf-rs/wasm --target web",
+    "wasmdev": "yarn wasm && yarn dev"
   },
   "dependencies": {
-    "@cloudpss/zstd": "^0.2.16",
     "@mantine/core": "^7.9.1",
     "@mantine/dropzone": "^7.9.1",
     "@mantine/hooks": "^7.9.1",
     "@mantine/notifications": "^7.9.1",
     "@tabler/icons-react": "^3.3.0",
-    "mutative": "^1.0.5",
+    "mutative": "^1.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "use-mutative": "^1.2.1",
+    "zod": "^3.24.2",
     "zustand": "^4.5.2",
     "zustand-mutative": "^1.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.7.3",
     "@types/node": "^20.12.11",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "@vitest/ui": "^1.6.0",
     "colord": "^2.9.3",
     "postcss": "^8.4.38",
     "postcss-preset-mantine": "^1.15.0",
@@ -40,7 +38,6 @@
     "typescript": "^5.2.2",
     "vite": "^5.2.0",
     "vite-plugin-top-level-await": "^1.4.1",
-    "vite-plugin-wasm": "^3.3.0",
-    "vitest": "^1.6.0"
+    "vite-plugin-wasm": "^3.3.0"
   }
 }

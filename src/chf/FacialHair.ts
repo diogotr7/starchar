@@ -1,5 +1,5 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 import type { HairModifier } from "./HairModifier";
 import { readHairModifier, writeHairModifier } from "./HairModifier";
 
@@ -69,7 +69,9 @@ const facialHairTypeMap: Record<string, FacialHairType> = {
   "31de0f7c-a059-4a5c-8917-d699a79af303": "Beard30",
 };
 
-const reverseFacialHair = Object.fromEntries(Object.entries(facialHairTypeMap).map(([k, v]) => [v, k]));
+const reverseFacialHair = Object.fromEntries(
+  Object.entries(facialHairTypeMap).map(([k, v]) => [v, k])
+);
 
 export interface FacialHair {
   childCount: number;
@@ -114,7 +116,10 @@ export function readFacialHair(reader: BufferReader): FacialHair {
 
 export function writeFacialHair(writer: BufferWriter, facialHair: FacialHair) {
   writer.writeUint32(0x98efbb1c);
-  writer.writeGuid(reverseFacialHair[facialHair.facialHairType] ?? new Error(`Unknown facial hair type: ${facialHair.facialHairType}`));
+  writer.writeGuid(
+    reverseFacialHair[facialHair.facialHairType] ??
+      new Error(`Unknown facial hair type: ${facialHair.facialHairType}`)
+  );
   writer.writeUint32(facialHair.childCount);
   switch (facialHair.childCount) {
     case 0: {

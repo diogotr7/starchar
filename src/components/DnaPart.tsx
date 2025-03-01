@@ -34,7 +34,7 @@ export function DnaPart({ label, part }: { label: string; part: DnaFacePart }) {
 
   const updateHeadId = useCallback(
     (index: number, value: string | number) => {
-      const id = typeof value === "number" ? value : Number.parseInt(value) ?? 0;
+      const id = typeof value === "number" ? value : (Number.parseInt(value) ?? 0);
       updateCharacter((d) => {
         d.dna.blends[part][index].headId = id;
       });

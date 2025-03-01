@@ -1,5 +1,5 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 
 export interface HairModifier {
   childCount: number;
@@ -27,7 +27,10 @@ export function readHairModifier(reader: BufferReader): HairModifier {
   return { childCount };
 }
 
-export function writeHairModifier(writer: BufferWriter, hairModifier: HairModifier) {
+export function writeHairModifier(
+  writer: BufferWriter,
+  hairModifier: HairModifier
+) {
   writer.writeUint32(0xe7809d46);
   writer.writeGuid("12ce4ce5-e49a-4dab-9d31-ad262faaddf2");
   writer.writeUint32(0x0);

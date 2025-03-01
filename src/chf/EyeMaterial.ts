@@ -1,5 +1,5 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 import type { DyeColors } from "./DyeColors";
 import { readDyeColors, writeDyeColors } from "./DyeColors";
 
@@ -8,17 +8,20 @@ export interface EyeMaterial {
 }
 
 export function readEyeMaterial(reader: BufferReader): EyeMaterial {
-  if (reader.peekUint32() !== 0xa047885e) {
-    return { colors: { color1: "#000000", color2: undefined } };
-  }
-
   reader.expectUint32(0xa047885e);
   reader.expectEmptyGuid();
-  reader.expectUint32(0xce9df055);
+  const key = reader.readUint32();
+
+  if (key !== 0xce9df055 && key !== 0xd5354502)
+    throw new Error(`Unknown readEyeMaterial key: ${key}`);
+
   reader.expectEmptyGuid();
   reader.expectUint32(1);
   reader.expectUint32(5);
-  reader.expectUint32(0x9736c44b);
+  const key2 = reader.readUint32();
+  if (key2 !== 0x9736c44b && key2 !== 0x8c9e711c)
+    throw new Error(`Unknown readEyeMaterial key2: ${key2}`);
+
   reader.expectUint32(0);
   reader.expectUint32(0);
   reader.expectUint32(0);
@@ -28,7 +31,10 @@ export function readEyeMaterial(reader: BufferReader): EyeMaterial {
   return { colors };
 }
 
-export function writeEyeMaterial(writer: BufferWriter, eyeMaterial: EyeMaterial) {
+export function writeEyeMaterial(
+  writer: BufferWriter,
+  eyeMaterial: EyeMaterial
+) {
   writer.writeUint32(0xa047885e);
   writer.writeEmptyGuid();
   writer.writeUint32(0xce9df055);

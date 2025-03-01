@@ -1,7 +1,14 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 
-export type EyebrowType = "None" | "Brows01" | "Brows02" | "Brows03" | "Brows04" | "Brows05" | "Brows06";
+export type EyebrowType =
+  | "None"
+  | "Brows01"
+  | "Brows02"
+  | "Brows03"
+  | "Brows04"
+  | "Brows05"
+  | "Brows06";
 
 const eyebrowTypeMap: Record<string, EyebrowType> = {
   "89ec0bbc-7daf-4b09-a98d-f8dd8df32305": "Brows01",
@@ -12,7 +19,9 @@ const eyebrowTypeMap: Record<string, EyebrowType> = {
   "03270dfe-71be-45ee-b51a-fb1dd7e67ba1": "Brows06",
 };
 
-const reverseEyebrowTypeMap = Object.fromEntries(Object.entries(eyebrowTypeMap).map(([key, value]) => [value, key]));
+const reverseEyebrowTypeMap = Object.fromEntries(
+  Object.entries(eyebrowTypeMap).map(([key, value]) => [value, key])
+);
 
 export interface Eyebrows {
   eyebrowsType: EyebrowType;
@@ -28,6 +37,9 @@ export function readEyebrows(reader: BufferReader): Eyebrows {
 
 export function writeEyebrows(writer: BufferWriter, eyebrows: Eyebrows) {
   writer.writeUint32(0x1787ee22);
-  writer.writeGuid(reverseEyebrowTypeMap[eyebrows.eyebrowsType] ?? new Error(`Unknown eyebrow type: ${eyebrows.eyebrowsType}`));
+  writer.writeGuid(
+    reverseEyebrowTypeMap[eyebrows.eyebrowsType] ??
+      new Error(`Unknown eyebrow type: ${eyebrows.eyebrowsType}`)
+  );
   writer.writeUint64(0);
 }

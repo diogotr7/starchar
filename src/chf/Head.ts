@@ -1,5 +1,5 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 import type { Eyebrows } from "./Eyebrows";
 import { readEyebrows, writeEyebrows } from "./Eyebrows";
 import type { Eyelashes } from "./Eyelashes";
@@ -10,6 +10,7 @@ import type { FacialHair } from "./FacialHair";
 import { readFacialHair, writeFacialHair } from "./FacialHair";
 import type { Hair } from "./Hair";
 import { readHair, writeHair } from "./Hair";
+import { readScalp, Scalp } from "./Scalp";
 
 export interface Head {
   eyes?: Eyes;
@@ -17,6 +18,7 @@ export interface Head {
   eyebrows?: Eyebrows;
   eyelashes?: Eyelashes;
   facialHair?: FacialHair;
+  scalp?: Scalp;
 }
 
 export function readHead(reader: BufferReader): Head {
@@ -47,8 +49,15 @@ export function readHead(reader: BufferReader): Head {
         head.facialHair = readFacialHair(reader);
         break;
       }
+      case 0xddfa667b: {
+        //universal_scalp_itemport
+        head.scalp = readScalp(reader);
+        break;
+      }
       default:
-        throw new Error("Unknown head part");
+        throw new Error(
+          "Unknown head part: " + reader.peekUint32().toString(16)
+        );
     }
   }
 

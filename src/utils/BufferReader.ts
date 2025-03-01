@@ -27,7 +27,7 @@ export class BufferReader {
     return value;
   }
 
-  readUint16Le(): number {
+  readUint16Be(): number {
     const value = this.view.getUint16(this.offset, false);
     this.offset += Int16Array.BYTES_PER_ELEMENT;
     return value;
@@ -147,5 +147,9 @@ export class BufferReader {
 
   skip(count: number): void {
     this.offset += count;
+  }
+
+  remainingBytes(): number {
+    return this.view.byteLength - this.offset;
   }
 }

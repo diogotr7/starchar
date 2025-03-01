@@ -34,3 +34,4 @@ dist-ssr
 !.yarn/versions
 
 scratch/
+chf-rs/target

@@ -1,5 +1,5 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 import type { HairModifier } from "./HairModifier";
 import { readHairModifier, writeHairModifier } from "./HairModifier";
 
@@ -62,7 +62,9 @@ export const hairTypes: Record<string, HairType> = {
   "03762539-c42e-4314-9710-97430c72da98": "Hair24",
 };
 
-const reverseHairTypes = Object.fromEntries(Object.entries(hairTypes).map(([k, v]) => [v, k]));
+const reverseHairTypes = Object.fromEntries(
+  Object.entries(hairTypes).map(([k, v]) => [v, k])
+);
 
 export function readHair(reader: BufferReader): Hair {
   reader.expectUint32(0x13601a95);
@@ -82,7 +84,10 @@ export function readHair(reader: BufferReader): Hair {
 
 export function writeHair(writer: BufferWriter, hair: Hair) {
   writer.writeUint32(0x13601a95);
-  writer.writeGuid(reverseHairTypes[hair.hairType] ?? new Error(`Unknown hair type: ${hair.hairType}`));
+  writer.writeGuid(
+    reverseHairTypes[hair.hairType] ??
+      new Error(`Unknown hair type: ${hair.hairType}`)
+  );
   if (hair.modifier) {
     writer.writeUint64(1);
     writeHairModifier(writer, hair.modifier);

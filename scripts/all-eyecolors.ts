@@ -2,9 +2,9 @@ import { readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { HsvColor } from "colord";
 import { colord } from "colord";
-import { readCharacter } from "../chf/Character";
-import { createChf, extractChf } from "../chf/ChfFile";
-import { defaultF, eyesDir } from "../paths";
+import { readCharacter } from "../src/chf/Character";
+import { createChf, extractChf } from "../src/chf/ChfFile";
+import { defaultF, eyesDir } from "./paths";
 
 const zeroPad = (num: number, places: number) => String(num).padStart(places, "0");
 

@@ -1,9 +1,9 @@
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { type HsvColor, colord } from "colord";
-import { readCharacter } from "../chf/Character";
-import { extractChf } from "../chf/ChfFile";
-import { downloadedDir, scratchDir } from "../paths";
+import { readCharacter } from "../src/chf/Character";
+import { extractChf } from "../src/chf/ChfFile";
+import { downloadedDir, scratchDir } from "./paths";
 
 interface ColorInfo {
   hsvColor: HsvColor;

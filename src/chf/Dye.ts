@@ -1,5 +1,5 @@
-import type { BufferReader } from "../BufferReader";
-import type { BufferWriter } from "../BufferWriter";
+import type { BufferReader } from "../utils/BufferReader";
+import type { BufferWriter } from "../utils/BufferWriter";
 import type { DyeColors } from "./DyeColors";
 import { readDyeColors, writeDyeColors } from "./DyeColors";
 import type { DyeValues } from "./DyeValues";
@@ -43,7 +43,7 @@ export function readDye(reader: BufferReader): Dye {
   reader.expectUint32(5);
   const dyeValues = readDyeValues(reader);
   const dyeColors = readDyeColors(reader);
-  reader.expectUint32(5);
+  if (reader.remainingBytes() >= 4) reader.expectUint32(5);
 
   return {
     type,
@@ -54,7 +54,9 @@ export function readDye(reader: BufferReader): Dye {
 }
 
 export function writeDye(writer: BufferWriter, dye: Dye) {
-  writer.writeUint32(reverseMap[dye.type] ?? new Error(`Unknown dye type: ${dye.type}`));
+  writer.writeUint32(
+    reverseMap[dye.type] ?? new Error(`Unknown dye type: ${dye.type}`)
+  );
   writer.writeEmptyGuid();
   writer.writeUint32(dye.unknown);
   writer.writeEmptyGuid();

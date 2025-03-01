@@ -7,19 +7,17 @@ import { createWithEqualityFn } from "zustand/traditional";
 import { shallow } from "zustand/shallow";
 
 interface CharacterState {
-  isCharacterLoaded: boolean;
   character: Character;
   getChf: () => ArrayBuffer;
   getDnaString: () => string;
   updateCharacter: (fn: (draft: Character) => void) => void;
   loadCharacter: (character: Character) => void;
-  resetCharacter: () => void;
+  unloadCharacter: () => void;
 }
 
 export const useCharacterStore = createWithEqualityFn<CharacterState>()(
   devtools(
     mutative((set, get) => ({
-      isCharacterLoaded: false,
       character: undefined!,
       getChf: () => createChf(get().character),
       getDnaString: () => {
@@ -27,8 +25,8 @@ export const useCharacterStore = createWithEqualityFn<CharacterState>()(
         return dnaToString(character.dna, character.bodyType);
       },
       updateCharacter: (fn) => set((state) => fn(state.character), false, "updateCharacter"),
-      loadCharacter: (character) => set({ isCharacterLoaded: true, character }, false, "loadCharacter"),
-      resetCharacter: () => set({ isCharacterLoaded: false, character: undefined! }, false, "resetCharacter"),
+      loadCharacter: (character) => set({ character }, false, "loadCharacter"),
+      unloadCharacter: () => set({ character: undefined! }, false, "unloadCharacter"),
     })),
   ),
   shallow,

@@ -1,39 +1,17 @@
-import { compress, decompress } from "@cloudpss/zstd/wasm";
-import { BufferReader } from "../BufferReader";
-import { BufferWriter } from "../BufferWriter";
-import { crc32c } from "../crc32";
+import {
+  compress,
+  crc32c,
+  get_chf_contents,
+} from "../../chf-rs/wasm/pkg/chf_rs_wasm";
+import { BufferWriter } from "../utils/BufferWriter";
 import { type Character, writeCharacter } from "./Character";
 
 const SIZE = 4096;
-const MAGIC = 0x00004242;
+const MAGIC = 0x4242;
 const MYMAGIC = "diogotr7";
 
 export function extractChf(bytes: Uint8Array): Uint8Array {
-  if (bytes.length !== SIZE) {
-    throw new Error("bytes must be 4096 bytes long");
-  }
-
-  const reader = new BufferReader(bytes.buffer);
-  const magic = reader.readUint32();
-  const crc = reader.readUint32();
-  const compressedSize = reader.readUint32();
-  const decompressedSize = reader.readUint32();
-
-  if (crc !== crc32c(bytes.slice(16))) {
-    throw new Error("crc does not match expected crc");
-  }
-
-  if (magic !== MAGIC) {
-    throw new Error("magic does not match expected magic");
-  }
-
-  const decompressed = decompress(bytes.slice(16, 16 + compressedSize));
-
-  if (decompressed.length !== decompressedSize) {
-    throw new Error("decompressed size does not match expected size");
-  }
-
-  return decompressed;
+  return get_chf_contents(bytes);
 }
 
 export function createChf(character: Character): ArrayBuffer {
@@ -42,7 +20,7 @@ export function createChf(character: Character): ArrayBuffer {
   writeCharacter(tempWriter, character);
   const uncompressed = tempBuffer.slice(0, tempWriter.getOffset());
 
-  const compressed = compress(uncompressed, 0);
+  const compressed = compress(new Uint8Array(uncompressed));
   const chf = new ArrayBuffer(SIZE);
   const chfWriter = new BufferWriter(chf);
 
