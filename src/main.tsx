@@ -1,11 +1,11 @@
 import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
 import { Notifications } from "@mantine/notifications";
+import "@mantine/notifications/styles.css";
 import React from "react";
 import reactDom from "react-dom/client";
-import "@mantine/notifications/styles.css";
-import "@mantine/core/styles.css";
 import init from "../chf-rs/wasm/pkg";
-import { App } from "./components2/App";
+import { App } from "./components/App";
 
 async function startApp() {
   console.debug("loading wasm");

@@ -1,10 +1,10 @@
 import { Affix, Button, Tabs } from "@mantine/core";
+import { IconDownload } from "@tabler/icons-react";
+import { useChfManagement } from "../useChfStore";
 import { BodyTypeEditor } from "./BodyTypeEditor";
 import { DnaEditor } from "./DnaEditor";
 import { ItemPortsEditor } from "./ItemPortsEditor";
 import { MaterialsEditor } from "./MaterialsEditor";
-import { IconDownload } from "@tabler/icons-react";
-import { useChfManagement } from "../useChfStore";
 
 export function ChfEditor() {
   const { exportChf } = useChfManagement();

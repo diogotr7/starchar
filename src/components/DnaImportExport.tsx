@@ -1,52 +1,48 @@
-import { Button, Center, Chip, ChipGroup, Fieldset, Group, Image, Menu, Modal, NumberInput, Stack, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  Center,
+  Chip,
+  ChipGroup,
+  Fieldset,
+  Group,
+  Image,
+  Menu,
+  Modal,
+  NumberInput,
+  Stack,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { useClipboard, useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
 import { useCallback, useEffect, useState } from "react";
-import type { Dna, DnaFacePart } from "../chf/Dna";
-import { dnaFromString, dnaFromStringOld, getFaceDna, getRandDna, maxHeadIdForBodyType } from "../chf/Dna";
-import { useCharacterStore } from "../useCharacterStore";
-
-const allParts: DnaFacePart[] = [
-  "eyebrowLeft",
-  "eyebrowRight",
-  "eyeLeft",
-  "eyeRight",
-  "earLeft",
-  "earRight",
-  "cheekLeft",
-  "cheekRight",
-  "nose",
-  "mouth",
-  "jaw",
-  "crown",
-];
-
-export const teciaPacheco =
-  "9493D0FC54EBF49E9CE19B65000000000C0004000400FFFF00000D0000000D00000000000000000000000B00000004000000040000000B0000000B0000000C0000001D00000019000000210000002100000008000000080000000200000002000000020000000D0000000D0000000A0000000C0000001100FFFF2900FFFF2900FFFF2900FFFF2900FFFF2900FFFF2900FFFF2900FFFF2900FFFF2900FFFF2900FFFF2900FFFF2900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-export const ruto =
-  "9493D0FCF6676CDDD4F8CC65000000000C0004000400FFFF000001000000010000000A0000000A0000000B0000000D0000000D0000000400000004000000020000000000000009000000000000000000000006000000060000000A0000000A0000000A00000009000000090000000E0000000C0000000F00FFFF1300FFFF1300FFFF1300FFFF1300FFFF1300FFFF1300FFFF1300FFFF1300FFFF1300FFFF1300FFFF1300FFFF1300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-export const hurston =
-  "9493D0FCF6676CDD048AE565000000000C0004000400FFFFFFFF2100FFFF2100FFFF2100FFFF2100FFFF2100FFFF2100FFFF2100FFFF2100FFFF2100FFFF2100FFFF2100FFFF2100000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000";
-
-export const dnaStrings = [
-  { name: "Tecia Pacheco", dna: teciaPacheco },
-  { name: "Ruto", dna: ruto },
-  { name: "Hurston", dna: hurston },
-];
+import {
+  allFaceParts,
+  Dna,
+  DnaFace,
+  dnaFromString,
+  dnaStrings,
+  dnaToString,
+  getFaceDna,
+} from "../schema/Dna";
+import { getBodyType } from "../schema/GuidMapping";
+import { useChf, useChfStore } from "../useChfStore";
 
 export function DnaImportExport() {
-  const { getDnaString, updateCharacter, bodyType } = useCharacterStore((state) => ({
-    getDnaString: state.getDnaString,
-    updateCharacter: state.updateCharacter,
-    bodyType: state.character.bodyType,
-  }));
   const [opened, { toggle, close }] = useDisclosure(false);
   const [dnaString, setDnaString] = useState("");
-  const [selectedParts, setSelectedParts] = useState<DnaFacePart[]>(allParts);
+  const [selectedParts, setSelectedParts] =
+    useState<(keyof DnaFace)[]>(allFaceParts);
   const clipboard = useClipboard();
   const [faceId, setFaceId] = useState(0);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: make sure the face id is within bounds when changing body type
+  const { bodyType, dna } = useChf((c) => ({
+    bodyType: getBodyType(c.body_type_id),
+    dna: c.dna,
+  }));
+
+  const updateCharacter = useChfStore((c) => c.updateChf);
+
   useEffect(() => {
     setFaceId(0);
   }, [bodyType]);
@@ -56,11 +52,12 @@ export function DnaImportExport() {
     if (dnaString.length === 384) {
       // partial dna string, old format. need to fix and convert to new format
       try {
-        newDna = dnaFromStringOld(dnaString, bodyType);
+        newDna = dnaFromString(dnaString);
       } catch {
         notifications.show({
           title: "Invalid DNA String",
-          message: "The DNA string you entered has a Head ID too high. Perhaps it's a female dna string applied to a male character?",
+          message:
+            "The DNA string you entered has a Head ID too high. Perhaps it's a female dna string applied to a male character?",
           autoClose: 5000,
         });
         return;
@@ -71,41 +68,50 @@ export function DnaImportExport() {
 
     updateCharacter((d) => {
       for (const part of selectedParts) {
-        d.dna.blends[part] = newDna.blends[part];
+        d.dna.face_parts[part] = newDna.face_parts[part];
       }
     });
     close();
-  }, [dnaString, updateCharacter, close, bodyType, selectedParts]);
+  }, [dnaString, close, bodyType, selectedParts]);
 
   const dnaStringOpen = useCallback(() => {
     // reset the modal to default when reopening
     setDnaString("");
-    setSelectedParts(allParts);
+    setSelectedParts(allFaceParts);
     toggle();
   }, [toggle]);
 
   const dnaStringClipboard = useCallback(() => {
-    clipboard.copy(getDnaString());
+    clipboard.copy(dnaToString(dna));
     notifications.show({
       title: "DNA String copied to clipboard",
-      message: "You can now share it with others or import it into another character.",
+      message:
+        "You can now share it with others or import it into another character.",
       autoClose: 2000,
     });
-  }, [clipboard, getDnaString]);
+  }, [clipboard]);
 
-  const canImport = (dnaString.length === 432 || dnaString.length === 384) && selectedParts.length > 0;
+  const canImport =
+    (dnaString.length === 432 || dnaString.length === 384) &&
+    selectedParts.length > 0;
 
   return (
     <>
       <Stack w={335}>
         <Fieldset p="md" legend="Head Id Preview">
-          <Image radius="sm" mb="sm" src={`/${bodyType === "male" ? "m" : "f"}_head_ids/${faceId.toString().padStart(2, "0")}.webp`} />
+          <Image
+            radius="sm"
+            mb="sm"
+            src={`/${bodyType === "male" ? "m" : "f"}_head_ids/${faceId
+              .toString()
+              .padStart(2, "0")}.webp`}
+          />
           <Group justify="space-around">
             <Button
               size="xs"
               onClick={() =>
                 updateCharacter((draft) => {
-                  draft.dna = getFaceDna(faceId);
+                  draft.dna = getFaceDna(draft.dna, faceId);
                 })
               }
             >
@@ -116,25 +122,27 @@ export function DnaImportExport() {
               w={60}
               value={faceId}
               min={0}
-              max={maxHeadIdForBodyType(bodyType)}
+              //max={maxHeadIdForBodyType(bodyType)}
               allowDecimal={false}
               allowLeadingZeros={false}
               allowNegative={false}
-              onChange={(v) => setFaceId(typeof v === "string" ? Number.parseInt(v) : v)}
+              onChange={(v) =>
+                setFaceId(typeof v === "string" ? Number.parseInt(v) : v)
+              }
             />
           </Group>
         </Fieldset>
         <Button onClick={dnaStringOpen}>Import DNA String</Button>
         <Button onClick={dnaStringClipboard}>Copy to Clipboard</Button>
-        <Button
-          onClick={() =>
+        {/* <Button
+          onClick={() => {
             updateCharacter((draft) => {
               draft.dna = getRandDna(bodyType);
-            })
-          }
+            });
+          }}
         >
           Randomize DNA
-        </Button>
+        </Button> */}
       </Stack>
       <Modal
         // export button z-index is 900
@@ -151,13 +159,16 @@ export function DnaImportExport() {
       >
         <Stack>
           <Text size="lg">
-            Enter the DNA string of the character you want to import. These can be shared between players or imported from NPCs from the game files.
+            Enter the DNA string of the character you want to import. These can
+            be shared between players or imported from NPCs from the game files.
           </Text>
           <Group wrap="nowrap" justify="space-between">
             <TextInput
               value={dnaString}
               onChange={(event) => setDnaString(event.currentTarget.value)}
-              error={!canImport && dnaString.length > 0 ? "Invalid DNA string" : null}
+              error={
+                !canImport && dnaString.length > 0 ? "Invalid DNA string" : null
+              }
               w="100%"
               placeholder="9493D0FC...."
             />
@@ -181,7 +192,11 @@ export function DnaImportExport() {
             Choose which parts of the face you want to import.
           </Text>
 
-          <ChipGroup multiple={true} value={selectedParts} onChange={(parts) => setSelectedParts(parts as DnaFacePart[])}>
+          <ChipGroup
+            multiple={true}
+            value={selectedParts}
+            onChange={(parts) => setSelectedParts(parts as (keyof DnaFace)[])}
+          >
             <Group>
               <Chip value="eyebrowLeft">Left Eyebrow</Chip>
               <Chip value="eyebrowRight">Right Eyebrow</Chip>

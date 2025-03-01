@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { chf_to_json, json_to_chf } from "../../chf-rs/wasm/pkg/chf_rs_wasm";
+import { dnaSchema } from "./Dna";
 import { itemPortSchema } from "./ItemPort";
 import { materialSchema } from "./Materials";
-import { dnaSchema } from "./Dna";
 
 const chfSchema = z.object({
   female_version: z.number(),

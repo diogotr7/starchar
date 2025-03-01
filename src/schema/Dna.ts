@@ -41,12 +41,12 @@ export const dnaSchema = z.object({
 
 export type Dna = z.infer<typeof dnaSchema>;
 
-export function dnaFromString(dnaString: string): Dna {
-  return {};
+export function dnaFromString(_dnaString: string): Dna {
+  return {} as Dna;
   //TODO: Hex String --WASM--> to byte -> Json --WASM--> return
 }
 
-export function dnaToString(dna: Dna): string {
+export function dnaToString(_dna: Dna): string {
   return "";
   //TODO: Dna -> Json --WASM-> Bytes -> Hex String --WASM--> return
 }

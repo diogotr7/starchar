@@ -6,9 +6,9 @@ import {
   SimpleGrid,
   Stack,
 } from "@mantine/core";
-import { HashDisplay } from "./HashDisplay";
 import { useChf, useChfUpdate } from "../useChfStore";
 import { GuidDisplay } from "./GuidDisplay";
+import { HashDisplay } from "./HashDisplay";
 
 function SubMaterialDisplay({
   materialIndex,

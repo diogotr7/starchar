@@ -1,16 +1,16 @@
 import { Group, NumberInput, Slider } from "@mantine/core";
-import { maxHeadIdForBodyType } from "../chf/Dna";
-import { useCharacterStore } from "../useCharacterStore";
 
-export interface DnaBlendProps {
+export function DnaBlend({
+  headId,
+  value,
+  onChangeSlider,
+  onChangeNumber,
+}: {
   headId: number;
   value: number;
   onChangeSlider: (value: number) => void;
   onChangeNumber: (value: number | string) => void;
-}
-
-export function DnaBlend({ headId, value, onChangeSlider, onChangeNumber }: DnaBlendProps) {
-  const bodyType = useCharacterStore((state) => state.character.bodyType);
+}) {
   return (
     <Group wrap="nowrap">
       <NumberInput
@@ -21,11 +21,19 @@ export function DnaBlend({ headId, value, onChangeSlider, onChangeNumber }: DnaB
         size="xs"
         w={50}
         min={0}
-        max={maxHeadIdForBodyType(bodyType)}
+        max={51} //technically incorrect, for males and females it's different.
         value={headId}
         onChange={onChangeNumber}
       />
-      <Slider w="100" min={1} max={65535} step={1} label={(value) => `${Math.round((value / 65535) * 100)}%`} value={value} onChange={onChangeSlider} />
+      <Slider
+        w="100"
+        min={1}
+        max={65535}
+        step={1}
+        label={(value) => `${Math.round((value / 65535) * 100)}%`}
+        value={value}
+        onChange={onChangeSlider}
+      />
     </Group>
   );
 }

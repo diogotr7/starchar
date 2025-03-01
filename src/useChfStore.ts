@@ -1,9 +1,9 @@
 import { mutative } from "zustand-mutative";
 import { devtools } from "zustand/middleware";
-import { Chf, chfToBytes } from "./schema/Chf";
-import { downloadBytes } from "./utils/DownloadBytes";
-import { createWithEqualityFn } from "zustand/traditional";
 import { shallow } from "zustand/shallow";
+import { createWithEqualityFn } from "zustand/traditional";
+import { Chf, chfToBytes } from "./schema/Chf";
+import { downloadBytes } from "./utils";
 
 type ChfStore = {
   chf: Chf | undefined;

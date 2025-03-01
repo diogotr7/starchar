@@ -6,7 +6,7 @@
   "packageManager": "yarn@4.2.2",
   "scripts": {
     "dev": "vite --port 4000",
-    "build": "tsc && vite build",
+    "build": "yarn wasm && tsc && vite build",
     "preview": "vite preview",
     "wasm": "wasm-pack build chf-rs/wasm --target web",
     "wasmdev": "yarn wasm && yarn dev"

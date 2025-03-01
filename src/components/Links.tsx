@@ -1,4 +1,4 @@
-import { Group, ActionIcon } from "@mantine/core";
+import { ActionIcon, Group } from "@mantine/core";
 import { IconBrandGithub, IconBrandPaypal } from "@tabler/icons-react";
 
 export function Links() {

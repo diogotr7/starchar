@@ -1,6 +1,6 @@
 import { Fieldset, Group, Stack, Text } from "@mantine/core";
-import { DnaPart } from "./DnaPart";
 import { DnaImportExport } from "./DnaImportExport";
+import { DnaPart } from "./DnaPart";
 
 export function DnaEditor() {
   return (

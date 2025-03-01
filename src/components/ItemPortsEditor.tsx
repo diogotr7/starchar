@@ -1,8 +1,8 @@
-import { ItemPort } from "../schema/ItemPort";
 import { Fieldset, Group } from "@mantine/core";
+import { ItemPort } from "../schema/ItemPort";
 import { useChf } from "../useChfStore";
-import { HashDisplay } from "./HashDisplay";
 import { GuidDisplay } from "./GuidDisplay";
+import { HashDisplay } from "./HashDisplay";
 
 function ItemPortDisplay({ itemPort }: { itemPort: ItemPort }) {
   return (
