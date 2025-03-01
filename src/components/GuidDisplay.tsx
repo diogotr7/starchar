@@ -1,21 +1,18 @@
-import { materialGuids, textures } from "../schema/GuidMapping";
+import {
+  itemPortGuids,
+  materialGuids,
+  textureGuids,
+} from "../schema/GuidMapping";
 
 export function GuidDisplay({ guid }: { guid: string }) {
-  const materialName = materialGuids
-    .find((m) => m.guid === guid)
-    ?.filePath.split("/")
-    .pop();
-  if (materialName) {
-    return materialName;
-  }
+  const materialName = materialGuids[guid];
+  if (materialName) return materialName;
 
-  const textureName = textures
-    .find((t) => t.guid === guid)
-    ?.filePath.split("/")
-    .pop();
-  if (textureName) {
-    return textureName;
-  }
+  const textureName = textureGuids[guid];
+  if (textureName) return textureName;
+
+  const itemPortName = itemPortGuids[guid];
+  if (itemPortName) return itemPortName;
 
   return <pre>{guid}</pre>;
 }

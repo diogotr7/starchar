@@ -102,7 +102,7 @@ export function DnaImportExport() {
           <Image
             radius="sm"
             mb="sm"
-            src={`/${bodyType === "male" ? "m" : "f"}_head_ids/${faceId
+            src={`/${bodyType === "Male" ? "m" : "f"}_head_ids/${faceId
               .toString()
               .padStart(2, "0")}.webp`}
           />
