@@ -1,4 +1,7 @@
 import {
+  AccordionChevron,
+  ActionIcon,
+  Collapse,
   ColorInput,
   Fieldset,
   Group,
@@ -6,9 +9,46 @@ import {
   Space,
   Stack,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { useChf, useChfUpdate } from "../useChfStore";
 import { GuidDisplay } from "./GuidDisplay";
 import { HashDisplay } from "./HashDisplay";
+
+function CollapsibleFieldset({
+  legend,
+  children,
+}: {
+  legend: string;
+  children: React.ReactNode;
+}) {
+  const [opened, { toggle }] = useDisclosure(true);
+
+  return (
+    <Fieldset
+      legend={
+        <>
+          <ActionIcon
+            size="md"
+            variant="transparent"
+            onClick={toggle}
+            aria-label={opened ? "Close" : "Open"}
+            style={{ cursor: "pointer" }}
+          >
+            <AccordionChevron
+              style={{
+                transform: opened ? "rotate(180deg)" : "rotate(0deg)",
+                transition: "transform 200ms",
+              }}
+            />
+          </ActionIcon>
+          {legend}
+        </>
+      }
+    >
+      <Collapse in={opened}>{children}</Collapse>
+    </Fieldset>
+  );
+}
 
 function SubMaterialDisplay({
   materialIndex,
@@ -23,7 +63,7 @@ function SubMaterialDisplay({
 
   const updateChf = useChfUpdate();
   return (
-    <Fieldset legend={`SubMaterial ${subMaterialIndex + 1}`}>
+    <CollapsibleFieldset legend={`SubMaterial ${subMaterialIndex + 1}`}>
       <Stack>
         <Group justify="space-between">
           <div>Hash</div>
@@ -34,7 +74,7 @@ function SubMaterialDisplay({
       {subMaterial.textures.length > 0 && (
         <>
           {subMaterial.textures.map((tex, i) => (
-            <Fieldset legend={`Texture ${i + 1}`} key={i}>
+            <CollapsibleFieldset legend={`Texture ${i + 1}`} key={i}>
               <Stack>
                 <Group justify="space-between">
                   <div>Index</div>
@@ -45,12 +85,12 @@ function SubMaterialDisplay({
                   <GuidDisplay guid={tex.tex_id} />
                 </Group>
               </Stack>
-            </Fieldset>
+            </CollapsibleFieldset>
           ))}
         </>
       )}
       {subMaterial.material_params.length > 0 && (
-        <Fieldset legend="Parameters">
+        <CollapsibleFieldset legend="Parameters">
           {subMaterial.material_params.map((param, i) => (
             <Group key={i} justify="space-between" p={4}>
               <HashDisplay hash={param.value_hash} />
@@ -71,10 +111,10 @@ function SubMaterialDisplay({
               />
             </Group>
           ))}
-        </Fieldset>
+        </CollapsibleFieldset>
       )}
       {subMaterial.material_colors.length > 0 && (
-        <Fieldset legend="Colors">
+        <CollapsibleFieldset legend="Colors">
           {subMaterial.material_colors.map((color, i) => (
             <Group key={i} justify="space-between" p={2}>
               <HashDisplay hash={color.value_hash} />
@@ -92,9 +132,9 @@ function SubMaterialDisplay({
               />
             </Group>
           ))}
-        </Fieldset>
+        </CollapsibleFieldset>
       )}
-    </Fieldset>
+    </CollapsibleFieldset>
   );
 }
 
@@ -102,7 +142,7 @@ function MaterialDisplay({ index }: { index: number }) {
   const material = useChf((c) => c.materials[index]);
 
   return (
-    <Fieldset legend={`Material ${index + 1}`}>
+    <CollapsibleFieldset legend={`Material ${index + 1}`}>
       <Stack>
         <Group justify="space-between">
           <div>Hash</div>
@@ -129,7 +169,7 @@ function MaterialDisplay({ index }: { index: number }) {
           ))}
         </>
       )}
-    </Fieldset>
+    </CollapsibleFieldset>
   );
 }
 
