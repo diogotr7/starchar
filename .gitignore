@@ -35,3 +35,4 @@ dist-ssr
 
 scratch/
 chf-rs/target
+chf-rs/cli/out

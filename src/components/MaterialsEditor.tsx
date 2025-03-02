@@ -1,4 +1,4 @@
-import { ColorInput, Fieldset, Group, NumberInput, Stack } from "@mantine/core";
+import { ColorInput, Fieldset, Group, Slider, Stack } from "@mantine/core";
 import { useChf, useChfUpdate } from "../useChfStore";
 import { GuidDisplay } from "./GuidDisplay";
 import { HashDisplay } from "./HashDisplay";
@@ -30,18 +30,20 @@ function SubMaterialDisplay({
       {subMaterial.material_params.length > 0 && (
         <Fieldset legend="Parameters">
           {subMaterial.material_params.map((param, i) => (
-            <Group key={i} justify="space-between" p={2}>
+            <Group key={i} justify="space-between" p={4}>
               <HashDisplay hash={param.value_hash} />
-              <NumberInput
+              <Slider
+                w="8em"
+                min={0}
+                max={1}
+                step={0.01}
+                size="md"
                 value={param.value}
                 onChange={(value) => {
                   updateChf((draft) => {
                     draft.materials[materialIndex].sub_materials[
                       subMaterialIndex
-                    ].material_params[i].value =
-                      typeof value === "string"
-                        ? Number.parseInt(value)
-                        : value;
+                    ].material_params[i].value = value;
                   });
                 }}
               />
@@ -57,7 +59,7 @@ function SubMaterialDisplay({
               <ColorInput
                 withEyeDropper={false}
                 value={color.value.toUpperCase()}
-                format="hex"
+                format="hexa"
                 onChange={(value) => {
                   updateChf((draft) => {
                     draft.materials[materialIndex].sub_materials[

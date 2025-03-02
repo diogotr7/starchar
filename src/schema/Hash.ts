@@ -73,10 +73,11 @@ export const hashMapping: Record<string, string> = {
   "0x9361cb58": "FrecklesOpacity",
   "0x9d8b687a": "female26",
   "0xc8fff8ae": "piercings_eyebrows_itemport",
+  "0xddfa667b": "universal_scalp_itemport",
 };
 
 export const hashGuess: Record<string, string> = {
-  "0xbd530797": "Limb/Body/Head Color",
+  "0xbd530797": "Color",
 
   "0xb29b1d90": "Eye Makeup Color 1",
   "0xe3230e2f": "Eye Makeup Color 2",
@@ -92,6 +93,16 @@ export const hashGuess: Record<string, string> = {
 
   "0x442a34ac": "Eye Color 1",
 
-  "0x15e90814": "Hair Dye Color 1",
-  "0xa2c7c909": "Hair Dye Color 2",
+  "0x15e90814": "Tip Dye Color",
+  "0xa2c7c909": "Root Dye Color",
+
+  "0x4e865b74": "Eyebrow dye",
+  "0x3b73d344": "Stubble dye",
+  "0x8792319b": "Beard dye",
+  "0x2c6279e6": "Hair dye",
+
+  "0x75196d10": "Eyebrow dye 2",
+  "0x9f37ad63": "Eyebrow dye 3",
+  "0x1f1fad17": "Hair dye 2",
+  "0x13170b02": "Hair dye 3",
 };
