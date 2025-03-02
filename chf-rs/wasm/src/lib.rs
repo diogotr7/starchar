@@ -37,6 +37,16 @@ pub fn get_chf_from_contents(data: &[u8]) -> Vec<u8> {
 }
 
 #[wasm_bindgen]
+pub fn get_dna_from_bytes(data: &[u8]) -> String {
+    chf_rs_lib::get_dna_from_bytes(data).unwrap()
+}
+
+#[wasm_bindgen]
+pub fn get_bytes_from_dna(data: &str) -> Vec<u8> {
+    chf_rs_lib::get_bytes_from_dna(data).unwrap()
+}
+
+#[wasm_bindgen]
 pub fn crc32c(data: &[u8]) -> u32 {
     chf_rs_lib::crc32c_bytes(data)
 }

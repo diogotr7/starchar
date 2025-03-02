@@ -105,8 +105,9 @@ impl DnaFaceParts2 {
 }
 
 #[derive(Debug, DekuRead, DekuWrite, Serialize, Deserialize)]
+// this magic is the size. It's 216. We have it as magic because it's not really relevant in the rest of the data.
+#[deku(magic = b"\xd8\x00\x00\x00\x00\x00\x00\x00")]
 pub struct Dna {
-    pub size: u64,
     #[deku(assert_eq = "Hash::from_str(b\"dna matrix 1.0\")")]
     pub dna_hash1: Hash,
 
@@ -116,16 +117,22 @@ pub struct Dna {
     ].contains(&dna_hash2)")]
     pub dna_hash2: Hash,
 
-    #[deku(assert = "[
-        // any of these when hash2 is male
-        Hash(0x65e740d3),
-        Hash(0x66df165f),
-        Hash(0x674986d1),
-        // any of these when hash2 is female
-        Hash(0x65d75204),
-        Hash(0x66ebfad1),
-        Hash(0x67448f99),
-    ].contains(&dna_hash3)")]
+    // Removing this assert because some dna strings ingame have different hashes here
+    // #[deku(assert = "[
+    //     // any of these when hash2 is male
+    //     Hash(0x65e740d3),
+    //     Hash(0x66df165f),
+    //     Hash(0x674986d1),
+    //     // any of these when hash2 is female
+    //     Hash(0x65d75204),
+    //     Hash(0x66ebfad1),
+    //     Hash(0x67448f99),
+
+    //     // in some technically illegal dna strings:
+    //     Hash(0x659be19c),//tecia
+    //     Hash(0x65ccf8d4),//ruto
+    //     Hash(0x65e58a04),//hurston
+    // ].contains(&dna_hash3)")]
     pub dna_hash3: Hash,
 
     #[deku(assert_eq = "0")]
@@ -140,7 +147,8 @@ pub struct Dna {
     #[deku(assert_eq = "4")]
     pub four: u16,
 
-    #[deku(assert = "*max_head_id < 60")]
+    //sometimes this is just set to FF, not sure if the game actually cares
+    //#[deku(assert = "*max_head_id < 60")]
     pub max_head_id: u16,
 
     #[deku(

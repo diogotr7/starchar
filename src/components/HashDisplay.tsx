@@ -27,7 +27,7 @@ export function HashDisplay({ hash }: { hash: string }) {
             });
           }}
         >
-          <IconCopy size="xs" />
+          <IconCopy />
         </ActionIcon>
       </Tooltip>
     </Group>

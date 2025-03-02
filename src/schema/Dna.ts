@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  get_bytes_from_dna,
+  get_dna_from_bytes,
+} from "../../chf-rs/wasm/pkg/chf_rs_wasm";
+import { fromHexStr, toHexStr } from "../utils";
 
 const dnaBlendSchema = z.object({
   head_id: z.number(),
@@ -27,7 +32,6 @@ const dnaFaceSchema = z.object({
 export type DnaFace = z.infer<typeof dnaFaceSchema>;
 
 export const dnaSchema = z.object({
-  size: z.number(),
   dna_hash1: z.string(),
   dna_hash2: z.string(),
   dna_hash3: z.string(),
@@ -41,14 +45,30 @@ export const dnaSchema = z.object({
 
 export type Dna = z.infer<typeof dnaSchema>;
 
-export function dnaFromString(_dnaString: string): Dna {
-  return {} as Dna;
-  //TODO: Hex String --WASM--> to byte -> Json --WASM--> return
+export function dnaFromString(dnaString: string): Dna {
+  let bytes: Uint8Array = fromHexStr(dnaString);
+
+  //add 8 bytes to the start of the dna string, they represent the length and are not part of the dna string
+  const lengthBytes = [0xd8, 0, 0, 0, 0, 0, 0, 0];
+  if (!bytes.slice(0, 8).every((v, i) => v === lengthBytes[i])) {
+    //if the first 8 bytes are not the length bytes, add them
+    const newBytes = new Uint8Array(bytes.length + 8);
+    newBytes.set(lengthBytes);
+    newBytes.set(bytes, 8);
+    bytes = newBytes;
+  }
+
+  const dna = JSON.parse(get_dna_from_bytes(bytes));
+  return dnaSchema.parse(dna);
 }
 
 export function dnaToString(_dna: Dna): string {
-  return "";
-  //TODO: Dna -> Json --WASM-> Bytes -> Hex String --WASM--> return
+  const dna = dnaSchema.parse(_dna);
+  const json = JSON.stringify(dna);
+  const bytes = get_bytes_from_dna(json);
+
+  //Chop off the first 8 bytes, they represent the length and are not part of a dna string
+  return toHexStr(bytes.slice(8));
 }
 
 export const teciaPacheco =
@@ -97,6 +117,46 @@ export function getFaceDna(dna: Dna, faceId: number): Dna {
   return {
     ...dna,
     max_head_id: faceId,
+    face_parts: verified,
+  };
+}
+
+export function getRandDna(
+  dna: Dna,
+  maxId: number,
+  mirror: boolean = true
+): Dna {
+  // Gets a random face part such that the sum of the values is 65534
+  function randomizePart(): DnaFacePart {
+    let total = 65534;
+    let parts = [];
+    for (let i = 0; i < 4; i++) {
+      let value = Math.floor(Math.random() * total);
+      parts.push({
+        head_id: Math.floor(Math.random() * maxId),
+        value: i === 3 ? total : value,
+      });
+      total -= value;
+    }
+    return parts;
+  }
+
+  const newParts = Object.fromEntries(
+    allFaceParts.map((key) => [key, randomizePart()])
+  );
+
+  const verified = dnaFaceSchema.parse(newParts);
+
+  if (mirror) {
+    verified.cheekLeft = verified.cheekRight;
+    verified.earLeft = verified.earRight;
+    verified.eyebrowLeft = verified.eyebrowRight;
+    verified.eyeLeft = verified.eyeRight;
+  }
+
+  return {
+    ...dna,
+    max_head_id: maxId,
     face_parts: verified,
   };
 }

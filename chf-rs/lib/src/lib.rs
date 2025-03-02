@@ -9,6 +9,7 @@ mod materials;
 use chf::{Chf, ChfContainer};
 use crc32c::{crc32c, crc32c_append};
 use deku::prelude::*;
+use dna::Dna;
 use std::io;
 use zstd;
 
@@ -110,4 +111,16 @@ pub fn get_chf_from_contents(data: &[u8]) -> Result<Vec<u8>, anyhow::Error> {
     let container_bytes = container.to_bytes()?;
 
     Ok(container_bytes)
+}
+
+pub fn get_dna_from_bytes(data: &[u8]) -> Result<String, anyhow::Error> {
+    let data = Dna::from_bytes((data, 0))?.1;
+
+    Ok(serde_json::to_string(&data)?)
+}
+
+pub fn get_bytes_from_dna(data: &str) -> Result<Vec<u8>, anyhow::Error> {
+    let data: Dna = serde_json::from_str(data)?;
+
+    Ok(data.to_bytes()?)
 }

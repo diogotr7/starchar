@@ -28,7 +28,7 @@ export function GuidDisplay({ guid }: { guid: string }) {
             });
           }}
         >
-          <IconCopy size="xs" />
+          <IconCopy />
         </ActionIcon>
       </Tooltip>
     </Group>

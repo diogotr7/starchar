@@ -24,6 +24,7 @@ import {
   dnaStrings,
   dnaToString,
   getFaceDna,
+  getRandDna,
 } from "../schema/Dna";
 import { getBodyType } from "../schema/GuidMapping";
 import { useChf, useChfStore } from "../useChfStore";
@@ -132,17 +133,16 @@ export function DnaImportExport() {
             </Button>
           </Group>
         </Fieldset>
-        <Fieldset legend="DNA String (WIP)" p="md" disabled>
+        <Fieldset legend="DNA String" p="md">
           <Stack gap="sm" p="0">
             <Button onClick={dnaStringOpen}>Import DNA String</Button>
             <Button onClick={dnaStringClipboard}>Copy DNA String</Button>
             <Button
-
-            // onClick={() => {
-            //   updateCharacter((draft) => {
-            //     draft.dna = getRandDna(bodyType);
-            //   });
-            // }}
+              onClick={() => {
+                updateCharacter((draft) => {
+                  draft.dna = getRandDna(draft.dna, 51);
+                });
+              }}
             >
               Randomize DNA
             </Button>
