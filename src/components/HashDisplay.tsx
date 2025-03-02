@@ -7,7 +7,7 @@ export function HashDisplay({ hash }: { hash: string }) {
   const name =
     hashMapping[hash] ??
     (hashGuess[hash] && `${hashGuess[hash]} (Guessed)`) ??
-    `Unknown Hash: ${hash}`;
+    hash;
 
   return (
     <Group gap="xs">

@@ -31,9 +31,12 @@ export function ChfEditor() {
           <MaterialsEditor />
         </Tabs.Panel>
       </Tabs>
-      <Affix position={{ bottom: "2em", right: "2em" }}>
+      <Affix
+        position={{ bottom: "2em", left: "50%" }}
+        style={{ transform: "translateX(-50%)" }}
+      >
         <Button
-          leftSection={<IconDownload size={16} />}
+          leftSection={<IconDownload size={24} />}
           size="xl"
           onClick={exportChf}
         >

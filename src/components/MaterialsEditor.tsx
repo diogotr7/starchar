@@ -1,4 +1,11 @@
-import { ColorInput, Fieldset, Group, Slider, Stack } from "@mantine/core";
+import {
+  ColorInput,
+  Fieldset,
+  Group,
+  Slider,
+  Space,
+  Stack,
+} from "@mantine/core";
 import { useChf, useChfUpdate } from "../useChfStore";
 import { GuidDisplay } from "./GuidDisplay";
 import { HashDisplay } from "./HashDisplay";
@@ -16,16 +23,31 @@ function SubMaterialDisplay({
 
   const updateChf = useChfUpdate();
   return (
-    <Fieldset legend={<HashDisplay hash={subMaterial.submaterial_hash} />}>
+    <Fieldset legend={`SubMaterial ${subMaterialIndex + 1}`}>
+      <Stack>
+        <Group justify="space-between">
+          <div>Hash</div>
+          <HashDisplay hash={subMaterial.submaterial_hash} />
+        </Group>
+      </Stack>
+      <Space h="md" />
       {subMaterial.textures.length > 0 && (
-        <Fieldset legend="Textures">
+        <>
           {subMaterial.textures.map((tex, i) => (
-            <Group key={i} justify="space-between">
-              <p>{tex.tex_index}</p>
-              <GuidDisplay guid={tex.tex_id} />
-            </Group>
+            <Fieldset legend={`Texture ${i + 1}`} key={i}>
+              <Stack>
+                <Group justify="space-between">
+                  <div>Index</div>
+                  <p>{tex.tex_index}</p>
+                </Group>
+                <Group justify="space-between">
+                  <div>Id</div>
+                  <GuidDisplay guid={tex.tex_id} />
+                </Group>
+              </Stack>
+            </Fieldset>
           ))}
-        </Fieldset>
+        </>
       )}
       {subMaterial.material_params.length > 0 && (
         <Fieldset legend="Parameters">
@@ -80,19 +102,24 @@ function MaterialDisplay({ index }: { index: number }) {
   const material = useChf((c) => c.materials[index]);
 
   return (
-    <Fieldset legend={<HashDisplay hash={material.material_hash} />}>
+    <Fieldset legend={`Material ${index + 1}`}>
       <Stack>
         <Group justify="space-between">
-          <div> Material Id</div>
+          <div>Hash</div>
+          <HashDisplay hash={material.material_hash} />
+        </Group>
+        <Group justify="space-between">
+          <div>Id</div>
           <GuidDisplay guid={material.material_id} />
         </Group>
         <Group justify="space-between">
-          <div>Material Flags</div>
+          <div>Flags</div>
           <div>{material.mtl_flags_maybe}</div>
         </Group>
       </Stack>
+      <Space h="md" />
       {material.sub_materials.length > 0 && (
-        <Fieldset legend="Sub Materials">
+        <>
           {material.sub_materials.map((_, subMaterialIndex) => (
             <SubMaterialDisplay
               key={subMaterialIndex}
@@ -100,7 +127,7 @@ function MaterialDisplay({ index }: { index: number }) {
               subMaterialIndex={subMaterialIndex}
             />
           ))}
-        </Fieldset>
+        </>
       )}
     </Fieldset>
   );
