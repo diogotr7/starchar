@@ -15,6 +15,10 @@ export function fromHexStr(hex: string): Uint8Array {
 
 export function downloadBytes(bytes: Uint8Array, name: string) {
   const blob = new Blob([bytes], { type: "application/octet-stream" });
+  download(blob, name);
+}
+
+export function download(blob: Blob, name: string) {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;

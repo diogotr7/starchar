@@ -160,3 +160,10 @@ export function getRandDna(
     face_parts: verified,
   };
 }
+
+export const dnaHeadIdMaxF = 47;
+export const dnaHeadIdMaxM = 59;
+
+export function getMaxHeadId(bodyType: "Male" | "Female"): number {
+  return bodyType === "Male" ? dnaHeadIdMaxM : dnaHeadIdMaxF;
+}

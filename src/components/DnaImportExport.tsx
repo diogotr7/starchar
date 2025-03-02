@@ -15,7 +15,9 @@ import {
 } from "@mantine/core";
 import { useClipboard, useDisclosure } from "@mantine/hooks";
 import { notifications } from "@mantine/notifications";
+import JSZip from "jszip";
 import { useCallback, useEffect, useState } from "react";
+import { chfToBytes } from "../schema/Chf";
 import {
   allFaceParts,
   Dna,
@@ -28,6 +30,7 @@ import {
 } from "../schema/Dna";
 import { getBodyType } from "../schema/GuidMapping";
 import { useChf, useChfStore } from "../useChfStore";
+import { download } from "../utils";
 
 export function DnaImportExport() {
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -43,6 +46,7 @@ export function DnaImportExport() {
   }));
 
   const updateCharacter = useChfStore((c) => c.updateChf);
+  const rawChf = useChf((c) => c);
 
   useEffect(() => {
     setFaceId(0);
@@ -96,6 +100,28 @@ export function DnaImportExport() {
     (dnaString.length === 432 || dnaString.length === 384) &&
     selectedParts.length > 0;
 
+  const dump = useCallback(async () => {
+    const minHeadId = 0;
+    const maxHeadId = 70;
+
+    const cloneChf = { ...rawChf };
+
+    const baseFileName = `head_${bodyType === "Male" ? "m" : "f"}`;
+
+    const zip = new JSZip();
+    for (let i = minHeadId; i <= maxHeadId; i++) {
+      const newDna = getFaceDna(cloneChf.dna, i);
+      const newChf = { ...cloneChf, dna: newDna };
+
+      const bytes = chfToBytes(newChf);
+      zip.file(`${baseFileName}_${i.toString().padStart(2, "0")}.chf`, bytes);
+    }
+
+    const blob = await zip.generateAsync({ type: "blob" });
+
+    download(blob, "all_heads.zip");
+  }, [rawChf, bodyType]);
+
   return (
     <>
       <Stack w={200}>
@@ -145,6 +171,9 @@ export function DnaImportExport() {
               }}
             >
               Randomize DNA
+            </Button>
+            <Button onClick={dump} color="red">
+              Dump all heads
             </Button>
           </Stack>
         </Fieldset>
