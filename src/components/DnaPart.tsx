@@ -30,7 +30,7 @@ export function DnaPart({
       newValues.splice(index, 0, value);
       const newBlends = newValues.map((v, i) => ({
         head_id: part[i].head_id,
-        value: v,
+        value: Math.round(v),
       }));
       updateChf((d) => {
         d.dna.face_parts[dnaFacePart] = newBlends;
