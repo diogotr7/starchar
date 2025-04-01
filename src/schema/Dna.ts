@@ -160,7 +160,7 @@ export function getRandDna(
     face_parts: verified,
   };
 }
-
+export const blendTotal = 65534;
 export const dnaHeadIdMaxF = 47;
 export const dnaHeadIdMaxM = 59;
 
