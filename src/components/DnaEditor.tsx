@@ -12,8 +12,14 @@ export function DnaEditor() {
           different eyes for example). You can also import and export DNA
           strings to share your characters with others.
           <br />
-          Each face part can be a blend of 4 different heads. The sliders
-          control the blend amount and the dropdowns control which head is used.
+          Each face part can be a blend of 4 different heads. The amount of each
+          head that contributes to the blend can be adjusted by dragging the
+          blue dot. The closer to each corner, the more that head contributes to
+          the blend. If the dot is at the center of the square, all heads
+          contribute equally to the blend.
+          <br />
+          Each corner's head id can be adjusted with the number picker next to
+          it.
         </Text>
         <Group>
           <Stack>
