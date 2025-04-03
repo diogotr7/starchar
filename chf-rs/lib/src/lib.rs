@@ -10,15 +10,26 @@ use chf::{Chf, ChfContainer};
 use crc32c::{crc32c, crc32c_append};
 use deku::prelude::*;
 use dna::Dna;
+use ruzstd::decoding::StreamingDecoder;
+use ruzstd::encoding::{compress_to_vec, CompressionLevel};
+use ruzstd::io::Read;
 use std::io;
-use zstd;
 
 pub fn compress(data: &[u8]) -> io::Result<Vec<u8>> {
-    zstd::encode_all(data, 3)
+    Ok(compress_to_vec(data, CompressionLevel::Fastest))
 }
 
 pub fn decompress(data: &[u8]) -> io::Result<Vec<u8>> {
-    zstd::decode_all(data)
+    let mut decoder = StreamingDecoder::new(data).unwrap();
+
+    let mut decompressed = Vec::new();
+    match decoder.read_to_end(&mut decompressed) {
+        Ok(_) => Ok(decompressed),
+        Err(e) => Err(io::Error::new(
+            io::ErrorKind::Other,
+            format!("Failed to decompress data: {}", e),
+        )),
+    }
 }
 
 pub fn crc32c_bytes(data: &[u8]) -> u32 {
@@ -33,7 +44,7 @@ pub fn chf_to_json(data: &[u8]) -> Result<String, anyhow::Error> {
         return Err(anyhow::anyhow!("CRC32C mismatch"));
     }
 
-    let decompressed = zstd::decode_all(container.data.as_slice())?;
+    let decompressed = decompress(container.data.as_slice())?;
     let chf_result = Chf::from_bytes((&decompressed, 0))?;
     let chf = chf_result.1;
     let json = serde_json::to_string(&chf)?;
@@ -46,7 +57,7 @@ pub fn json_to_chf(data: &str) -> Result<Vec<u8>, anyhow::Error> {
     let chf_bytes = chf.to_bytes()?;
 
     println!("{:?}", chf_bytes);
-    let data = zstd::encode_all(chf_bytes.as_slice(), 3)?;
+    let data = compress(chf_bytes.as_slice())?;
 
     let remaining = 4096 // chf file size
         - 2 // magic
@@ -78,13 +89,13 @@ pub fn json_to_chf(data: &str) -> Result<Vec<u8>, anyhow::Error> {
 pub fn get_chf_contents(data: &[u8]) -> Result<Vec<u8>, anyhow::Error> {
     let container = ChfContainer::from_bytes((data, 0))?.1;
 
-    let decompressed = zstd::decode_all(container.data.as_slice())?;
+    let decompressed = decompress(container.data.as_slice())?;
 
     Ok(decompressed)
 }
 
 pub fn get_chf_from_contents(data: &[u8]) -> Result<Vec<u8>, anyhow::Error> {
-    let data = zstd::encode_all(data, 3)?;
+    let data = compress(data)?;
 
     let remaining = 4096 // chf file size
         - 2 // magic
