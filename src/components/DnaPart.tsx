@@ -1,5 +1,5 @@
 import { Fieldset } from "@mantine/core";
-import { DnaFace } from "../schema/Dna";
+import { FacePart } from "../schema/Dna";
 import { DnaQuadBlend } from "./DnaQuadBlend";
 
 export function DnaPart({
@@ -7,7 +7,7 @@ export function DnaPart({
   dnaFacePart,
 }: {
   label: string;
-  dnaFacePart: keyof DnaFace;
+  dnaFacePart: FacePart;
 }) {
   return (
     <Fieldset legend={label} p="xs">

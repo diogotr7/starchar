@@ -8,7 +8,7 @@ import {
 } from "@mantine/core";
 import { useCallback, useRef, useState, useEffect } from "react";
 import { DraggableEvent, DraggableCore } from "react-draggable";
-import { blendTotal, DnaFace, DnaFacePart } from "../schema/Dna";
+import { blendTotal, FacePart } from "../schema/Dna";
 import { useChfStore, useChf } from "../useChfStore";
 import { getCoords } from "../utils/coords";
 
@@ -100,22 +100,13 @@ function HeadIdPicker({
 }
 
 export interface DnaQuadBlendProps {
-  facePart: keyof DnaFace;
+  facePart: FacePart;
 }
 
 export function DnaQuadBlend({ facePart }: DnaQuadBlendProps) {
   const updateChf = useChfStore((c) => c.updateChf);
   const part = useChf((c) => c.dna.face_parts[facePart]);
   const theme = useMantineTheme();
-
-  const onChange = useCallback(
-    (newFacePart: DnaFacePart) => {
-      updateChf((draft) => {
-        draft.dna.face_parts[facePart] = newFacePart;
-      });
-    },
-    [updateChf, facePart]
-  );
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState(() =>
@@ -124,6 +115,9 @@ export function DnaQuadBlend({ facePart }: DnaQuadBlendProps) {
     )
   );
 
+  // Step size for keyboard navigation (in percentage)
+  const STEP_SIZE = 0.05;
+
   useEffect(() => {
     setLocation(
       locationFromFacePart(
@@ -131,6 +125,34 @@ export function DnaQuadBlend({ facePart }: DnaQuadBlendProps) {
       )
     );
   }, [part]);
+
+  const updateLocation = useCallback(
+    (newLocation: { left: number; top: number }) => {
+      // Ensure coordinates are within bounds
+      const boundedLocation = {
+        left: Math.max(0, Math.min(1, newLocation.left)),
+        top: Math.max(0, Math.min(1, newLocation.top)),
+      };
+
+      setLocation(boundedLocation);
+      const newParts = facePartFromLocation(
+        boundedLocation.left,
+        boundedLocation.top
+      );
+
+      updateChf((draft) => {
+        draft.dna.face_parts[facePart] = draft.dna.face_parts[facePart].map(
+          (p, i) => {
+            return {
+              ...p,
+              value: newParts[i],
+            };
+          }
+        );
+      });
+    },
+    [updateChf, facePart]
+  );
 
   const updateHue = useCallback(
     (e: DraggableEvent) => {
@@ -145,24 +167,72 @@ export function DnaQuadBlend({ facePart }: DnaQuadBlendProps) {
       const xPercent = Math.min(Math.max(dx / width, 0), 1);
       const yPercent = Math.min(Math.max(dy / height, 0), 1);
 
-      setLocation({
-        left: xPercent,
-        top: yPercent,
-      });
-      const newParts = facePartFromLocation(xPercent, yPercent);
-
-      updateChf((draft) => {
-        draft.dna.face_parts[facePart] = draft.dna.face_parts[facePart].map(
-          (p, i) => {
-            return {
-              ...p,
-              value: newParts[i],
-            };
-          }
-        );
-      });
+      updateLocation({ left: xPercent, top: yPercent });
     },
-    [onChange, containerRef]
+    [updateLocation]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      // Prevent default to avoid scrolling the page
+      e.preventDefault();
+
+      let newLocation = { ...location };
+
+      switch (e.key) {
+        case "ArrowUp":
+          newLocation.top = Math.max(
+            0,
+            location.top - (e.shiftKey ? STEP_SIZE / 5 : STEP_SIZE)
+          );
+          break;
+        case "ArrowDown":
+          newLocation.top = Math.min(
+            1,
+            location.top + (e.shiftKey ? STEP_SIZE / 5 : STEP_SIZE)
+          );
+          break;
+        case "ArrowLeft":
+          newLocation.left = Math.max(
+            0,
+            location.left - (e.shiftKey ? STEP_SIZE / 5 : STEP_SIZE)
+          );
+          break;
+        case "ArrowRight":
+          newLocation.left = Math.min(
+            1,
+            location.left + (e.shiftKey ? STEP_SIZE / 5 : STEP_SIZE)
+          );
+          break;
+        case "Home":
+          // Jump to top-left corner
+          newLocation = { left: 0, top: 0 };
+          break;
+        case "End":
+          // Jump to bottom-right corner
+          newLocation = { left: 1, top: 1 };
+          break;
+        case "PageUp":
+          // Jump to top-right corner
+          newLocation = { left: 1, top: 0 };
+          break;
+        case "PageDown":
+          // Jump to bottom-left corner
+          newLocation = { left: 0, top: 1 };
+          break;
+        case "5":
+        case "c":
+        case "C":
+          // Center point when 5 or c is pressed (like numpad 5 centered)
+          newLocation = { left: 0.5, top: 0.5 };
+          break;
+        default:
+          return; // Exit if it's not a key we handle
+      }
+
+      updateLocation(newLocation);
+    },
+    [location, updateLocation]
   );
 
   const updateHeadId = useCallback(
@@ -171,7 +241,7 @@ export function DnaQuadBlend({ facePart }: DnaQuadBlendProps) {
         draft.dna.face_parts[facePart][index].head_id = value;
       });
     },
-    [onChange, facePart]
+    [updateChf, facePart]
   );
 
   return (
@@ -202,6 +272,14 @@ export function DnaQuadBlend({ facePart }: DnaQuadBlendProps) {
             position: "relative",
             border: `1px solid ${theme.colors.dark[4]}`,
           }}
+          tabIndex={0}
+          onKeyDown={handleKeyDown}
+          aria-label={`${facePart} blend control. Use arrow keys to adjust the blend.`}
+          aria-valuetext={`Left: ${Math.round(
+            location.left * 100
+          )}%, Top: ${Math.round(location.top * 100)}%`}
+          role="slider"
+          aria-roledescription="2D blend slider"
         >
           {/* SVG for center and edge indicators */}
           <svg

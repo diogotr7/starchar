@@ -1,18 +1,12 @@
 import { ActionIcon, Group, Text, Tooltip } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconCopy } from "@tabler/icons-react";
-import { hashGuess, hashMapping } from "../schema/Hash";
 
 export function HashDisplay({ hash }: { hash: string }) {
-  const name =
-    hashMapping[hash] ??
-    (hashGuess[hash] && `${hashGuess[hash]} (Guessed)`) ??
-    hash;
-
   return (
     <Group gap="xs">
       <Tooltip label={hash}>
-        <Text>{name}</Text>
+        <Text>{hash}</Text>
       </Tooltip>
       <Tooltip label="Copy hash">
         <ActionIcon

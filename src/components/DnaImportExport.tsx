@@ -21,7 +21,7 @@ import { chfToBytes } from "../schema/Chf";
 import {
   allFaceParts,
   Dna,
-  DnaFace,
+  FacePart,
   dnaFromString,
   dnaStrings,
   dnaToString,
@@ -36,7 +36,7 @@ export function DnaImportExport() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const [dnaString, setDnaString] = useState("");
   const [selectedParts, setSelectedParts] =
-    useState<(keyof DnaFace)[]>(allFaceParts);
+    useState<FacePart[]>([...allFaceParts]);
   const clipboard = useClipboard();
   const [faceId, setFaceId] = useState(0);
 
@@ -54,7 +54,7 @@ export function DnaImportExport() {
 
   const importDna = useCallback(() => {
     let newDna: Dna;
-    if (dnaString.length === 384) {
+    if (dnaString.length === 464) {
       // partial dna string, old format. need to fix and convert to new format
       try {
         newDna = dnaFromString(dnaString);
@@ -82,7 +82,7 @@ export function DnaImportExport() {
   const dnaStringOpen = useCallback(() => {
     // reset the modal to default when reopening
     setDnaString("");
-    setSelectedParts(allFaceParts);
+    setSelectedParts([...allFaceParts]);
     toggle();
   }, [toggle]);
 
@@ -97,7 +97,7 @@ export function DnaImportExport() {
   }, [clipboard]);
 
   const canImport =
-    (dnaString.length === 432 || dnaString.length === 384) &&
+    (dnaString.length === 432 || dnaString.length === 464) &&
     selectedParts.length > 0;
 
   const dump = useCallback(async () => {
@@ -166,7 +166,7 @@ export function DnaImportExport() {
             <Button
               onClick={() => {
                 updateCharacter((draft) => {
-                  draft.dna = getRandDna(draft.dna, 51);
+                  draft.dna = getRandDna(draft.dna, 30);
                 });
               }}
             >
@@ -229,21 +229,22 @@ export function DnaImportExport() {
           <ChipGroup
             multiple={true}
             value={selectedParts}
-            onChange={(parts) => setSelectedParts(parts as (keyof DnaFace)[])}
+            onChange={(parts) => setSelectedParts(parts as FacePart[])}
           >
             <Group>
-              <Chip value="eyebrowLeft">Left Eyebrow</Chip>
-              <Chip value="eyebrowRight">Right Eyebrow</Chip>
-              <Chip value="eyeLeft">Left Eye</Chip>
-              <Chip value="eyeRight">Right Eye</Chip>
-              <Chip value="earLeft">Left Ear</Chip>
-              <Chip value="earRight">Right Ear</Chip>
-              <Chip value="cheekLeft">Left Cheek</Chip>
-              <Chip value="cheekRight">Right Cheek</Chip>
-              <Chip value="nose">Nose</Chip>
-              <Chip value="mouth">Mouth</Chip>
-              <Chip value="jaw">Jaw</Chip>
-              <Chip value="crown">Crown</Chip>
+              <Chip value="EyebrowLeft">Left Eyebrow</Chip>
+              <Chip value="EyebrowRight">Right Eyebrow</Chip>
+              <Chip value="EyeLeft">Left Eye</Chip>
+              <Chip value="EyeRight">Right Eye</Chip>
+              <Chip value="EarLeft">Left Ear</Chip>
+              <Chip value="EarRight">Right Ear</Chip>
+              <Chip value="CheekLeft">Left Cheek</Chip>
+              <Chip value="CheekRight">Right Cheek</Chip>
+              <Chip value="Nose">Nose</Chip>
+              <Chip value="Mouth">Mouth</Chip>
+              <Chip value="Jaw">Jaw</Chip>
+              <Chip value="Crown">Crown</Chip>
+              {"Neck" in dna.face_parts && <Chip value="Neck">Neck</Chip>}
             </Group>
           </ChipGroup>
           <Center pt="md">

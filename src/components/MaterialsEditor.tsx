@@ -67,7 +67,7 @@ function SubMaterialDisplay({
       <Stack>
         <Group justify="space-between">
           <div>Hash</div>
-          <HashDisplay hash={subMaterial.submaterial_hash} />
+          <HashDisplay hash={subMaterial.name} />
         </Group>
       </Stack>
       <Space h="md" />
@@ -78,11 +78,11 @@ function SubMaterialDisplay({
               <Stack>
                 <Group justify="space-between">
                   <div>Index</div>
-                  <p>{tex.tex_index}</p>
+                  <p>{tex.index}</p>
                 </Group>
                 <Group justify="space-between">
                   <div>Id</div>
-                  <GuidDisplay guid={tex.tex_id} />
+                  <GuidDisplay guid={tex.guid} />
                 </Group>
               </Stack>
             </CollapsibleFieldset>
@@ -93,7 +93,7 @@ function SubMaterialDisplay({
         <CollapsibleFieldset legend="Parameters">
           {subMaterial.material_params.map((param, i) => (
             <Group key={i} justify="space-between" p={4}>
-              <HashDisplay hash={param.value_hash} />
+              <HashDisplay hash={param.name} />
               <Slider
                 w="8em"
                 min={0}
@@ -117,7 +117,7 @@ function SubMaterialDisplay({
         <CollapsibleFieldset legend="Colors">
           {subMaterial.material_colors.map((color, i) => (
             <Group key={i} justify="space-between" p={2}>
-              <HashDisplay hash={color.value_hash} />
+              <HashDisplay hash={color.name} />
               <ColorInput
                 withEyeDropper={false}
                 value={color.value.toUpperCase()}
@@ -146,15 +146,15 @@ function MaterialDisplay({ index }: { index: number }) {
       <Stack>
         <Group justify="space-between">
           <div>Hash</div>
-          <HashDisplay hash={material.material_hash} />
+          <HashDisplay hash={material.name} />
         </Group>
         <Group justify="space-between">
           <div>Id</div>
-          <GuidDisplay guid={material.material_id} />
+          <GuidDisplay guid={material.guid} />
         </Group>
         <Group justify="space-between">
           <div>Flags</div>
-          <div>{material.mtl_flags_maybe}</div>
+          <div>{material.mtl_flags}</div>
         </Group>
       </Stack>
       <Space h="md" />

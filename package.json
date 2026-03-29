@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "yarn@4.2.2",
   "scripts": {
-    "wasm": "wasm-pack build chf-rs/wasm --target web",
+    "wasm": "wasm-pack build chf-rs --target web",
     "dev": "vite --port 4000",
     "build": "tsc && vite build",
     "preview": "vite preview",

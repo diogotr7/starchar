@@ -1,2 +1,17 @@
-[workspace]
-members = ["lib", "cli", "wasm"]
+[package]
+name = "chf-rs-wasm"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+starbreaker-chf = { git = "https://github.com/diogotr7/StarBreaker" }
+wasm-bindgen = "0.2"
+console_error_panic_hook = "0.1.7"
+serde_json = "1"
+crc32c = "0.6"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3"

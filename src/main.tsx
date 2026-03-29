@@ -4,7 +4,7 @@ import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import React from "react";
 import reactDom from "react-dom/client";
-import init from "../chf-rs/wasm/pkg";
+import init from "../chf-rs/pkg";
 import { App } from "./components/App";
 
 async function startApp() {

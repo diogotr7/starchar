@@ -1,74 +1,55 @@
 import { z } from "zod";
-import {
-  get_bytes_from_dna,
-  get_dna_from_bytes,
-} from "../../chf-rs/wasm/pkg/chf_rs_wasm";
-import { fromHexStr, toHexStr } from "../utils";
+import { parse_dna_hex, write_dna_hex } from "../../chf-rs/pkg/chf_rs_wasm";
 
 const dnaBlendSchema = z.object({
-  head_id: z.number(),
   value: z.number(),
+  head_id: z.number(),
 });
+
+export type DnaBlend = z.infer<typeof dnaBlendSchema>;
 
 const dnaFacePartSchema = z.array(dnaBlendSchema).length(4);
-
 export type DnaFacePart = z.infer<typeof dnaFacePartSchema>;
 
-const dnaFaceSchema = z.object({
-  eyebrowLeft: dnaFacePartSchema,
-  eyebrowRight: dnaFacePartSchema,
-  eyeLeft: dnaFacePartSchema,
-  eyeRight: dnaFacePartSchema,
-  nose: dnaFacePartSchema,
-  earLeft: dnaFacePartSchema,
-  earRight: dnaFacePartSchema,
-  cheekLeft: dnaFacePartSchema,
-  cheekRight: dnaFacePartSchema,
-  mouth: dnaFacePartSchema,
-  jaw: dnaFacePartSchema,
-  crown: dnaFacePartSchema,
-});
+export const allFaceParts = [
+  "EyebrowLeft",
+  "EyebrowRight",
+  "EyeLeft",
+  "EyeRight",
+  "Nose",
+  "EarLeft",
+  "EarRight",
+  "CheekLeft",
+  "CheekRight",
+  "Mouth",
+  "Jaw",
+  "Crown",
+  "Neck",
+] as const;
 
-export type DnaFace = z.infer<typeof dnaFaceSchema>;
+export type FacePart = (typeof allFaceParts)[number];
+export type FaceParts = Record<string, DnaFacePart>;
 
 export const dnaSchema = z.object({
-  dna_hash1: z.string(),
-  dna_hash2: z.string(),
-  dna_hash3: z.string(),
-  zero: z.number(),
+  raw_bytes: z.string(),
+  gender_hash: z.string(),
+  variant_hash: z.string(),
   part_count: z.number(),
   blends_per_part: z.number(),
-  four: z.number(),
+  header_unknown: z.number(),
   max_head_id: z.number(),
-  face_parts: dnaFaceSchema,
+  face_parts: z.record(z.string(), dnaFacePartSchema),
 });
 
 export type Dna = z.infer<typeof dnaSchema>;
 
 export function dnaFromString(dnaString: string): Dna {
-  let bytes: Uint8Array = fromHexStr(dnaString);
-
-  //add 8 bytes to the start of the dna string, they represent the length and are not part of the dna string
-  const lengthBytes = [0xd8, 0, 0, 0, 0, 0, 0, 0];
-  if (!bytes.slice(0, 8).every((v, i) => v === lengthBytes[i])) {
-    //if the first 8 bytes are not the length bytes, add them
-    const newBytes = new Uint8Array(bytes.length + 8);
-    newBytes.set(lengthBytes);
-    newBytes.set(bytes, 8);
-    bytes = newBytes;
-  }
-
-  const dna = JSON.parse(get_dna_from_bytes(bytes));
-  return dnaSchema.parse(dna);
+  const json = parse_dna_hex(dnaString);
+  return dnaSchema.parse(JSON.parse(json));
 }
 
-export function dnaToString(_dna: Dna): string {
-  const dna = dnaSchema.parse(_dna);
-  const json = JSON.stringify(dna);
-  const bytes = get_bytes_from_dna(json);
-
-  //Chop off the first 8 bytes, they represent the length and are not part of a dna string
-  return toHexStr(bytes.slice(8));
+export function dnaToString(dna: Dna): string {
+  return write_dna_hex(JSON.stringify(dna));
 }
 
 export const teciaPacheco =
@@ -84,82 +65,47 @@ export const dnaStrings = [
   { name: "Hurston", dna: hurston },
 ];
 
-export const allFaceParts: (keyof DnaFace)[] = [
-  "eyebrowLeft",
-  "eyebrowRight",
-  "eyeLeft",
-  "eyeRight",
-  "nose",
-  "earLeft",
-  "earRight",
-  "cheekLeft",
-  "cheekRight",
-  "mouth",
-  "jaw",
-  "crown",
-];
-
 export function getFaceDna(dna: Dna, faceId: number): Dna {
-  const newParts = Object.fromEntries(
-    allFaceParts.map((key) => [
-      key,
-      [
-        { head_id: faceId, value: 65534 },
-        { head_id: 0, value: 0 },
-        { head_id: 0, value: 0 },
-        { head_id: 0, value: 0 },
-      ],
-    ])
-  );
-
-  const verified = dnaFaceSchema.parse(newParts);
-
-  return {
-    ...dna,
-    max_head_id: faceId,
-    face_parts: verified,
-  };
+  const newParts: FaceParts = {};
+  for (const key of Object.keys(dna.face_parts)) {
+    newParts[key] = [
+      { value: 65534, head_id: faceId },
+      { value: 0, head_id: 0 },
+      { value: 0, head_id: 0 },
+      { value: 0, head_id: 0 },
+    ];
+  }
+  return { ...dna, max_head_id: faceId, face_parts: newParts };
 }
 
-export function getRandDna(
-  dna: Dna,
-  maxId: number,
-  mirror: boolean = true
-): Dna {
-  // Gets a random face part such that the sum of the values is 65534
+export function getRandDna(dna: Dna, maxId: number, mirror: boolean = true): Dna {
   function randomizePart(): DnaFacePart {
     let total = 65534;
-    let parts = [];
+    const parts: DnaBlend[] = [];
     for (let i = 0; i < 4; i++) {
-      let value = Math.floor(Math.random() * total);
+      const value = Math.floor(Math.random() * total);
       parts.push({
-        head_id: Math.floor(Math.random() * maxId),
         value: i === 3 ? total : value,
+        head_id: Math.floor(Math.random() * maxId),
       });
       total -= value;
     }
     return parts;
   }
 
-  const newParts = Object.fromEntries(
-    allFaceParts.map((key) => [key, randomizePart()])
-  );
-
-  const verified = dnaFaceSchema.parse(newParts);
-
-  if (mirror) {
-    verified.cheekLeft = verified.cheekRight;
-    verified.earLeft = verified.earRight;
-    verified.eyebrowLeft = verified.eyebrowRight;
-    verified.eyeLeft = verified.eyeRight;
+  const newParts: FaceParts = {};
+  for (const key of Object.keys(dna.face_parts)) {
+    newParts[key] = randomizePart();
   }
-
-  return {
-    ...dna,
-    max_head_id: maxId,
-    face_parts: verified,
-  };
+  if (mirror) {
+    newParts.CheekLeft = newParts.CheekRight;
+    newParts.EarLeft = newParts.EarRight;
+    newParts.EyebrowLeft = newParts.EyebrowRight;
+    newParts.EyeLeft = newParts.EyeRight;
+  }
+  return { ...dna, max_head_id: maxId, face_parts: newParts };
 }
+
 export const blendTotal = 65534;
 export const dnaHeadIdMaxF = 47;
 export const dnaHeadIdMaxM = 59;

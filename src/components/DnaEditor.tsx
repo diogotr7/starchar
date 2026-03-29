@@ -1,8 +1,11 @@
 import { Center, Fieldset, Group, Stack, Text } from "@mantine/core";
+import { useChf } from "../useChfStore";
 import { DnaImportExport } from "./DnaImportExport";
 import { DnaPart } from "./DnaPart";
 
 export function DnaEditor() {
+  const hasNeck = useChf((c) => "Neck" in c.dna.face_parts);
+
   return (
     <Stack>
       <Fieldset legend="DNA">
@@ -24,22 +27,23 @@ export function DnaEditor() {
         <Group>
           <Stack>
             <Group>
-              <DnaPart label="Left Eyebrow" dnaFacePart="eyebrowLeft" />
-              <DnaPart label="Right Eyebrow" dnaFacePart="eyebrowRight" />
-              <DnaPart label="Left Eye" dnaFacePart="eyeLeft" />
-              <DnaPart label="Right Eye" dnaFacePart="eyeRight" />
+              <DnaPart label="Left Eyebrow" dnaFacePart="EyebrowLeft" />
+              <DnaPart label="Right Eyebrow" dnaFacePart="EyebrowRight" />
+              <DnaPart label="Left Eye" dnaFacePart="EyeLeft" />
+              <DnaPart label="Right Eye" dnaFacePart="EyeRight" />
             </Group>
             <Group>
-              <DnaPart label="Left Ear" dnaFacePart="earLeft" />
-              <DnaPart label="Right Ear" dnaFacePart="earRight" />
-              <DnaPart label="Left Cheek" dnaFacePart="cheekLeft" />
-              <DnaPart label="Right Cheek" dnaFacePart="cheekRight" />
+              <DnaPart label="Left Ear" dnaFacePart="EarLeft" />
+              <DnaPart label="Right Ear" dnaFacePart="EarRight" />
+              <DnaPart label="Left Cheek" dnaFacePart="CheekLeft" />
+              <DnaPart label="Right Cheek" dnaFacePart="CheekRight" />
             </Group>
             <Group>
-              <DnaPart label="Crown" dnaFacePart="crown" />
-              <DnaPart label="Nose" dnaFacePart="nose" />
-              <DnaPart label="Mouth" dnaFacePart="mouth" />
-              <DnaPart label="Jaw" dnaFacePart="jaw" />
+              <DnaPart label="Crown" dnaFacePart="Crown" />
+              <DnaPart label="Nose" dnaFacePart="Nose" />
+              <DnaPart label="Mouth" dnaFacePart="Mouth" />
+              <DnaPart label="Jaw" dnaFacePart="Jaw" />
+              {hasNeck && <DnaPart label="Neck" dnaFacePart="Neck" />}
             </Group>
           </Stack>
           <Center>
