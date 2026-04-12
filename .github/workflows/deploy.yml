@@ -44,7 +44,7 @@ jobs:
           yarn
 
       - name: Build WASM
-        run: wasm-pack build chf-rs/wasm --target web
+        run: yarn wasm
 
       - name: Build Website
         run: yarn build
